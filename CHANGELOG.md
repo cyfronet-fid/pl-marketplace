@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
-
 ## [3.58.0]
 
 ### Added
@@ -28,16 +27,6 @@ Please view this file on the master branch, on stable branches it's out of date.
 
 ### Fixed
 - Number of requests handling data_administrators scope (@goreck888)
-- Show pop-up on add to favourites (@maria-j-k)
-- Pre-fill administrator data in catalogues creation form (@maria-j-k)
-- Bundle status changes to draft if any of its offers changes the status from public to other (@maria-j-k)
-- Fix access_type validator in offer (@maria-j-k)
-- Compare/Favourite icons on the service page (@jarekzet)
-- Back to previous button fixed (@maria-j-k)
-- Removed `no_offers` message in deleted services (@goreck888)
-- Redirect to login when unlogged user is ordering a service(@goreck888)
-- Propagation of service relationships (@goreck888)
-
 
 ## [3.57.0]
 

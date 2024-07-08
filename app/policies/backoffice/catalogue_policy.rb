@@ -5,6 +5,30 @@ class Backoffice::CataloguePolicy < Backoffice::ApplicationPolicy
     service_portfolio_manager? || user&.catalogue_owner?
   end
 
+  def show?
+    actionable?
+  end
+
+  def new?
+    service_portfolio_manager?
+  end
+
+  def create?
+    service_portfolio_manager?
+  end
+
+  def update?
+    access?
+  end
+
+  def edit?
+    access?
+  end
+
+  def destroy?
+    access?
+  end
+
   def permitted_attributes
     [
       :name,

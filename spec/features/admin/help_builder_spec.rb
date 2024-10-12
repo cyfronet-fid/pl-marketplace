@@ -38,8 +38,7 @@ RSpec.feature "Marketplace help builder", manager_frontend: true do
 
       visit admin_help_path
 
-      find(".delete-icon").click
-      find("#confirm-accept").click
+      accept_confirm { find(".delete-icon").click }
 
       expect(page).to have_current_path(admin_help_path)
       expect(page).to_not have_content(section.title)
@@ -82,8 +81,7 @@ RSpec.feature "Marketplace help builder", manager_frontend: true do
 
       visit admin_help_path
 
-      find("#delete-lead-#{section.id}").click
-      find("#confirm-accept").click
+      accept_confirm { find("#delete-lead-#{section.id}").click }
 
       expect(page).to have_current_path(admin_help_path)
       expect(page).to_not have_content(item.title)

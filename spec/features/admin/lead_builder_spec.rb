@@ -13,7 +13,7 @@ RSpec.feature "Marketplace lead builder", manager_frontend: true do
     scenario "can be created" do
       visit admin_leads_path
 
-      click_on "Add new lead section"
+      click_on "+ add new lead section"
       fill_in "Title", with: "Learn more"
       select "learn_more", from: "Template"
       fill_in "Slug", with: "slug1"

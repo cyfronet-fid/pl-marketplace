@@ -1628,7 +1628,7 @@ Service detail
 
     .card-body {
       overflow: hidden;
-      padding-bottom: 8px;
+      padding-bottom: 20px;
       min-height: 150px;
 
       table {
@@ -8025,6 +8025,37 @@ abbr[title] {
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
         }
+
+        &::after {
+          width: 20px;
+          content: "";
+          height: 12px;
+          position: absolute;
+          top: 24px;
+          right: 20px;
+          background: url("ico_chevron_down.svg");
+        }
+
+        &[aria-expanded="true"] {
+          &::after {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      .actions-box {
+        margin-left: 10px;
+        display: inline;
+        z-index: 1000;
+        position: relative;
+
+        a {
+          color: $landing-01;
+
+          &:hover {
+            color: $custom-16;
+          }
+        }
       }
     }
   }
@@ -8263,7 +8294,6 @@ abbr[title] {
     border-radius: 8px;
     width: 100%;
     padding: 15px 24px 24px;
-    background: $alert-bg url("icon-right-arrow.svg") no-repeat right 25px bottom 25px;
 
     .actions-row {
       display: flex;
@@ -8299,10 +8329,6 @@ abbr[title] {
       font-weight: 400;
       max-width: 88%;
       line-height: 150%; /* 21px */
-    }
-
-    &:hover {
-      background: $alert-bg url("icon-right-arrow-hover.svg") no-repeat right 25px bottom 25px;
     }
 
     &.simple-intro {

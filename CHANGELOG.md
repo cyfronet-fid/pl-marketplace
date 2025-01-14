@@ -54,6 +54,7 @@ Please view this file on the master branch, on stable branches it's out of date.
 - Landing page (@jarekzet, @Michal-Kolomanski)
 - Readme section about manual dev setup (@Michal-Kolomanski)
 - Approval panel for new providers (@goreck888)
+- `Save as draft` and `Duplicate` features for offer form (@maria-j-k) 
 
 ### Changed
 

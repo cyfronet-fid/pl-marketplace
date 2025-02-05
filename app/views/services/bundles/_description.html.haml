@@ -1,0 +1,22 @@
+.card-body{ class: "#{"suspended" if bundle.service.suspended?}" }
+  %span.text-sm-right.fa-pull-right.badge-right{ class: order_type(bundle) }
+    %i{ class: "ordertype #{order_type(bundle)}" }
+    = t("offers.type.#{order_type(bundle)}")
+  = yield_content!(:status) if content_for?(:status)
+  .d-flex.top-bundle-wrapper
+    %h4.card-title.pt-0.mb-4
+      = link_to bundle.name, bundle.service.suspended? ? nil : service_bundle_path(bundle.service, bundle)
+
+  .bundle-goals
+    - bundle.bundle_goals.each do |goal|
+      %span.goal= goal.name
+  .bundle-description
+    .card-text.mb-2{ "data-controller" => "parameter" }
+      - if bundle.description.size > 500
+        %div{ data: { "parameter-target": "hideableParameter", state: "visible" } }
+          = markdown(bundle.description.truncate(500, separator: " "))
+        .d-none{ data: { "parameter-target": "hideableParameter", state: "hidden" } }
+          = markdown(bundle.description)
+        = render "common_parts/show_more_link", id: bundle.id
+      - else
+        = markdown(bundle.description)

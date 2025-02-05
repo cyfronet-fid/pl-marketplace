@@ -1,0 +1,8 @@
+.tour-feedback{ "data-controller" => "tourfeedback", "data-tourfeedback-target": "input", value: value }
+  .feedback-rating
+    - 5.times do
+      .feedback-point.no-events{ "data-tourfeedback-target" => "point", disabled: true }
+
+    .feedback-lines
+      - 4.times do
+        .feedback-line{ "data-tourfeedback-target" => "line" }

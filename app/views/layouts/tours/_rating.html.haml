@@ -1,0 +1,21 @@
+.tour-feedback{ "data-controller" => "tourfeedback", class: ("is-invalid" if error) }
+  = hidden_field_tag "content[#{name}]", value.blank? ? "2" : value, "data-tourfeedbackmodal-target": "input"
+  .feedback-labels
+    .feedback-label
+      Not Useful
+    .feedback-label
+      Neutral
+    .feedback-label
+      Very Useful
+
+  .feedback-rating
+    - 5.times do
+      .feedback-point{ "data-action" => "click->tourfeedback#rate", "data-tourfeedback-target" => "point" }
+
+    .feedback-lines
+      - 4.times do
+        .feedback-line{ "data-tourfeedback-target" => "line" }
+
+- if error
+  .invalid-feedback.mb-4
+    = error

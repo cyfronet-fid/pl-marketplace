@@ -1,0 +1,10 @@
+- content_for :title, "#{@project_item.service.name} - #{@project.name}"
+
+
+= render "projects/services/layout", project: @project, projects: @projects, project_item: @project_item do
+  -# TODO: Change %div to some concrete class if needed
+  %div{ "data-controller": "conversation" }
+    = render "messages/messages", messages: @messages, earliest_new_message: @earliest_new_message
+    = render Conversations::MessageBoxComponent.new(@message,
+                                                project_service_conversation_path(@project, @project_item),
+                                                _("Your message to the service provider"))

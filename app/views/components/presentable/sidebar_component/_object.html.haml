@@ -1,0 +1,11 @@
+%ul.list-group{ class: "#{"suspended" if inactive}" }
+  - Array(object.send(clazz)).map do |record|
+    %li.list-group-item
+      - fields.map do |field|
+        - if record.send(field).present?
+          - if nested.present? && nested&.[](field.to_sym).present? && nested&.[](field.to_sym) == "email"
+            %span= mail_to record.send(field), record.send(field)
+            %br
+          - else
+            %span= record.send(field)
+            %br

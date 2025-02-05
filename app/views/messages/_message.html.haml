@@ -1,0 +1,5 @@
+%li.step-progress-item.ml-3{ class: (message.role_user? ? "align-self-end" : "align-self-start") }
+  %p.frame{ class: ("user-directed-message" unless message.role_user?) }= message.message
+  .d-inline-block.message-info= label_message(message)
+  - if message.user_direct_scope?
+    .d-inline-block.message-info.visible= "Visible only to you"

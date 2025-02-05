@@ -1,0 +1,7 @@
+- link_fields.filter_map do |group|
+  = render "components/presentable/links_component/#{group[:template]}",
+           object: @object,
+           fields: group[:fields],
+           nested: group[:nested],
+           active_when_suspended: group[:active_when_suspended] || [],
+           preview: @preview

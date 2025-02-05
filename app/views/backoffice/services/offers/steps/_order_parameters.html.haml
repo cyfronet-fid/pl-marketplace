@@ -1,0 +1,71 @@
+.row
+  .col-lg-7.pl-0
+    %h4 Order Informations
+    .offer-section-wrapper.bottom-margin
+      .buttons-selector
+        -# change this to custom radio buttons (compare to vouchers in service order wizard)
+        = f.input :order_type, as: :radio_buttons, collection: Offer.order_types.keys.map { |ot| [ot, ot.titleize] },
+          checked: offer.order_type || offer.service.order_type, value_method: :first, label_method: :second,
+          input_html: { "data-offer-target": "radioButton", "data-ordering-target": "orderType",
+                        "data-action": "ordering#updateVisibility offer#toggleRadioButton" }
+
+    %h4 Order Managment
+    .offer-section-wrapper
+      .buttons-selector.bottom-margin
+        = f.input :internal, as: :radio_buttons, collection: [["EOSC OMS", true], ["Own Ordering System", false]],
+          checked: true,
+          label: "Order Management System", wrapper_html: { "data-ordering-target": "internalWrapper" },
+            input_html: { "data-ordering-target": "internal", "data-offer-target": "radioButton",
+                          "data-action": "ordering#updateVisibility offer#toggleRadioButton" }
+
+      .tip-box.mb-4{ "data-ordering-target": "internalDescription" }
+        %p.frame
+          %strong EOSC Order Management System
+          \- we will notify you about the placed order and its status.
+
+        %p.frame
+          %strong Own Ordering System
+          \- use your dedicated tool for managing orders. We will reach out within 48 hours
+          to assist you with configuration process.
+
+      -# probably need to enhance url validator to accept addresses like www.example.com
+        (without http:// || https:// prefix)
+        this field should be visible if order_type == "open_access" || ("order_required" && !internal)
+
+      = f.input :order_url,
+        "data-tooltip": "You've selected open access. Please share the resource URL for user entry.",
+        wrapper_html: { "data-ordering-target": "orderUrlWrapper" },
+        input_html: { class: "form-control-lg" }, label: _("URL with Direct Access to the Resource")
+
+      #order-url-hint.tip-box.mb-5
+        %p
+          Url should start with http:// or https:// prefix [e.g. https://example.com].
+          %br
+          Given URL will be used in the offer order/access mechanism - on the service access information step
+          this URL will be used under 'Go to the order website' / 'Go to the service' button (depending on the
+          offer order type). If it isn't specified it will fall back to the service's webpage URL.
+
+      = f.input :restrictions, input_html: { rows: 10 }, label: "Are there any restrictions on Access to the Resource?"
+    .bottom-tip
+      * Fields marked with an asterisk are mandatory to fill in.
+
+    -# = render "backoffice/services/offers/primary_oms_form", form: f, offer: offer,
+      available_omses: service.available_omses
+
+  .col-lg-5.right-tips
+    .right-tip
+      %p
+        In the EOSC Marketplace, users can access resources in four ways:
+      %p
+        %strong Open Access:
+        Resources are available openly with just one click, accessible to any user without the need to request access.
+      %p
+        %strong Fully Open Access:
+        Resources are available openly with just one click,
+        accessible to any user without the need to request access or even login.
+      %p
+        %strong Order Required:
+        The user gains access to the resource only after submitting a request for access
+      %p
+        %strong Other:
+        Access to the resource has other way to grant

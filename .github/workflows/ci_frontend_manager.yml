@@ -1,0 +1,41 @@
+name: Manager's frontend tests
+on: [push]
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - uses: actions/checkout@v4
+      - name: Start containers
+        run: docker compose -f docker-compose-x64.yml up -d
+      - name: Install VIPS
+        run: sudo apt-get update && sudo apt-get install libvips42 -y
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.12.2'
+          check-latest: true
+          cache: yarn
+      - run: yarn
+      - name: Setup DB, Run tests
+        env:
+          RAILS_ENV: test
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          bundle exec rake db:drop db:create db:migrate RAILS_ENV=test
+          bundle exec rake test:prepare
+          bundle exec rspec -t manager_frontend
+      - name: Containers logs
+        if: failure()
+        run: docker compose logs
+      - name: Stop containers
+        if: always()
+        run: docker compose down

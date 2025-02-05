@@ -1,0 +1,8 @@
+#scrollbar.progress-box.mt-4
+  %ul.step-progress.pl-5.pb-4
+    - if statuses.count.positive?
+      - statuses.reverse_each do |status|
+        = render "statuses/status", status: status
+    - else
+      %p
+        = _("Conversation not started yet.")

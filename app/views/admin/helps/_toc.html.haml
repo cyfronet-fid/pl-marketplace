@@ -1,0 +1,8 @@
+%li.list-group-item
+  = link_to section.title, admin_help_path(anchor: section.slug)
+  .float-right
+    = link_to _("Edit"), edit_admin_help_section_path(section),
+      class: "btn btn-sm btn-warning"
+    = link_to _("Remove"), admin_help_section_path(section),
+      class: "btn btn-sm btn-danger",
+      data: { "turbo-confirm": _("Are you sure?"), "turbo-method": :delete }

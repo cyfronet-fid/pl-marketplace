@@ -1,0 +1,30 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "Integration tests",
+  "main": "",
+  "scripts": {
+    "cy:run": "TZ=Europe/Warsaw cypress run --browser chrome --quiet --env grepUntagged=true",
+    "cy:run-jira-integration": "TZ=Europe/Warsaw cypress run --browser chrome --quiet --env grepTags='@extended-test'",
+    "cy:run-provider-portal-integration": "TZ=Europe/Warsaw cypress run --config baseUrl=https://beta.marketplace.eosc-portal.eu/ --browser chrome --quiet --env grepTags='@integration-PC-tests'",
+    "cy:run-debug": "DEBUG=cypress:* TZ=Europe/Warsaw cypress run --browser chrome --quiet",
+    "cy:run-browser": "TZ=Europe/Warsaw cypress run --browser chrome --quiet",
+    "cy:run-all-regression-tests": "TZ=Europe/Warsaw cypress run --browser chrome --quiet"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "13.8.1",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@cypress/grep": "^4.0.1",
+    "@medv/finder": "^3.2.0",
+    "@types/node": "^20.12.7",
+    "cypress-fail-fast": "^7.1.0",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-promise": "^1.1.0",
+    "cypress-terminal-report": "^6.0.1",
+    "cypress-wait-until": "^3.0.1"
+  }
+}

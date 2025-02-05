@@ -1,0 +1,25 @@
+- breadcrumb :research_product, project, research_product
+
+= render "projects/layout", project: project, projects: projects do
+  .pt-4.pl-3.pr-3.rounded.service-box.service-detail.mb-4.project-heading
+    .row
+      .col-md-9.d-flex.align-items-center
+        .box-wrapper
+          %h1.flex-grow-1.text-break
+            #{research_product.title}
+          .col-md-12.back-link
+          %i.fas.fa-chevron-left.fa-xs.mr-1
+          = link_to _("Back to %{pn} project details") % { pn: project.name }, [project, :services]
+      .buttons-panel.col-md-3.float-right.d-flex.align-items-center
+        - if policy(research_product).destroy?
+          = link_to project_research_product_path(project, research_product), "data-turbo-method": :delete,
+            class: "btn btn-outline-primary btn-sm mb-1 mt-1 unpin-button",
+            type: "button", role: "button" do
+            = image_tag "unpin.svg", alt: "Unpin", class: "button-icon"
+            %span Unpin
+    %ul.nav.nav-tabs.mt-4.pl-3.row.services-menu
+      %li.nav-item
+        = link_to _("Details"), project_research_product_path(project, research_product),
+          class: "nav-link active text-uppercase"
+  .container.p-0
+    = yield

@@ -1,0 +1,13 @@
+= field.input :id, label: attr.label, hint: attr.description,
+  error: attr.errors.messages_for(:id).join(" ") do
+  .input-group.date-select.pl-0
+    - has_errors = attr.errors[:id].present?
+    - valid = !has_errors && attr.value
+    = field.input_field attr.id,
+      value: "#{attr.value}",
+      class: "form-control #{"is-invalid" if has_errors} #{"is-valid" if valid}",
+      name: "#{field.object_name}[#{attr.id}]",
+      "data-date-format": to_js_date_format(attr.date_format),
+      as: :date_time_picker
+    %span.input-group-addon
+      %i.far.fa-calendar-alt

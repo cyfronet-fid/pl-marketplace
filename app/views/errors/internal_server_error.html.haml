@@ -1,0 +1,10 @@
+.container
+  %h1
+    = _("So sorry!")
+  %p.mt-3
+    -# haml-lint:disable MultilinePipe
+    = _("An unexpected error occurred.")
+    = _("A notification has been sent to our development team for investigation. We " + |
+        "are sorry for the inconvenience.") |
+    -# haml-lint:enable MultilinePipe
+  = link_to _("Take me to start page"), root_path, class: "btn btn-primary mt-2"

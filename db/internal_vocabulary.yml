@@ -1,0 +1,161 @@
+bundle_goals:
+  processing:
+    name: Processing
+  publishing:
+    name: Publishing
+  anonymisation:
+    name: Anonymisation
+  data_storage:
+    name: Data Storage
+  computing_resources:
+    name: Computing Resources
+  discover_reuse_data:
+    name: Discover & Re-use Data
+  data_management:
+    name: Data Management
+  produce_data:
+    name: Produce Data
+
+bundle_capabilities_of_goals:
+  data_transfer:
+    name: Data Transfer
+  compute:
+    name: Compute
+  processing_tool:
+    name: Processing Tool
+  storage:
+    name: Storage
+  big_data_storage:
+    name: Big Data Storage
+  long_term_storage:
+    name: Long Term Storage
+  anonimisation:
+    name: Anonimisation
+  pseudonimisation:
+    name: Pseudonimisation
+  metadata_removal_tool:
+    name: Metadata Removal Tool
+  data_discoverability:
+    name: Data Discoverability
+  data_download:
+    name: Data Download
+  data_sources:
+    name: Data Sources
+  publishing_service:
+    name: Publishing Service
+  doi:
+    name: DOI
+  free:
+    name: Free
+  domain_availability:
+    name: Domain Availability
+  data_security:
+    name: Data Security
+  long_term:
+    name: Long Term
+  publishing:
+    name: Publishing
+  other:
+    name: Other
+
+research_activities:
+  access_computing_and_storage_resources:
+    name: Access Computing and Storage Resources
+    eid: research_activity-access_computing_and_storage_resources
+  access_research_infrastructures:
+    name: Access Research Infrastructures
+    description: Find frameworks made by scientific clusters or RIs that will equip you with...
+    eid: research_activity-access_research_infrastructures
+  access_training_material:
+    name: Access Training Material
+    eid: research_activity-access_training_material
+  build_analysis_environment:
+    name: Build analysis environment
+    eid: research_activity-build_analysis_environment
+  discover_research_outputs:
+    name: Discover Research Outputs
+    description: Find datasets, scientific publications, software
+    eid: research_activity-discover_research_outputs
+  explore_other_research_catalogues:
+    name: Explore other research catalogues
+    eid: research_activity-explore_other_research_catalogues
+  find_instruments_and_equipment:
+    name: Find Instruments and Equipment
+    description: Find research instruments and scientific equipment
+    eid: research_activity-find_instruments_and_equipment
+  find_supporting_services_for_e_infras_and_research_institutions:
+    name: Find supporting services for eInfras and research institutions
+    eid: research_activity-find_supporting_services_for_eInfras
+  manage_research_data:
+    name: Manage Research Data
+    description: Find robust, feature-rich and user-friendly services for Data Management
+    eid: research_activity-manage_research_data
+  process_and_analyze:
+    name: Process and Analyze
+    eid: research_activity-process_and_analyze
+  publish_research_outputs:
+    name: Publish Research Outputs
+    description: Store, backup, archive your data, publications, software
+    eid: research_activity-publish_research_outputs
+
+service_types:
+  compute:
+    name: Compute
+    eid: service_category-compute
+    children:
+      cloud_compute:
+        name: Cloud Compute
+        eid: service_subcategory-compute-cloud_compute
+      cloud_container_compute:
+        name: Cloud Container Compute
+        eid: service_subcategory-compute-cloud_container_compute
+      high_troughput_compute:
+        name: High-troughput Compute
+        eid: service_subcategory-compute-high_troughput_compute
+      gpu_instances:
+        name: GPU Instances
+        eid: service_subcategory-compute-gpu_instances
+  data:
+    name: Data
+    eid: service_category-data_source
+    children:
+      data_transfer:
+        name: Data Transfer
+        eid: service_subcategory-data_source-data_transfer
+  storage:
+    name: Storage
+    eid: service_category-storage
+    children:
+      online_storage:
+        name: Online Storage
+        eid: service_subcategory-storage-online_storage
+        children:
+          block_storage:
+            name: Block Storage
+            eid: service_subsubcategory-storage-online_storage-block_storage
+          object_storage:
+            name: Object Storage
+            eid: service_subsubcategory-storage-online_storage-object_storage
+          file_storage:
+            name: File Storage
+            eid: service_subsubcategory-storage-online_storage-file_storage
+      archive_storage:
+        name: Archive Storage
+        eid: service_subcategory-storage-archive_storage
+  training:
+    eid: service_category-training
+    name: Training
+    children:
+      training_infrastructure:
+        name: Training Infrastructure
+        eid: service_subcategory-training-training_infrastructure
+        children:
+          general:
+            name: General
+            eid: service_subsubcategory-training-training_infrastructure-general
+          fitsm:
+            name: FitSM
+            eid: service_subsubcategory-training-training_infrastructure-fitsm
+  other:
+    name: Other
+    eid: service_category-other

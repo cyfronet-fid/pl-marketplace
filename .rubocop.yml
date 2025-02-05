@@ -1,0 +1,175 @@
+inherit_gem:
+  prettier: rubocop.yml
+
+AllCops:
+  TargetRubyVersion: 3.3.0
+  NewCops: enable
+  SuggestExtensions: true
+  Exclude:
+    - '**/tmp/**/*'
+    - '**/vendor/**/*'
+    - '**/node_modules/**/*'
+    - 'bin/**/*'
+    - 'db/schema.rb'
+
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - 'app/models/jira/checker.rb'
+    - 'app/models/jira/client.rb'
+    - 'config/initializers/devise.rb'
+    - 'db/migrate/**/*'
+    - 'lib/jms/subscriber.rb'
+    - 'spec/factories/jms_xml_provider.rb'
+    - 'spec/factories/jms_xml_service.rb'
+    - 'spec/factories/jms_service.rb'
+    - 'spec/factories/jms_providers_response.rb'
+    - 'spec/factories/eosc_registry_vocabularies_response.rb'
+    - 'spec/factories/eosc_registry_services_response.rb'
+    - 'spec/factories/eosc_registry_providers_response.rb'
+    - 'spec/helpers/service_helper_spec.rb'
+    - 'spec/lib/jira/console_checker_spec.rb'
+    - 'spec/requests/api/v1/omses/projects/project_items_controller_spec.rb'
+
+Metrics/BlockNesting:
+  Enabled: true
+  Exclude:
+    - 'app/controllers/users/omniauth_callbacks_controller.rb'
+    - 'lib/import/resources.rb'
+    - 'lib/import/providers.rb'
+
+Metrics/PerceivedComplexity:
+  Enabled: true
+  Max: 15
+  Exclude:
+    - 'app/models/jira/client.rb'
+    - 'app/services/importers/provider.rb'
+    - 'app/services/importers/service.rb'
+    - 'app/services/project_item/create.rb'
+    - 'app/services/service/pc_create_or_update.rb'
+    - 'lib/import/vocabularies.rb'
+    - 'lib/import/resources.rb'
+    - 'lib/import/providers.rb'
+    - 'lib/jira/console_checker.rb'
+    - 'lib/import/resources.rb'
+
+Metrics/CyclomaticComplexity:
+  Enabled: true
+  Max: 15
+  Exclude:
+    - 'app/models/jira/client.rb'
+    - 'app/services/importers/provider.rb'
+    - 'app/services/importers/service.rb'
+    - 'app/services/service/pc_create_or_update.rb'
+    - 'lib/import/resources.rb'
+    - 'lib/jira/console_checker.rb'
+    - 'app/services/project_item/create.rb'
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+# Not necessary to enforce this, both forms are useful sometimes.
+Style/ConditionalAssignment:
+  Enabled: false
+
+# We don't really use such big numbers outside of port configuration, where it's counterproductive.
+Style/NumericLiterals:
+  Enabled: false
+
+# We didn't order gems from the beginning. Turning this on would mess history up.
+Bundler/OrderedGems:
+  Enabled: false
+
+# Turn off due conflict with prettier
+Style/LineEndConcatenation:
+  Enabled: false
+
+Style/InverseMethods:
+  Enabled: true
+  InverseMethods:
+    :present?: :blank?
+
+# We do it a lot in HAMLs which are not auto-correctable
+Style/FormatString:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+# These four force very small files, we don't really want that
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+# Make it more lax
+Metrics/AbcSize:
+  Enabled: true
+  Max: 60
+  Exclude:
+    - 'db/migrate/**/*'
+    - 'app/services/importers/service.rb'
+    - 'app/services/importers/provider.rb'
+    - 'lib/import/resources.rb'
+    - 'lib/jira/console_checker.rb'
+    - 'app/services/service/pc_create_or_update.rb'
+
+# Require docs for each class
+Style/Documentation:
+  Enabled: false
+
+# We do it a lot in HAMLs which are not auto-correctable
+Style/RedundantInterpolation:
+  Enabled: false
+
+# We do it in HAMLs to avoid other banned operations
+Style/StringConcatenation:
+  Enabled: false
+
+# We usually go for compact style, but in some places exploded version is necessary. Don't force
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/HashAsLastArrayItem:
+  Enabled: true
+  EnforcedStyle: no_braces
+
+Style/FormatStringToken:
+  Enabled: true
+  EnforcedStyle: template
+
+# Many changes, not much added value
+Style/GuardClause:
+  Enabled: false
+
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either
+
+Metrics/ParameterLists:
+  Enabled: true
+  CountKeywordArgs: false
+
+# This cop makes sure that predicates are named properly
+Naming/PredicateName:
+  Enabled: true
+  AllowedMethods: has_attribute?
+
+# Disable this in spec as per https://github.com/rubocop/rubocop/issues/4222#issuecomment-290655562
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "spec/**/*"
+
+Style/OpenStructUse:
+  Exclude:
+    - "spec/lib/import/providers_spec.rb"
+    - "spec/lib/import/resources_spec.rb"

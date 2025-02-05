@@ -1,0 +1,10 @@
+- content_for :title, @project.name
+- breadcrumb :project, @project
+
+= render "projects/project_layout", project: @project, projects: @projects do
+  -# TODO: Change %div to some concrete class if needed
+  %div{ "data-controller": "conversation" }
+    = render "messages/messages", messages: @messages, earliest_new_message: @earliest_new_message
+    = render Conversations::MessageBoxComponent.new(@message,
+                                                    project_conversation_path(@project),
+                                                    _("Message to EOSC Expert"))

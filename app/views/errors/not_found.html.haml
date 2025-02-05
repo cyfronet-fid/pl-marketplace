@@ -1,0 +1,12 @@
+.container.not-found
+  .row
+    .col-md-5
+      %h1
+        = _("Oops!")
+      %p.mt-3
+        We can't seem to find the page
+        %br
+        you're looking for.
+      = link_to _("Take me to home page"), root_path, class: "btn btn-primary mt-3"
+    .col-md-7
+      = image_tag("404.png", class: "align-self-center img-fluid not-found-pic")

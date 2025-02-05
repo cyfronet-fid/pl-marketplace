@@ -1,0 +1,11 @@
+en:
+  project_items:
+    status:
+      created: New
+      registered: New
+      in_progress: Under review
+      ready: Ready to use
+      rejected: Rejected
+      closed: Closed
+      waiting_for_response: Provide additional information
+      approved: Being processed

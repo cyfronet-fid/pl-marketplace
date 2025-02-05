@@ -1,0 +1,15 @@
+name: Auto Comment
+on: [pull_request]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wow-actions/auto-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pullRequestOpened: >
+            Hi @{{ author }},
+            
+            thank you for raising your pull request.
+            
+            Check your changes at the [URL](https://pr-${{github.event.number}}.docker-fid.grid.cyf-kr.edu.pl).

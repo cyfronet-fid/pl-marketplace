@@ -1,0 +1,27 @@
+- breadcrumb :api_docs
+
+.container
+  %h1 API
+  = render "api_docs/token_wrapper", valid_token: current_user&.valid_token?,
+                                       token: current_user&.authentication_token
+
+  %h2.mb-5 EOSC Marketplace API Documentation
+  .container
+    .row
+      .col-12.col-md-3.api-submenu
+        %ul
+          - api_wiki_subsections.each do |subsection|
+            %li{ class: ("active" if subsection == @subsection) }
+              %span
+                = link_to humanized_subsection(subsection), api_docs_path(subsection: subsection)
+
+      .col-12.col-md-8.float-right.ml-auto.mr-auto.api-docs
+        %h2
+          = humanized_subsection(@subsection)
+        = render "api_docs/subsections/#{@subsection}"
+        - next_subsection = next_subsection(@subsection)
+        - if next_subsection.present?
+          %hr.bottom-hr.mb-4
+          %p.next
+            Next:
+            #{link_to humanized_subsection(next_subsection), api_docs_path(subsection: next_subsection)}

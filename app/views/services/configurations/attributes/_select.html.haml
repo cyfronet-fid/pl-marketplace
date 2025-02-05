@@ -1,0 +1,20 @@
+= field.input :id, label: attr.label, hint: attr.description,
+  error: attr.errors.messages_for(:id).join(" ") do
+  - has_errors = attr.errors[:id].present?
+  - valid = !has_errors && attr.value
+  - case attr.config["mode"]
+  - when "buttons"
+    = field.input_field attr.id,
+      class: "form-check-input #{"is-invalid" if has_errors} #{"is-valid" if valid}",
+      collection: attr.config["values"].map { |e| ["#{e} #{attr.unit}", e] },
+      checked: "#{attr.value}",
+      name: "#{field.object_name}[#{attr.id}][]",
+      as: :radio_buttons
+  - else
+    = field.input_field attr.id,
+      class: "form-control #{"is-invalid" if has_errors} #{"is-valid" if valid}",
+      collection: attr.config["values"].map { |e| ["#{e} #{attr.unit}", e] },
+      selected: "#{attr.value}",
+      name: "#{field.object_name}[#{attr.id}][]",
+      prompt: "",
+      as: :select

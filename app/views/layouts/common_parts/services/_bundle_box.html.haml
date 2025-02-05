@@ -1,0 +1,20 @@
+.col-md-12.d-flex.align-items-stretch.bundle.backoffice-bundle{ id: "bundle-#{bundle.iid}" }
+  .card.m-0.mb-5
+    - content_for :status do
+      = service_status(bundle, "text-sm-left fa-pull-left badge-left")
+    = render "services/bundles/description", bundle: bundle
+    = render "services/bundle", bundled_offers: bundle.all_offers, parent: bundle.main_offer
+    = render "services/choose_offers/bundle_links",
+       contact_email: bundle.contact_email || "",
+       related_training: bundle.related_training ? bundle.related_training_url : "",
+       helpdesk_url: bundle.helpdesk_url || ""
+    .card-button.text-center.backoffice-button
+      %label
+        - if controller_name == "ordering_configurations"
+          = link_to edit_service_ordering_configuration_bundle_path(bundle.service, bundle) do
+            %span.btn.btn-primary.font-webtn-linkight-bold
+              = _("Edit")
+        - else
+          = link_to edit_backoffice_service_bundle_path(bundle.service, bundle) do
+            %span.btn.btn-primary.font-webtn-linkight-bold
+              = _("Edit")

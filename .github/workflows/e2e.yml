@@ -1,0 +1,89 @@
+name: Integration Test
+on: [push]
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+        
+    steps:
+    - name: Configure sysctl limits
+      run: |
+        sudo swapoff -a
+        sudo sysctl -w vm.swappiness=1
+        sudo sysctl -w fs.file-max=262144
+        sudo sysctl -w vm.max_map_count=262144
+    - uses: actions/checkout@v4
+    - name: Start containers
+      run: docker compose -f docker-compose-x64.yml -f docker-compose-e2e.yml up -d
+    - name: Install VIPS
+      run: sudo apt-get update && sudo apt-get install libvips42 -y
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20.12.2'
+        check-latest: true
+        cache: yarn
+    - run: yarn install
+    - name: Install foreman
+      run: |
+        gem install foreman
+    - uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/Cypress
+          ./test/system/node_modules
+        key: my-cache-${{ runner.os }}-${{ hashFiles('./test/system/package-lock.json') }}
+    - name: Install e2e dependencies
+      working-directory: ./test/system
+      run: yarn install
+    - name: Setup and seed db
+      env:
+        RAILS_ENV: development
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      run: |
+        bundle exec rake db:drop db:create db:migrate searchkick:reindex:all
+        bundle exec rails dev:prime_e2e
+    - name: Run App and Cypress
+      uses: cypress-io/github-action@v6
+      env:
+        CYPRESS_JIRA_TEST_USER: ${{ secrets.JIRA_TEST_USER }}
+        CYPRESS_JIRA_TEST_USER_PWD: ${{ secrets.JIRA_TEST_USER_PWD }}
+        CYPRESS_MP_JIRA_URL: ${{ secrets.MP_JIRA_URL }}
+        CYPRESS_MP_JIRA_PROJECT: ${{ secrets.MP_JIRA_PROJECT }}
+        CYPRESS_PROVIDER_PORTAL_REFRESH_TOKEN: ${{secrets.PROVIDER_PORTAL_REFRESH_TOKEN}}
+        CYPRESS_PROVIDER_PORTAL_URL: ${{secrets.PROVIDER_PORTAL_URL}}
+        CYPRESS_MARKETPLACE_URL: ${{secrets.MARKETPLACE_URL}}
+        CYPRESS_PROVIDER_PORTAL_CLIENT_ID: ${{secrets.PROVIDER_PORTAL_CLIENT_ID}}
+        CYPRESS_AAI_TOKEN_URL: ${{secrets.AAI_TOKEN_URL}}
+        RECAPTCHA_SITE_KEY: ${{secrets.GR_SITE_KEY}}
+        RECAPTCHA_SECRET_KEY: ${{secrets.GR_SECRET_KEY}}
+        PORT: 5000
+        RAILS_ENV: development
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        AUTH_MOCK: true
+        # MP_JIRA_USERNAME: ${{ secrets.JIRA_TEST_USER }}
+        # MP_JIRA_PASSWORD: ${{ secrets.JIRA_TEST_USER_PWD }}
+        # MP_JIRA_URL: ${{ secrets.MP_JIRA_URL }}
+        # MP_JIRA_PROJECT: ${{ secrets.MP_JIRA_PROJECT }}
+      with:
+        build: bundle exec rake assets:precompile
+        start: bundle exec rails server -e development -p 5000 -d
+        working-directory: ./test/system
+        command: yarn run cy:run
+        wait-on: 'http://localhost:5000'
+        browser: chrome
+        quiet: true
+        record: false
+        install: false
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: ./test/system/cypress/screenshots
+    - name: Containers logs
+      if: failure()
+      run: docker compose logs
+    - name: Stop containers
+      if: always()
+      run: docker compose down

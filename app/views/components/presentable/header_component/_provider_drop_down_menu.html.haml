@@ -1,0 +1,18 @@
+%a#dropdown-menu-button.dropdown-toggle.btn.btn-outline-secondary.d-block.mb-3{ "aria-expanded" => "false",
+                                                    "aria-haspopup" => "true",
+                                                    "data-toggle" => "dropdown",
+                                                    type: "button" }
+  .menu__label Manage the provider
+.dropdown-menu.shadow
+  %ul
+    %li
+      %a.dropdown-item.dropdown-details{ href:
+        providers_dashboard_url + "/dashboard/#{catalogue_pid(provider)}/#{provider.pid}/stats",
+        target: :_blank, "data-probe": "" }
+        = _("Provider dashboard")
+    - if catalogue_pid(provider) == "eosc"
+      %li
+        %a.dropdown-item.dropdown-details{ href:
+          providers_dashboard_url + "/provider/update/#{provider.pid}",
+          target: :_blank, "data-probe": "" }
+          = _("Edit provider details")

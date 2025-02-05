@@ -1,0 +1,8 @@
+- if related_services&.count&.positive?
+  %h2.mb-4.mt-4.font-weight-bolder
+    = _(title)
+  .row
+    = render partial: "services/service_box",
+            collection: related_services,
+            as: :service,
+            locals: { preview: local_assigns[:preview] }

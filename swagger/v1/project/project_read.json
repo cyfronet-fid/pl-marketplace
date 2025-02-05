@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "first_name": { "type": "string" },
+        "last_name": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": ["uid", "email", "name", "first_name", "last_name"]
+    },
+    "project_items": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "attributes": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["id", "owner", "project_items"]
+}

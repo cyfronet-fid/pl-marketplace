@@ -1,0 +1,13 @@
+- content_for :title, _("Create new offer")
+- breadcrumb :ordering_configuration_offer_new, @service
+.container
+  .mb-4.pb-4.border-header
+    %h1= _("Create new offer")
+
+  = render "backoffice/services/offers/form",
+    service: @service,
+    offer: @offer,
+    show_delete_button: false,
+    offer_form_source_module: [@service, :ordering_configuration, @offer],
+    back_link: service_ordering_configuration_path(@service, from: params[:from]),
+    from: params[:from]

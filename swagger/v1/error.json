@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "error": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "required": ["error"]
+}

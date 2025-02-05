@@ -1,0 +1,6 @@
+- if step.property_values.present? || service.offers_count > 1
+  .card.offer-description.mb-4
+    .card-body.p-4
+      %h4.card-title= step.offer.name
+      .card-text= markdown(step.offer.description)
+      = render "attributes/index", property_values: step.property_values

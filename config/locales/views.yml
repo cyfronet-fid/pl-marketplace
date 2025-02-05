@@ -1,0 +1,35 @@
+en:
+  badge:
+    master: Development instance
+    pr: Test instance
+    staging: Beta instance
+  helps:
+    show:
+      title: FAQ
+  executive:
+    statistics:
+      index:
+        title: Executive
+        orderable:
+          title: Orderable
+          description: |
+              Number of services orderable through the Marketplace
+              (Sum of all offers with Internal ordering access type)
+        not_orderable:
+          title: Not orderable/open access
+          description: |
+            Number of services not orderable (Sum of all offers with External
+            and Open access type added to the projects)
+        all_services:
+          title: All services
+          description: |
+            All services registered in Marketplace
+        providers:
+          title: Providers (%{count})
+          description: "Providers in the Marketplace:"
+        disciplines:
+          title: Domains (%{count})
+          description: "Scientific domains ordered services are used for:"
+        countries:
+          title: Origins (%{count})
+          description: "Countries of users ordering services:"

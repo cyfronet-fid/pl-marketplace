@@ -1,0 +1,27 @@
+= render "layouts/sections"
+.container
+  %nav.navbar.navbar-expand-lg.navbar-light
+    = link_to root_path, class: "navbar-brand col-6 col-lg-3 pl-0" do
+      = image_tag "eosc-logo-color-admin.png"
+
+    %button.navbar-toggler.backoffice-menu{ "aria-controls" => "navbar-supported-content",
+                            "aria-expanded" => "false", "aria-label" => "Toggle navigation",
+                            "data-target" => "#navbar-supported-content",
+                            "data-toggle" => "collapse",
+                             type: "button" }
+      %span.navbar-toggler-icon
+
+    #navbar-supported-content.collapse.navbar-collapse.navbar-expand-lg
+      %ul.navbar-nav.ml-auto.pt-2
+        = nav_link controller: :admins, html_options: { class: "nav-item" } do
+          = link_to "Getting Started", admin_path, class: "nav-link pl-2 py-1"
+        = nav_link controller: :jobs, html_options: { class: "nav-item" } do
+          = link_to "Delayed jobs", admin_jobs_path, class: "nav-link pl-2 py-1"
+        = nav_link controller: :jobs, html_options: { class: "nav-item" } do
+          = link_to "Help builder", admin_help_path, class: "nav-link pl-2 py-1"
+        = nav_link controller: :jobs, html_options: { class: "nav-item" } do
+          = link_to "Lead creator", admin_leads_path, class: "nav-link pl-2 py-1"
+        = nav_link controller: :admins, html_options: { class: "nav-item" } do
+          = link_to "Features", admin_features_path, class: "nav-link pl-2 py-1"
+        = nav_link controller: :admins, html_options: { class: "nav-item" } do
+          = link_to "Tour Feedback", admin_tour_feedbacks_path, class: "nav-link pl-2 py-1"

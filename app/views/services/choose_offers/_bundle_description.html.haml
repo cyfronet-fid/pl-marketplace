@@ -1,0 +1,16 @@
+.card-body
+  .bundle-goals
+    - bundle&.bundle_goals&.each do |goal|
+      %span.goal= goal.name
+  %h4.card-title.pt-2= bundle.name
+
+  .bundle-description
+    .card-text.mb-2{ "data-controller" => "parameter" }
+      - if bundle.description.squish.size > 500
+        %div{ data: { "parameter-target": "hideableParameter", state: "visible" } }
+          = markdown(bundle.description.truncate(500, separator: " "))
+        .d-none{ data: { "parameter-target": "hideableParameter", state: "hidden" } }
+          = markdown(bundle.description)
+        = render "common_parts/show_more_link", id: bundle.id
+      - else
+        = markdown(bundle.description)

@@ -1,0 +1,25 @@
+%li.projects-list
+  = link_to research_product.title, project_research_product_path(project, research_product), class: "project-title"
+  .row
+    .container
+      .project-resource-type.mt-3.float-left
+        = _(research_product.resource_type.humanize)
+      - if research_product&.best_access_right.present?
+        .access-information-tag.mt-3{ class: research_product.best_access_right.parameterize }
+  .separator-line
+  .bottom-action-links.d-block
+    - if research_product.links.present?
+      %a.bundle-more.collapsed.dropdown.projects-links.mb-2{ href: "#collapse-example_#{research_product.id}",
+                      "data-toggle" => "collapse",
+                      "role" => "button",
+                      "aria-expanded" => "false",
+                      type: "button" } Links
+    - if policy(research_product).destroy?
+      = link_to project_research_product_path(project, research_product), "data-turbo-method": :delete,
+        class: "projects-links unpin-link mt-1 ml-3 pl-4",
+        type: "button", role: "button" do
+        = image_tag "unpin.svg", alt: "Unpin"
+        %span Unpin
+  - research_product.links.each do |link|
+    #collapse-example.padding.collapse.links-list{ id: "#{research_product.id}" }
+      = link_to link, link

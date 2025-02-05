@@ -1,0 +1,13 @@
+.modal-info.mb-4
+  %p
+    = _("We will send your question to our customer service.")
+    %br
+      = _("You will receive an answer to your email address.")
+= simple_form_for report, remote: true, url: reports_path,
+  html: { role: "form", id: "modal-form", data: { action: "submit" } } do |f|
+  - unless current_user
+    = f.input :author, label: _("Name and surname")
+    = f.input :email, as: :email
+  = f.input :text, as: :text, input_html: { rows: 6 }, label: _("Describe problem precisely"),
+            hint: report_hint(current_user&.email)
+  #recaptcha= recaptcha_tags noscript: false

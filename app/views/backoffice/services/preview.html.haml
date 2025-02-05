@@ -1,0 +1,33 @@
+- content_for :title, "#{@service.name} preview"
+- breadcrumb :backoffice_service_preview, @service
+.corner-ribbon
+  Service preview
+.container.mb-4
+  .row
+    .col.text-right
+      .btn-group
+        - if @service.persisted?
+          = link_to _("Go back to edit"), edit_backoffice_service_path(@service),
+            class: "btn btn-warning", "data-turbo": false
+          = link_to _("Confirm changes"), backoffice_service_offers_path(@service),
+            class: "btn btn-success", method: :put, "data-turbo": false
+        - else
+          = link_to _("Go back to edit"), new_backoffice_service_path,
+            class: "btn btn-warning",
+             data: { e2e: "go-back-edit-btn", turbo: false }
+          = link_to _("Confirm changes"), backoffice_services_path,
+            class: "btn btn-success", type: :submit,
+            data: { e2e: "confirm-changes-btn", "turbo-method": :post }
+= render "services/wrapper", service: @service, category: @category,
+  comparison_enabled: @comparison_enabled, compare_services: @compare_services,
+  favourite_services: @favourite_services, question: @question, tab_id: "desc", preview: true do
+  #about{ "data-preview-target": "content" }
+    = render Presentable::DescriptionComponent.new(object: @service,
+    similar_services: @similar_services, related_services: @related_services, preview: true) do |c|
+      - c.description_panels do
+        - if policy(@service).order? && (policy(@service).offers_show? || policy(@service).bundles_show?)
+          = render "services/offers", offers: @offers, service: @service,
+                                      bundles: @bundles, bundled: @bundled, preview: true
+    = render "taggable/details_section", taggable: @service, preview: true
+  #details.d-none{ "data-preview-target": "content" }
+    = render Presentable::DetailsComponent.new(@service, preview: true)

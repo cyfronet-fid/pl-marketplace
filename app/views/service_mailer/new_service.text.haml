@@ -1,0 +1,15 @@
+What's new?
+\
+New service is now available.
+\
+= @service.name
+Check now at:
+= service_url(@service)
+\
+You are receiving this message because
+you have opted up for updates in
+- if @common_categories.present?
+  category #{@common_categories.map(&:name).join(", ")}
+#{"and " if @common_categories.present? && @common_scientific_domains.present?}
+- if @common_scientific_domains.present?
+  scientific domain #{@common_scientific_domains.map(&:name).join(", ")}

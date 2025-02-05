@@ -1,0 +1,11 @@
+.col-12.pl-0.pr-0.mx-auto
+  #scrollbar.progress-box.mt-4.pr-3{ "data-controller": "scroller" }
+    %ul.d-flex.flex-column
+      - if messages.count.positive?
+        - messages.each do |message|
+          - if message == earliest_new_message
+            .new-message-separator{ "data-conversation-target": "separator" }= _("NEW")
+          = render "messages/message", message: message
+      - else
+        .contact-row.form-inline
+          = _("Conversation not started yet.")

@@ -1,0 +1,12 @@
+.service-description-container
+  = markdown(@object.description)
+.details-box-wrapper.mt-5
+  = render Presentable::SidebarComponent.new(@object)
+
+= description_panels
+.related-container
+  - unless @object.suspended?
+    .row
+      .col-12
+        = render "services/related", related_services: @related_services, title: related_services_title,
+        preview: @preview

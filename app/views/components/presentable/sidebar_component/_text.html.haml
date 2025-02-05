@@ -1,0 +1,7 @@
+%ul.list-group{ class: "#{"suspended" if inactive}" }
+  - fields.each do |field|
+    - next unless object.send(field).present?
+    %li.list-group-item
+      %span
+        -# TODO: refactor dynamic translation
+        = t(".fields.#{field}.#{object.send(field)}")

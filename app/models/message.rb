@@ -17,6 +17,10 @@ class Message < ApplicationRecord
              -> { where(messages: { messageable_type: "Project" }).includes(:messages) },
              foreign_key: "messageable_id",
              optional: true
+  belongs_to :approval_request,
+             -> { where(messages: { messageable_type: "ApprovalRequest" }).includes(:messages) },
+             foreign_key: "messageable_id",
+             optional: true
 
   validates :author_role, presence: true
   validates :author, presence: true, if: :role_user?
@@ -57,7 +61,8 @@ class Message < ApplicationRecord
   end
 
   def dispatch_create_email
-    MessageMailer.new_message(self).deliver_later
+    action = approval_request.present? ? approval_request.last_action : nil
+    MessageMailer.new_message(self, action: action).deliver_later
   end
 
   def dispatch_update_email

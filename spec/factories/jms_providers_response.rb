@@ -147,6 +147,11 @@ FactoryBot.define do
           "region" => "WW",
           "country" => "N/E"
         },
+        "mainContact" => {
+          "firstName" => "Test",
+          "lastName" => "Provider",
+          "email" => "test@mail.pl"
+        },
         "publicContacts" => [{ "email" => "test@mail.pl" }],
         "users" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
       }
@@ -178,6 +183,11 @@ FactoryBot.define do
           "city" => "test",
           "region" => "WW",
           "country" => "N/E"
+        },
+        "mainContact" => {
+          "firstName" => "Test",
+          "lastName" => "Provider",
+          "email" => "test@mail.pl"
         },
         "publicContacts" => [{ "email" => "test@mail.pl" }],
         "users" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]

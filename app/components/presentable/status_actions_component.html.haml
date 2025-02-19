@@ -1,13 +1,10 @@
-.status-row
-  .row
-    .col-12.col-lg-4
-      %span
-        = _("Status") + ":"
-      %span.font-weight-bold= @object.status
-    .col-12.col-lg-8.service-buttons
-      .btn-group.float-right
-        - if @publish
-          = link_to _("Publish"),
+.status-column
+  .status{ class: "#{@object.status}" }= @object.status
+.actions-column
+  .service-buttons
+    .btn-group.float-right
+      - if @publish
+        = link_to _("Publish"),
               send("backoffice_#{@object_type}_publish_path", @object),
               class: "btn btn-primary",
               data: { turbo_confirm: "Confirm to publish",

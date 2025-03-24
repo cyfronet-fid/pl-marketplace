@@ -19,10 +19,8 @@ describe("Category", () => {
     cy.openUserDropdown();
     cy.get("[data-e2e='backoffice']").click();
     cy.location("href").should("contain", "/backoffice");
-    cy.get("[data-e2e='other_settings']").click();
-    cy.location("href").should("contain", "backoffice/other_settings");
     cy.get("[data-e2e='categories']").click();
-    cy.location("href").should("contain", "backoffice/other_settings/categories");
+    cy.location("href").should("contain", "backoffice/categories");
     cy.get("[data-e2e='add-new-category']").click();
     cy.fillFormCreateCategory(category, correctLogo);
     cy.get("[data-e2e='create-category-btn']").click();

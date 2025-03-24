@@ -23,6 +23,7 @@ class Service < ApplicationRecord
   SERVICE_TYPES = %w[Service Datasource].freeze
 
   scope :horizontal, -> { where(horizontal: true) }
+  scope :visible, -> { where(status: %i[published suspended]) }
   scope :managed_by,
         ->(user) do
           includes(resource_organisation: :data_administrators).where(

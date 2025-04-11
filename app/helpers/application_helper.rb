@@ -115,7 +115,7 @@ module ApplicationHelper
   end
 
   def render_turbo_stream_flash
-    turbo_stream.prepend "flash-messages", partial: "layouts/flash"
+    turbo_stream.prepend "flash", partial: "layouts/flash"
   end
 
   def lead_class(card_counter, card_length)

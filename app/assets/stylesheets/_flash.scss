@@ -1,4 +1,11 @@
 .flash {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  pointer-events: none;
+
   &-container {
     animation: appear-fade-out 6s both;
     cursor: pointer;

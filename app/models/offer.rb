@@ -70,6 +70,18 @@ class Offer < ApplicationRecord
   belongs_to :offer_type, class_name: "Vocabulary::ServiceCategory", optional: true
   belongs_to :offer_subtype, class_name: "Vocabulary::ServiceCategory", optional: true
 
+  validates :service, presence: true
+  validates :iid, presence: true, numericality: true
+  validates :order_url, mp_url: true, if: :order_url?
+  validates :availability_count,
+            numericality: {
+              greater_than_or_equal_to: 0,
+              message: "Quantity must be greater than or equal to 0"
+            }
+
+  validate :primary_oms_exists?, if: -> { primary_oms_id.present? }
+  validate :check_main_bundles, if: -> { draft? }
+
   with_options unless: :draft? do
     validate :proper_oms?, if: -> { primary_oms.present? }
     validates :oms_params, absence: true, if: -> { current_oms.blank? }
@@ -124,7 +136,7 @@ class Offer < ApplicationRecord
   end
 
   def offers_count
-    service&.offers&.size || 0
+    service&.offers_count || 0
   end
 
   def oms_params_match?

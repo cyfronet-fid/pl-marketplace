@@ -28,6 +28,10 @@ Please view this file on the master branch, on stable branches it's out of date.
 
 - `ASSET_HOST` and `ASSET_PROTOCOL` environment variables (@goreck888)
 
+### Deprecated
+
+- `ASSET_HOST` and `ASSET_PROTOCOL` environment variables (@goreck888)
+
 ## [3.58.2]
 
 ### Removed

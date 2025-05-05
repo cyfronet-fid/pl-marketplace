@@ -127,4 +127,11 @@ module ApplicationHelper
       "bottom"
     end
   end
+
+  def unescaped_link_to(name = nil, raw_url = nil, html_options = nil)
+    parser = URI::Parser.new
+    url = parser.unescape(url_target(name, raw_url))
+    puts "ELO #{raw_url.class}"
+    link_to(name, url, html_options)
+  end
 end

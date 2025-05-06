@@ -18,6 +18,11 @@ Please view this file on the master branch, on stable branches it's out of date.
 - Offer recommendations in project view (@wujuu)
 - New provider wizard form (@maria-j-k, @goreck888, @jarekzet)
 - Node information (@goreck888)
+- 
+## [3.59.0]
+
+### Added
+
 
 ### Deprecated
 
@@ -49,6 +54,9 @@ Please view this file on the master branch, on stable branches it's out of date.
 - Environmental variable to hide recommendation panel (`SHOW_RECOMMENDATION_PANEL`) (@maria-j-k)
 - Unit to the constant offer parameter (@gorreck888)
 - New layout for EOSC-PL use-case (@jarekzet)
+- `Save as draft` and `Duplicate` features for offer form (@maria-j-k) 
+- Publish/Suspend/Unpublish actions for multiple Providers and Catalogues (@goreck888, @jarekzet)
+- Landing page (@jarekzet, @Michal-Kolomanski)
 - Readme section about manual dev setup (@Michal-Kolomanski)
 - Approval panel for new providers (@goreck888)
 

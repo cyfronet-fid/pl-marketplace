@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
-## [3.59.0] 2025-06-23
+## [3.60.0]
 
 ### Added
 
@@ -18,7 +18,7 @@ Please view this file on the master branch, on stable branches it's out of date.
 - Offer recommendations in project view (@wujuu)
 - New provider wizard form (@maria-j-k, @goreck888, @jarekzet)
 - Node information (@goreck888)
-- 
+
 ## [3.59.0]
 
 ### Added
@@ -54,7 +54,6 @@ Please view this file on the master branch, on stable branches it's out of date.
 - Landing page (@jarekzet, @Michal-Kolomanski)
 - Readme section about manual dev setup (@Michal-Kolomanski)
 - Approval panel for new providers (@goreck888)
-- `Save as draft` and `Duplicate` features for offer form (@maria-j-k) 
 
 ### Changed
 

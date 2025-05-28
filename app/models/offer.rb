@@ -27,8 +27,18 @@ class Offer < ApplicationRecord
             bundle_exclusive: false,
             status: :published,
             services: {
-              status: %i[published suspended errored]
+              status: Statusable::PUBLIC_STATUSES
             }
+          )
+        end
+  scope :active,
+        -> do
+          where(
+            "offers.status = ? AND bundle_exclusive = ? AND (limited_availability = ? OR availability_count > ?)",
+            :published,
+            false,
+            false,
+            0
           )
         end
   scope :accessible, -> { joins(:service).where(status: :published, services: { status: Statusable::PUBLIC_STATUSES }) }
@@ -47,26 +57,33 @@ class Offer < ApplicationRecord
   before_validation :set_internal
   before_validation :set_oms_details
   before_validation :sanitize_oms_params
+  before_validation :set_iid
+  after_initialize :set_iid
 
   has_many :bundle_offers
   has_many :bundles, through: :bundle_offers, dependent: :destroy
   has_many :main_bundles, class_name: "Bundle", foreign_key: "main_offer_id", dependent: :restrict_with_error
   has_many :offer_vocabularies
+  has_many :observed_user_offers, dependent: :destroy
+  has_many :users, through: :observed_user_offers
   belongs_to :offer_category, class_name: "Vocabulary::ServiceCategory"
   belongs_to :offer_type, class_name: "Vocabulary::ServiceCategory", optional: true
   belongs_to :offer_subtype, class_name: "Vocabulary::ServiceCategory", optional: true
 
+  with_options unless: :draft? do
+    validate :proper_oms?, if: -> { primary_oms.present? }
+    validates :oms_params, absence: true, if: -> { current_oms.blank? }
+    validate :check_oms_params, if: -> { current_oms.present? }
+    validate :same_order_type_as_in_service, if: -> { service&.order_type.present? }
+  end
+
   validate :set_iid, on: :create
+  validate :check_main_bundles, if: -> { draft? }
   validates :service, presence: true
   validates :iid, presence: true, numericality: true
   validates :order_url, mp_url: true, if: :order_url?
 
   validate :primary_oms_exists?, if: -> { primary_oms_id.present? }
-  validate :proper_oms?, if: -> { primary_oms.present? }
-  validates :oms_params, absence: true, if: -> { current_oms.blank? }
-  validate :check_oms_params, if: -> { current_oms.present? }
-  validate :check_main_bundles, if: -> { draft? }
-  validate :same_order_type_as_in_service, if: -> { service&.order_type.present? }
 
   before_destroy :check_main_bundles
 
@@ -108,7 +125,7 @@ class Offer < ApplicationRecord
   end
 
   def offers_count
-    service&.offers_count || 0
+    service&.offers&.size || 0
   end
 
   def oms_params_match?

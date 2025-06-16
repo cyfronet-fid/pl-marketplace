@@ -40,7 +40,8 @@ class ResearchProductsController < ApplicationController
   def download_research_product_data
     base_url = Mp::Application.config.search_service_base_url
     endpoint = Mp::Application.config.search_service_research_product_endpoint
-    path = "#{params[:resource_type]}/#{CGI.escape(params[:resource_id])}"
+    scope = params[:scope].blank? ? "eu" : params[:scope]
+    path = "#{params[:resource_type]}/#{CGI.escape(params[:resource_id])}?scope=#{scope}"
     faraday = Faraday.new { |config| config.response :raise_error }
     response = faraday.get(base_url + endpoint + path)
     if response.status == 200

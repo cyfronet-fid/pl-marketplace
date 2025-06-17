@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_18_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
     t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "approval_requests", force: :cascade do |t|
+    t.string "approvable_type"
+    t.bigint "approvable_id"
+    t.bigint "user_id"
+    t.string "last_action"
+    t.string "status"
+    t.datetime "conversation_last_seen"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approvable_type", "approvable_id"], name: "index_approval_requests_on_approvable"
+    t.index ["user_id"], name: "index_approval_requests_on_user_id"
   end
 
   create_table "bundle_categories", force: :cascade do |t|
@@ -236,6 +249,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
     t.bigint "contactable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "country_phone_code"
     t.index ["contactable_id"], name: "index_contacts_on_contactable_id"
     t.index ["id", "contactable_id", "contactable_type"], name: "index_contacts_on_id_and_contactable_id_and_contactable_type", unique: true
   end
@@ -351,6 +365,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
     t.index ["scope"], name: "index_messages_on_scope"
   end
 
+  create_table "observed_user_offers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "offer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["offer_id"], name: "index_observed_user_offers_on_offer_id"
+    t.index ["user_id", "offer_id"], name: "index_observed_user_offers_on_user_id_and_offer_id", unique: true
+    t.index ["user_id"], name: "index_observed_user_offers_on_user_id"
+  end
+
+  create_table "offer_links", force: :cascade do |t|
+    t.bigint "source_id", null: false
+    t.bigint "target_id", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["source_id", "target_id"], name: "index_offer_links_on_source_id_and_target_id", unique: true
+    t.index ["source_id"], name: "index_offer_links_on_source_id"
+    t.index ["target_id"], name: "index_offer_links_on_target_id"
+  end
+
   create_table "offer_vocabularies", force: :cascade do |t|
     t.bigint "offer_id"
     t.bigint "vocabulary_id"
@@ -384,6 +418,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
     t.integer "offer_category_id"
     t.integer "offer_type_id"
     t.integer "offer_subtype_id"
+    t.boolean "limited_availability", default: false
+    t.bigint "availability_count", default: 0
+    t.string "availability_unit", default: "piece"
     t.index ["iid"], name: "index_offers_on_iid"
     t.index ["primary_oms_id"], name: "index_offers_on_primary_oms_id"
     t.index ["service_id", "iid"], name: "index_offers_on_service_id_and_iid", unique: true
@@ -529,7 +566,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
     t.text "reason_for_access"
     t.string "customer_typology"
     t.string "user_group_name"
-    t.string "project_name"
+    t.string "project_owner"
     t.string "project_website_url"
     t.string "company_name"
     t.string "company_website_url"
@@ -612,7 +649,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
   end
 
   create_table "providers", force: :cascade do |t|
-    t.text "name", null: false
+    t.string "name", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "pid"
@@ -989,6 +1026,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_164825) do
   add_foreign_key "catalogue_vocabularies", "vocabularies"
   add_foreign_key "catalogues", "catalogue_sources", column: "upstream_id", on_delete: :nullify
   add_foreign_key "data_administrators", "users"
+  add_foreign_key "observed_user_offers", "offers"
+  add_foreign_key "observed_user_offers", "users"
+  add_foreign_key "offer_links", "offers", column: "source_id"
+  add_foreign_key "offer_links", "offers", column: "target_id"
   add_foreign_key "offer_vocabularies", "offers"
   add_foreign_key "offer_vocabularies", "vocabularies"
   add_foreign_key "offers", "omses", column: "primary_oms_id"

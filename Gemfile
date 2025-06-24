@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.3.6"
 
-gem "rails", "~> 7.1.3.4"
+gem "rails", "~> 7.2.1"
 gem "pg", "~> 1.5", "< 2.0"
 gem "puma"
 gem "nori"
@@ -31,6 +31,7 @@ gem "friendly_id", "~> 5.5"
 gem "acts-as-taggable-on"
 gem "countries"
 gem "i18n_data"
+gem "humanize"
 
 gem "activestorage-validator"
 gem "image_processing", ">= 1.2"
@@ -112,6 +113,7 @@ group :development do
   gem "overcommit", require: false
   gem "haml_lint", require: false
   gem "scss_lint", require: false
+  gem "mdl"
 end
 
 group :test do

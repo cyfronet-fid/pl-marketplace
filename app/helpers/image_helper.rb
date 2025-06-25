@@ -15,7 +15,8 @@ module ImageHelper
     tmp_logo = Tempfile.new(["logo_temp", ext])
     tmp_logo.binmode
     tmp_logo.write logo.read
-    tmp_logo.close
+    tmp_logo.rewind
+
     tmp_logo.path
   end
 

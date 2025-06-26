@@ -51,7 +51,6 @@ describe Jms::ManageMessage, backend: true do
 
   it "should receive update active provider message" do
     original_stdout = $stdout
-
     $stdout = StringIO.new
     response = parser.parse(provider_resource)
     resource = response["resource"]
@@ -142,7 +141,7 @@ describe Jms::ManageMessage, backend: true do
 
   it "should receive create catalogue message" do
     original_stdout = $stdout
-    # $stdout = StringIO.new
+    $stdout = StringIO.new
     response = JSON.parse(catalogue_resource)
     resource = response["resource"]
     expect(Catalogue::PcCreateOrUpdateJob).to receive(:perform_later).with(
@@ -157,7 +156,7 @@ describe Jms::ManageMessage, backend: true do
 
   it "should receive update catalogue message" do
     original_stdout = $stdout
-    # $stdout = StringIO.new
+    $stdout = StringIO.new
     response = parser.parse(catalogue_resource)
     resource = response["resource"]
     expect(Catalogue::PcCreateOrUpdateJob).to receive(:perform_later).with(

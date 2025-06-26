@@ -21,14 +21,14 @@ class Jms::ManageMessage < ApplicationService
     Sidekiq.strict_args! false
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
 
   def call
     log @message
     body = JSON.parse(@message.body)
     resource_type = @message.headers["destination"].split(".")[-2]
     action = @message.headers["destination"].split(".").last
-    resource = JSON.parse(body["resource"])
+    resource = body["resource"].is_a?(String) ? JSON.parse(body["resource"]) : body["resource"]
 
     raise ResourceParseError, "Cannot parse resource" if resource.empty?
 
@@ -86,7 +86,7 @@ class Jms::ManageMessage < ApplicationService
     warn "[WARN] eid #{e} for #{resource_type} has a wrong format - update disabled"
   end
 
-  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
 
   private
 

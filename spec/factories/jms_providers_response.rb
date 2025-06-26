@@ -31,12 +31,8 @@ FactoryBot.define do
                 "region" => "WW",
                 "country" => "N/E"
               },
-              "publicContacts" => {
-                "publicContact" => [{ "email" => "test@mail.pl" }]
-              },
-              "users" => {
-                "user" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
-              }
+              "publicContacts" => [{ "email" => "test@mail.pl" }],
+              "users" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
             },
             {
               "id" => "phenomenal",
@@ -58,12 +54,8 @@ FactoryBot.define do
                 "region" => "WW",
                 "country" => "N/E"
               },
-              "publicContacts" => {
-                "publicContact" => [{ "email" => "test@mail.pl" }]
-              },
-              "users" => {
-                "user" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
-              }
+              "publicContacts" => [{ "email" => "test@mail.pl" }],
+              "users" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
             },
             {
               "id" => "West-Life",
@@ -113,12 +105,8 @@ FactoryBot.define do
                 "region" => "WW",
                 "country" => "N/E"
               },
-              "publicContacts" => {
-                "publicContact" => [{ "email" => "test@mail.pl" }]
-              },
-              "users" => {
-                "user" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
-              }
+              "publicContacts" => [{ "email" => "test@mail.pl" }],
+              "users" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
             }
           ],
           "facets" => [
@@ -159,18 +147,8 @@ FactoryBot.define do
           "region" => "WW",
           "country" => "N/E"
         },
-        "publicContacts" => {
-          "publicContact" => {
-            "email" => "test@mail.pl"
-          }
-        },
-        "users" => {
-          "user" => {
-            "email" => "test@mail.pl",
-            "name" => "test",
-            "surname" => "test"
-          }
-        }
+        "publicContacts" => [{ "email" => "test@mail.pl" }],
+        "users" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
       }
     end
   end
@@ -201,18 +179,8 @@ FactoryBot.define do
           "region" => "WW",
           "country" => "N/E"
         },
-        "publicContacts" => {
-          "publicContact" => {
-            "email" => "test@mail.pl"
-          }
-        },
-        "users" => {
-          "user" => {
-            "email" => "test@mail.pl",
-            "name" => "test",
-            "surname" => "test"
-          }
-        }
+        "publicContacts" => [{ "email" => "test@mail.pl" }],
+        "users" => [{ "email" => "test@mail.pl", "name" => "test", "surname" => "test" }]
       }
     end
   end

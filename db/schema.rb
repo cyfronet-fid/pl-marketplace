@@ -249,6 +249,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_10_072744) do
     t.bigint "contactable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "country_phone_code"
     t.index ["contactable_id"], name: "index_contacts_on_contactable_id"
     t.index ["id", "contactable_id", "contactable_type"], name: "index_contacts_on_id_and_contactable_id_and_contactable_type", unique: true
   end

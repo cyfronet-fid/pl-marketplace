@@ -17,7 +17,7 @@ FactoryBot.define do
               terms: ["test@user.com"],
               published: false
             },
-            active: false,
+            active: true,
             suspended: false,
             draft: false,
             identifiers: "",

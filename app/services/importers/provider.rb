@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-class Importers::Provider
+class Importers::Provider < ApplicationService
   include Importable
 
   def initialize(data, synchronized_at, source = "jms")
+    super()
     @data = data
     @synchronized_at = synchronized_at
     @source = source
@@ -14,7 +15,7 @@ class Importers::Provider
     multimedia = Array(@data["multimedia"]) || []
     scientific_domains = @data["scientificDomains"]&.map { |sd| sd["scientificSubdomain"] } || []
     tag_list = Array(@data["tags"]) || []
-    public_contacts = Array(@data["publicContacts"])&.map { |c| PublicContact.new(map_contact(c)) } || []
+    public_contacts = Array(@data["publicContacts"]).map { |c| PublicContact.new(map_contact(c)) } || []
     certifications = Array(@data["certifications"])
     participating_countries = Array(@data["participatingCountries"]) || []
     affiliations = Array(@data["affiliations"])

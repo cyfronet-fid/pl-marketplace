@@ -36,85 +36,64 @@ FactoryBot.define do
             "position" => "Developer",
             "organisation" => "JD company"
           },
-          "publicContacts" => {
-            "publicContact" => [
-              {
-                "firstName" => "Jane 1",
-                "lastName" => "Doe",
-                "email" => "john1@doe.com",
-                "phone" => "+41 678 888 123",
-                "position" => "Developer",
-                "organisation" => "JD company"
-              },
-              {
-                "firstName" => "Jane 2",
-                "lastName" => "Doe",
-                "email" => "jane2@doe.com",
-                "phone" => "+41 678 888 123",
-                "position" => "Developer",
-                "organisation" => "JD company"
-              }
-            ]
-          },
+          "publicContacts" => [
+            {
+              "firstName" => "Jane 1",
+              "lastName" => "Doe",
+              "email" => "john1@doe.com",
+              "phone" => "+41 678 888 123",
+              "position" => "Developer",
+              "organisation" => "JD company"
+            },
+            {
+              "firstName" => "Jane 2",
+              "lastName" => "Doe",
+              "email" => "jane2@doe.com",
+              "phone" => "+41 678 888 123",
+              "position" => "Developer",
+              "organisation" => "JD company"
+            }
+          ],
           "helpdeskPage" => "https://services.openminted.eu/support",
           "id" => eid,
-          "languageAvailabilities" => {
-            "languageAvailability" => "en"
-          },
+          "languageAvailabilities" => ["en"],
           "lastUpdate" => 1_599_609_600,
           "lifeCycleStatus" => "production",
           "name" => name,
           "order" => "http://openminted.eu/omtd-services/catalogue-of-scholarly-datasets/",
-          "geographicalAvailabilities" => {
-            "geographicalAvailability" => "WW"
-          },
-          "grantProjectNames" => {
-            "grantProjectName" => ["grant"]
-          },
+          "geographicalAvailabilities" => ["WW"],
+          "grantProjectNames" => ["grant"],
           "pricing" => "http://openminted.eu/pricing/",
           "paymentModel" => "http://openminted.eu/payment-model",
           "resourceOrganisation" => "tp",
           "resourceProviders" => {
             "resourceProvider" => prov_eid
           },
-          "relatedResources" => {
-            "relatedResource" => ["super-service"]
-          },
-          "requiredResources" => {
-            "requiredResource" => ["super-service"]
-          },
+          "relatedResources" => ["super-service"],
+          "requiredResources" => ["super-service"],
           "serviceLevel" => "http://openminted.eu/sla-agreement/",
-          "categories" => {
-            "category" => {
-              "category" => "category-data",
-              "subcategory" => "subcategory-access"
-            }
-          },
+          "categories" => [{ "category" => "category-data", "subcategory" => "subcategory-access" }],
           "logo" => logo,
-          "scientificDomains" => {
-            "scientificDomain" => {
+          "scientificDomains" => [
+            {
               "scientificDomain" => "scientific_domain-other",
               "scientificSubdomain" => "scientific_subdomain-other-other"
             }
-          },
+          ],
           "tagline" => "Find easily accessible corpora of scholarly content and mine them!",
-          "tags" => {
-            "tag" => [
-              "Text Mining",
-              "Catalogue",
-              "Research",
-              "Data Mining",
-              "TDM ",
-              "Corpora",
-              "Datasets",
-              "Scholarly literature",
-              "Scientific publications",
-              "Scholarly content"
-            ]
-          },
-          "targetUsers" => {
-            "targetUser" => %w[researchers risk-assessors]
-          },
+          "tags" => [
+            "Text Mining",
+            "Catalogue",
+            "Research",
+            "Data Mining",
+            "TDM ",
+            "Corpora",
+            "Datasets",
+            "Scholarly literature",
+            "Scientific publications",
+            "Scholarly content"
+          ],
+          "targetUsers" => %w[researchers risk-assessors],
           "termsOfUse" => "https://services.openminted.eu/support/termsAndConditions",
           "trainingInformation" => "http://openminted.eu/support-training/",
           "trl" => "trl-8",
@@ -125,31 +104,22 @@ FactoryBot.define do
           "statusMonitoring" => "http://openminted.eu/monitoring/",
           "maintenance" => "http://openminted.eu/maintenance/",
           "multimedia" => {
-            "multimedia" => ["https://www.youtube.com/watch?v=-_F8NZwWXew"]
+            "multimedia" => [
+              {
+                "multimediaURL" => "https://www.youtube.com/watch?v=-_F8NZwWXew",
+                "multimediaName" => "See statistical workflows"
+              }
+            ]
           },
-          "useCases" => {
-            "useCase" => ["http://phenomenal-h2020.eu/home/help"]
-          },
-          "accessTypes" => {
-            "accessType" => ["access_type-at"]
-          },
-          "accessModes" => {
-            "accessMode" => ["access_mode-am"]
-          },
-          "resourceGeographicLocations" => {
-            "resourceGeographicLocation" => ["PL"]
-          },
+          "useCases" => [{ "useCaseURL" => "http://phenomenal-h2020.eu/home/help", "useCaseName" => "Help" }],
+          "accessTypes" => ["access_type-at"],
+          "accessModes" => ["access_mode-am"],
+          "resourceGeographicLocations" => ["PL"],
           "helpdeskEmail" => "info@bluebridge.support_for_data_publication",
           "securityContactEmail" => "info@bluebridge.support_for_data_publication",
-          "certifications" => {
-            "certification" => ["ISO-639"]
-          },
-          "standards" => {
-            "standard" => ["standard"]
-          },
-          "openSourceTechnologies" => {
-            "openSourceTechnology" => ["opensource"]
-          },
+          "certifications" => ["ISO-639"],
+          "standards" => ["standard"],
+          "openSourceTechnologies" => ["opensource"],
           "privacyPolicy" => "http://phenomenal-h2020.eu/home/help",
           "orderType" => "order_type-other"
         }

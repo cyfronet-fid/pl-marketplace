@@ -305,7 +305,7 @@ RSpec.feature "Services in backoffice", manager_frontend: true do
       service = create(:service, status: :draft)
 
       visit backoffice_service_path(service)
-      expect { click_on "Publish" }.to have_enqueued_job(Ess::UpdateJob)
+      expect { accept_confirm { click_on "Publish" } }.to have_enqueued_job(Ess::UpdateJob)
 
       expect(page).to have_content("Status: published")
     end

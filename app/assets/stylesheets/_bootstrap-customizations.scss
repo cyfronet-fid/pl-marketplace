@@ -1316,7 +1316,7 @@ Service detail
 
         .grey-tip {
           border-radius: 8px;
-          background: $custom-18;
+          background: $eoscpl-05;
           padding: 24px 24px 10px;
           margin-bottom: 45px;
 
@@ -7937,8 +7937,8 @@ abbr[title] {
           }
 
           &.active {
-            border: 1px solid $custom-12;
-            background: $secondary;
+            border: 1px solid $landing-04;
+            background: $eoscpl-05;
           }
         }
       }
@@ -8007,7 +8007,7 @@ abbr[title] {
 
 .tip-box {
   border-radius: 8px;
-  background: #edf4ff;
+  background: $eoscpl-06;
   padding: 24px 24px 12px;
   font-size: 16px;
   color: $palette-black;
@@ -8025,8 +8025,8 @@ abbr[title] {
   margin-top: 90px;
 
   .btn-primary {
-    padding: 16px 62px;
-    font-size: 18px;
+    padding: 8px 30px;
+    font-size: 16px;
 
     &.btn-danger {
       background: $danger;
@@ -8062,7 +8062,7 @@ abbr[title] {
 
   .right-tip {
     border-radius: 8px;
-    background: $custom-18;
+    background: $eoscpl-05;
     padding: 24px 24px 10px;
     color: $custom-19;
     font-size: 16px;

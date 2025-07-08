@@ -12,16 +12,16 @@
       section: "offer-type", "offer-target": "sectionButton" } }
       Offer Type
     -# haml-lint:enable InlineClasses
-    #step-two-button.offer-step{ data: { action: "click->offer#showSection",
+    #order-parameters-button.offer-step{ data: { action: "click->offer#showSection",
       section: "order-parameters", "offer-target": "sectionButton" } }
       Order Parameters
-    #step-three-button.offer-step{ data: { action: "click->offer#showSection",
+    #offer-parameters-button.offer-step{ data: { action: "click->offer#showSection",
       section: "offer-parameters", "offer-target": "sectionButton" } }
       Offer Parameters
-    #step-four-button.offer-step{ data: { action: "click->offer#showSection",
+    #offer-description-button.offer-step{ data: { action: "click->offer#showSection",
       section: "description", "offer-target": "sectionButton" } }
       Offer Description
-    #step-five-button.offer-step{ data: { action: "click->offer#showSection",
+    #summary-button.offer-step{ data: { action: "click->offer#showSection",
       section: "summary", "offer-target": "sectionButton" } }
       Summary
 
@@ -46,13 +46,15 @@
     = render "backoffice/services/offers/exit_modal", offer: offer, f: f, service: service
     .col-4
       .btn.btn-back.d-none{ data: { action: "click->offer#prevSection", "offer-target": "prevButton" } }
-        <- Back
+        %i.fa-solid.fa-arrow-left.mr-0
+        Back
     .col-4.text-right
       .btn.btn-back{ data: { action: "click->exit#showModal" } }
         Exit
     .col-4.text-right
       .btn.btn-primary{ data: { action: "click->offer#nextSection", "offer-target": "nextButton" } }
-        Next ->
+        Next
+        %i.fa-solid.fa-arrow-right.mr-0
 
       .submit.d-none{ "data-offer-target": "submitRow" }
         = f.button :submit, class: "btn btn-primary pl-5 pr-5 mobile-bottom-margin", "data-e2e": "create-offer-btn"

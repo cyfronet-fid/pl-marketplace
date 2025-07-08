@@ -95,10 +95,6 @@ header {
   }
 }
 
-*:focus {
-  outline: none !important;
-}
-
 hr {
   border-color: $secondary;
 }
@@ -2691,6 +2687,14 @@ label[data-multicheckbox].small {
       &.datasource-name {
         max-width: 100%;
       }
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:focus {
+        outline: 1px solid $palette-black;
+      }
     }
 
     .actions {
@@ -2732,6 +2736,13 @@ label[data-multicheckbox].small {
     &.heading-row {
       font-weight: 600;
     }
+
+    .catalogue-name,
+    .provider-name {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   a {
@@ -2760,11 +2771,15 @@ label[data-multicheckbox].small {
     background: url("icon-edit.svg") 100% 50% no-repeat;
     background-size: 18px auto;
     font-size: 14px;
+
+    &:hover {
+      text-decoration: none !important;
+    }
   }
 
   &.indent-list {
     .list-group-item {
-      background: $alert-bg;
+      background: $eoscpl-06;
     }
   }
 }
@@ -8378,7 +8393,7 @@ footer {
 
 .backoffice-nav {
   border-radius: 8px;
-  margin: 30px 0;
+  margin: 30px 0 25px;
   padding: 0;
 
   .navbar-nav {
@@ -8573,8 +8588,9 @@ footer {
 
   a {
     font-size: 18px;
+    margin-right: 30px;
     font-weight: 500;
-    padding: 8px 24px;
+    padding: 0 24px 6px;
     color: $landing-01;
 
     &.active {

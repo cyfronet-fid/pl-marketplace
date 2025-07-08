@@ -190,7 +190,7 @@ a {
   }
 
   &:hover {
-    background: $landing-04;
+    background: $eoscpl-02;
   }
 }
 
@@ -2678,7 +2678,7 @@ label[data-multicheckbox].small {
     padding: 0.45rem 1rem;
 
     &:nth-child(even) {
-      background: $alert-bg;
+      background: $eoscpl-06;
     }
 
     &.subcategory {
@@ -2873,11 +2873,15 @@ label[data-multicheckbox].small {
     margin-top: 35px;
     border-bottom: 1px solid $palette-solid-10;
 
+    .nav-item {
+      margin-right: 30px;
+    }
+
     .nav-link {
       text-transform: none;
       color: $black;
-      font-size: 16px;
-      font-weight: 400;
+      font-size: 18px;
+      font-weight: 500;
 
       &.active {
         border: none;
@@ -3635,6 +3639,7 @@ label[data-multicheckbox].small {
     dt {
       width: auto;
       padding-right: 5px;
+      flex: 0 0 95px;
     }
 
     dd {
@@ -5494,7 +5499,7 @@ abbr[title] {
 }
 
 .btn-outline-primary {
-  border-width: 1px;
+  border-width: 2px;
   border-style: solid;
 }
 
@@ -6590,17 +6595,50 @@ abbr[title] {
 }
 
 .status-row {
-  background: $tag-bg-color;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  padding: 8px 20px;
+  background: $custom-26;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  padding: 8px 20px 8px 30px;
   margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: center;
+
+  &.suspended {
+    background: $landing-01;
+  }
+
+  &.unpublished {
+    background: $landing-03;
+  }
 
   span {
     margin: 0;
-    font-size: 16px;
-    line-height: 28px;
+    font-size: 13px;
+    text-transform: capitalize;
+    line-height: 35px;
+  }
+
+  .btn-secondary {
+    background: $eoscpl-07;
+    color: $palette-black;
+    border: 2px solid $eoscpl-01;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 5px 20px;
+
+    &:hover {
+      background: $eoscpl-01;
+      color: $palette-white;
+    }
+
+    &.btn-red {
+      border: 2px solid $eoscpl-02;
+
+      &:hover {
+        background: $eoscpl-02;
+      }
+    }
   }
 }
 
@@ -7765,25 +7803,25 @@ abbr[title] {
       }
     }
 
-    &#step-two-button {
+    &#order-parameters-button {
       &:before {
         content: "2";
       }
     }
 
-    &#step-three-button {
+    &#offer-parameters-button {
       &:before {
         content: "3";
       }
     }
 
-    &#step-four-button {
+    &#offer-description-button {
       &:before {
         content: "4";
       }
     }
 
-    &#step-five-button {
+    &#summary-button {
       &:before {
         content: "5";
       }
@@ -8331,6 +8369,7 @@ abbr[title] {
 
   .btn-secondary {
     font-size: 14px;
+    font-weight: 400;
     padding: 0.62rem 1.3rem;
     border: 1px solid $custom-16;
     background: $alert-bg;
@@ -8344,6 +8383,11 @@ abbr[title] {
       background: $custom-16;
       color: $palette-white;
     }
+  }
+
+  .btn-outline-secondary {
+    font-size: 14px;
+    font-weight: 400;
   }
 
   .category-separator {
@@ -9104,10 +9148,28 @@ footer {
 /* WHITELABEL BACKOOFICE MODS */
 
 .breadcrumbs-backoffice-wrapper {
-  background: linear-gradient(0deg, $alert-bg 0%, $palette-white 100%);
-  padding: 20px 0;
+  background: $landing-04 !important;
+  color: $palette-white !important;
+  padding: 12px 0;
 
   .breadcrumbs {
+    color: $palette-white !important;
+
+    a {
+      color: $palette-white !important;
+
+      &:first-child {
+        background: url("home-icon-backoffice.svg");
+        opacity: 1;
+        margin-top: 4px;
+        margin-right: 7px;
+      }
+    }
+
+    .current {
+      color: $palette-white !important;
+    }
+
     .data-probe {
       padding: 0;
       border: 0;
@@ -9142,7 +9204,7 @@ footer {
         text-align: center;
 
         &:hover {
-          background: $alert-bg;
+          background: $eoscpl-06;
         }
 
         &::before {
@@ -9154,8 +9216,8 @@ footer {
         border: 1px solid $custom-12;
 
         .nav-link {
-          background: $alert-bg;
-          color: $custom-12;
+          background: $custom-12;
+          color: $palette-white;
         }
       }
 

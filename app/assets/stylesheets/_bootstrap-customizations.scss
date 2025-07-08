@@ -8547,6 +8547,7 @@ footer {
 .empty-information {
   background: url("backoffice-item-bg.jpg");
   background-size: cover;
+  background-position: 50% 100%;
   color: $palette-white;
   padding: 32px;
   border-radius: 8px;
@@ -8568,14 +8569,15 @@ footer {
   }
 
   .btn {
-    background: $landing-03;
-    color: $palette-blue;
+    border: 2px solid $landing-03;
+    color: $landing-03;
     margin-top: 30px;
+    background: none;
     padding: 0.62rem 5rem;
 
     &:hover {
-      background: $palette-blue;
-      color: $landing-03;
+      background: $landing-03;
+      color: $landing-04 !important;
     }
   }
 }

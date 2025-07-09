@@ -5514,8 +5514,21 @@ abbr[title] {
 }
 
 .btn-outline-primary {
+  color: $palette-black;
   border-width: 2px;
   border-style: solid;
+
+  &.btn-delete {
+    background: url("icon-trash.svg") 10px 5px no-repeat;
+    background-size: 23px auto;
+    padding-left: 38px !important;
+
+    &:hover {
+      border-color: $eoscpl-02;
+      background-color: none;
+      color: $palette-black;
+    }
+  }
 }
 
 .lead-error {

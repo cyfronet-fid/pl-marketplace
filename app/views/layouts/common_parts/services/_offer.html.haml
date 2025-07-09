@@ -9,5 +9,5 @@
       - if policy([:backoffice, offer]).edit?
         %label
           = link_to edit_offer_link(offer.service, offer, controller_name) do
-            %span.btn.btn-outline-secondary.font-weight-bold
-              = _("Edit")
+            %span.btn.btn-outline-secondary.pl-5.pr-5
+              = _("Edit an offer")

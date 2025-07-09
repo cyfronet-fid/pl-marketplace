@@ -1459,24 +1459,23 @@ Service detail
     }
 
     .badge-left {
-      font-size: 0.8em;
-      padding: 10px 14px;
-      text-transform: uppercase;
+      font-size: 14px;
+      padding: 7px 20px;
       position: absolute;
-      border-right: 1px solid $palette-solid-10;
-      border-bottom: 1px solid $palette-solid-10;
-      top: 0;
-      color: $palette-solid-50;
-      font-weight: 400;
-      left: 0;
-      -webkit-border-radius: 0;
-      -moz-border-radius: 0;
-      border-radius: 0;
+      top: 16px;
+      color: $custom-25;
+      font-weight: 600;
+      left: 24px;
+      text-transform: capitalize;
+      background: $custom-26;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px;
 
       &.badge-success,
       &.badge-warning,
       &.badge-error {
-        color: $white;
+        color: $custom-25;
       }
     }
 
@@ -1489,7 +1488,7 @@ Service detail
       p {
         margin-bottom: 10px;
         font-size: 12px;
-        line-height: 1.2;
+        line-height: 150%;
         color: $body-color;
       }
     }
@@ -2869,7 +2868,7 @@ label[data-multicheckbox].small {
       line-height: 1.1;
       font-size: 12px;
       background: $alert-bg;
-      color: $palette-blue;
+      color: $eoscpl-03;
     }
   }
 
@@ -3660,6 +3659,7 @@ label[data-multicheckbox].small {
     dd {
       a {
         font-weight: 400;
+        text-decoration: underline;
       }
     }
   }
@@ -6569,7 +6569,38 @@ abbr[title] {
 .parameters {
   .card {
     border-color: $palette-solid-10;
-    padding: 23px 25px 0;
+    padding: 22px 25px 25px;
+
+    &.info-card {
+      border-color: $eoscpl-06;
+      background: $eoscpl-06;
+
+      h5 {
+        color: $eoscpl-03;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 22px;
+      }
+
+      p {
+        color: $eoscpl-03;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 140%;
+      }
+
+      .btn {
+        width: 100%;
+        font-size: 14px;
+        margin-top: 15px;
+        background: $eoscpl-07;
+
+        &:hover {
+          background: $landing-04;
+          color: $palette-white;
+        }
+      }
+    }
 
     .icon-speed {
       width: auto;
@@ -6590,6 +6621,14 @@ abbr[title] {
         border: 1px solid $primary;
         background: $primary;
         color: $white;
+        font-size: 14px;
+        margin-bottom: 10px;
+
+        &:hover {
+          border: 1px solid $eoscpl-02;
+          background: $eoscpl-02;
+          color: $white;
+        }
       }
     }
   }
@@ -6604,7 +6643,14 @@ abbr[title] {
       }
 
       .card-body {
-        padding-top: 0 !important;
+        padding: 0.8rem 1.45rem !important;
+
+        .card-title {
+          font-size: 18px;
+          font-weight: 600;
+          padding-top: 45px;
+          margin-bottom: 25px;
+        }
 
         .info-row {
           .icon-pencil {
@@ -9114,7 +9160,7 @@ footer {
 }
 
 .badge-right {
-  padding: 8px;
+  padding: 7px 8px;
   text-transform: uppercase;
   position: absolute;
   display: flex;

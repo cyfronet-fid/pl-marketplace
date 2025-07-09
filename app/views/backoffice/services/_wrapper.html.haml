@@ -36,7 +36,7 @@
               prompt: new_question_prompt(service),
               preview: local_assigns[:preview]
           = render Presentable::LinksComponent.new(object: service, preview: local_assigns[:preview])
-          .right-panel-links.pt-4.pb-4
+          .updates-box.pt-4.pb-4
             = render "components/presentable/updates", object: service
         = render Presentable::ProviderInfoComponent.new(base: service,
         preview: local_assigns[:preview]) if service.respond_to?(:resource_organisation)

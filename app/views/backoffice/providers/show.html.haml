@@ -28,4 +28,6 @@
           = link_to _("Edit"),
                 edit_backoffice_provider_path(@provider),
                 class: "btn btn-primary"
-  = link_to _("<- Back to Providers"), backoffice_providers_path, class: "backoffice-back-link mt-3"
+  = link_to backoffice_providers_path, class: "backoffice-back-link mt-3" do
+    %i.fa-solid.fa-arrow-left.me-2.mr-1
+    = _("Back to Providers")

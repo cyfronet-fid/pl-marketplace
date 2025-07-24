@@ -23,4 +23,7 @@
                     send("backoffice_other_settings_#{snake_cased(@type)}_path", @vocabulary),
                     data: { "turbo-confirm": _("Are you sure you want to remove this #{@type}?"), "turbo-method": :delete },
                     class: "btn btn-danger"
-    = link_to _("<- Back to Vocabularies"), backoffice_other_settings_vocabularies_path, class: "backoffice-back-link mt-3"
+
+    = link_to backoffice_other_settings_vocabularies_path, class: "backoffice-back-link mt-3" do
+      %i.fa-solid.fa-arrow-left.me-2.mr-1
+      = _("Back to Vocabularies")

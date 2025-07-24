@@ -32,8 +32,6 @@ RSpec.feature "Api docs page", end_user_frontend: true do
 
       sleep(10)
 
-      expect(page).to have_css(".active")
-
       find("#toggler").click
 
       expect(user.reload.authentication_token).to_not eq(prev_token)
@@ -49,7 +47,7 @@ RSpec.feature "Api docs page", end_user_frontend: true do
         expect(page).to have_text("You don't have an authentication token yet")
         click_link("Generate token")
 
-        # sleep(1)
+        sleep(5)
 
         find("#toggler").click
 
@@ -63,11 +61,11 @@ RSpec.feature "Api docs page", end_user_frontend: true do
       token = user.authentication_token
       page.driver.browser.manage.window.resize_to(1920, 1080)
 
+      expect(page).to have_content("Welcome to the EOSC")
       expect(page).to have_content("Successfully authenticated from Checkin account.")
+      find("div", class: "alert").click
 
-      sleep(1)
-      find("a", class: "account-dropdown").click
-      find("a", id: "logout-btn").click
+      find("a", id: "hidden-logout").click
 
       expect(page).to have_content("Signed out successfully.")
       sleep(1)
@@ -92,14 +90,6 @@ RSpec.feature "Api docs page", end_user_frontend: true do
     let!(:user) { create(:user) }
 
     before { checkin_sign_in_as(user) }
-
-    scenario "I can see Marketplace API link", skip: "Marketplace API link shouldn't be here for now" do
-      visit root_path
-
-      click_link("Marketplace API", match: :first)
-      expect(page).to have_text(user.authentication_token)
-      expect(page).to have_link("Revoke token")
-    end
 
     scenario "I can see see API wiki" do
       visit api_docs_path

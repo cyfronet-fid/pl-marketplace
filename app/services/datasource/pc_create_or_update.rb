@@ -62,8 +62,8 @@ class Datasource::PcCreateOrUpdate
   def self.handle_invalid_data(mp_datasource, datasource_hash, error_message)
     Rails.logger.warn error_message
     validatable_datasource = Datasource.new(datasource_hash)
-    datasource_errors = validatable_datasource&.errors&.to_hash if validatable_datasource.invalid?
-    mp_datasource&.sources&.first&.update(errored: datasource_errors)
+    datasource_errors = validatable_datasource.errors.to_hash if validatable_datasource.invalid?
+    mp_datasource.sources&.first&.update(errored: datasource_errors)
   end
 
   def self.create_datasource(datasource_hash)

@@ -17,7 +17,7 @@
       - else
         = image_tag("catalogue_logo.svg", size: "100x45", class: "align-self-center mr-4 float-left img-responsive")
     %hr.bottom-hr.mt-5.mb-4
-    .btn-group
+    .btn-group-separate
       - if policy([:backoffice, @catalogue]).edit?
         = unescaped_link_to _("Edit catalogue"),
                   edit_backoffice_catalogue_path(@catalogue),

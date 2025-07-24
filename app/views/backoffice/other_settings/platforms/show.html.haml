@@ -14,4 +14,7 @@
           = link_to _("Delete"), backoffice_other_settings_platform_path(@platform),
                     data: { "turbo-confirm": _("Are you sure you want to remove this platform?"), "turbo-method": :delete },
                     class: "btn btn-danger"
-    = link_to _("<- Back to Platforms"), backoffice_other_settings_platforms_path, class: "backoffice-back-link mt-3"
+
+  = link_to backoffice_other_settings_platforms_path, class: "backoffice-back-link mt-3" do
+    %i.fa-solid.fa-arrow-left.me-2.mr-1
+    = _("Back to Platforms")

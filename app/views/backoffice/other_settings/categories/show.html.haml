@@ -11,7 +11,7 @@
       = image_tag @category.logo.variant(resize: "200x200") if @category.logo.attached? && @category.logo.variable?
 
       %hr.bottom-hr.mt-5.mb-4
-      .btn-group
+      .btn-group-separate
         - if policy([:backoffice, @category]).edit?
           = link_to "Edit",
                     edit_backoffice_other_settings_category_path(@category),

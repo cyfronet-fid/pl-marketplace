@@ -2284,6 +2284,12 @@ h5 {
   }
 }
 
+.next-link {
+  &::after {
+    content: "33333";
+  }
+}
+
 .details {
   dl {
     display: table;
@@ -2740,6 +2746,27 @@ label[data-multicheckbox].small {
     .provider-name {
       &:hover {
         text-decoration: underline;
+      }
+    }
+
+    .checkbox-col {
+      width: 1%;
+      max-width: 1%;
+
+      input {
+        margin-left: 0;
+      }
+    }
+
+    .selected-menu {
+      a {
+        float: right;
+      }
+    }
+
+    .text-right {
+      a {
+        float: right;
       }
     }
   }
@@ -5124,6 +5151,38 @@ abbr[title] {
 @media (max-width: 992px) {
   .vertical-center {
     margin-top: 30px;
+  }
+}
+
+.confirm-modal {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 20px 40px 30px;
+  -webkit-box-shadow: 0 0 27px 3px rgba($palette-black, 0.18);
+  -moz-box-shadow: 0 0 27px 3px rgba($palette-black, 0.18);
+  box-shadow: 0 0 27px 3px rgba($palette-black, 0.18);
+
+  &.d-flex {
+    display: block !important;
+  }
+
+  h3 {
+    color: $eoscpl-01;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+
+  .modal-actions {
+    margin-top: 25px;
+
+    .close {
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 10px;
+      color: $eoscpl-01;
+    }
   }
 }
 
@@ -7731,7 +7790,7 @@ abbr[title] {
 }
 
 .new-offer-form-controls {
-  margin-top: 90px;
+  margin-top: 70px;
 
   .btn-primary {
     padding: 8px 30px;
@@ -7747,7 +7806,7 @@ abbr[title] {
   }
 
   .btn-back {
-    padding: 16px 0;
+    padding: 6px 0;
     color: $custom-16;
     font-size: 18px;
     font-weight: 600;
@@ -7999,7 +8058,8 @@ abbr[title] {
     line-height: 100%; /* 50px */
   }
 
-  .btn-primary {
+  .btn-primary,
+  .btn-danger {
     font-size: 14px;
     font-weight: 400;
     padding: 0.62rem 1.3rem;
@@ -8683,6 +8743,7 @@ footer {
 
 .backoffice-back-link {
   display: block;
+  font-weight: 500;
   margin-top: 25px;
 }
 

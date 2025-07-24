@@ -310,8 +310,10 @@ class Service < ApplicationRecord
   end
 
   def owned_by?(user)
-    resource_organisation&.data_administrators&.map(&:user_id)&.include?(user.id) ||
-      catalogue&.data_administrators&.map(&:user_id)&.include?(user.id)
+    (
+      resource_organisation&.data_administrators.present? &&
+        resource_organisation.data_administrators&.map(&:user_id)&.include?(user.id)
+    ) || catalogue.data_administrators&.map(&:user_id)&.include?(user.id)
   end
 
   def organisation_search_link(target, default_path = nil)

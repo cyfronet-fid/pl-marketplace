@@ -21,4 +21,7 @@
                     backoffice_other_settings_category_path(@category.id),
                     data: { "turbo-confirm": "Are you sure you want to remove this category?", "turbo-method": :delete },
                     class: "btn btn-danger"
-  = link_to _("<- Back to Categories"), backoffice_other_settings_categories_path, class: "backoffice-back-link mt-3"
+
+  = link_to backoffice_other_settings_categories_path, class: "backoffice-back-link mt-3" do
+    %i.fa-solid.fa-arrow-left.me-2.mr-1
+    = _("Back to Categories")

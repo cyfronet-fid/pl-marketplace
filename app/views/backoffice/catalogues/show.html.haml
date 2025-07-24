@@ -23,4 +23,6 @@
                   edit_backoffice_catalogue_path(@catalogue),
                   class: "btn btn-primary"
 
-  = link_to _("<- Back to Catalogues"), backoffice_catalogues_path, class: "backoffice-back-link mt-3"
+  = link_to backoffice_catalogues_path, class: "backoffice-back-link mt-3" do
+    %i.fa-solid.fa-arrow-left.me-2.mr-1
+    = _("Back to Catalogues")

@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [3.60.0](https://github.com/cyfronet-fid/pl-marketplace/compare/3.59.1...v3.60.0) (2025-08-01)
+
+
+### Features
+
+* [[#3423](https://github.com/cyfronet-fid/pl-marketplace/issues/3423)] Add recommended offers to service ([9647ee9](https://github.com/cyfronet-fid/pl-marketplace/commit/9647ee9078eb166134cdbec6c238718bdf8a0c4a))
+* [3480] Apply new tab feature to header ([cf6ddf4](https://github.com/cyfronet-fid/pl-marketplace/commit/cf6ddf4f130e3547a2c875337267bee325772bca)), closes [#3480](https://github.com/cyfronet-fid/pl-marketplace/issues/3480)
+
+
+### Bug Fixes
+
+* Fix signing in for ordering scope ([8e23136](https://github.com/cyfronet-fid/pl-marketplace/commit/8e231361869256b637e6be9766c46571f2cd13ac))
+* Remove ASSET_HOST and ASSET_PROTOCOL ([227ec4c](https://github.com/cyfronet-fid/pl-marketplace/commit/227ec4c998c51b02c6be14f14d818d1760513dfd))
+* Test fixes ([b189ac9](https://github.com/cyfronet-fid/pl-marketplace/commit/b189ac93af6cbfa77c1de1822182d9d73f62fc17))
+
 ## [3.59.1]
 
 ### Added

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [3.60.1](https://github.com/cyfronet-fid/pl-marketplace/compare/v3.60.0...v3.60.1) (2025-08-04)
+
+
+### Bug Fixes
+
+* Fix previous user counter decrementation ([08fea43](https://github.com/cyfronet-fid/pl-marketplace/commit/08fea43897110c3dfa78df17eced5a0269ea73ca))
+
 ## [3.60.0](https://github.com/cyfronet-fid/pl-marketplace/compare/3.59.1...v3.60.0) (2025-08-01)
 
 

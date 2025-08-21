@@ -7606,6 +7606,7 @@ abbr[title] {
   .offer-step {
     cursor: pointer;
     z-index: 100;
+    position: relative;
 
     &:before {
       content: "1";

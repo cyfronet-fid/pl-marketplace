@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Backoffice::Services::OffersController < Backoffice::ApplicationController
-  include Backoffice::OffersHelper
+  include ExitHelper
 
   before_action :find_service
   before_action :find_offer_and_authorize, only: %i[edit update]
@@ -33,10 +33,10 @@ class Backoffice::Services::OffersController < Backoffice::ApplicationController
       @offer = Offer::Create.call(template)
     end
 
-    if @offer.persisted?
-      redirect_to backoffice_service_offers_path(@service), notice: "New offer created successfully"
-    else
+    if @offer.invalid?
       render :new, status: :bad_request
+    else
+      redirect_to backoffice_service_offers_path(@service), notice: "New offer created successfully"
     end
   end
 
@@ -46,7 +46,6 @@ class Backoffice::Services::OffersController < Backoffice::ApplicationController
   def update
     save_as_draft = params[:commit] == save_as_draft_title
     template = permitted_attributes(Offer)
-
     if save_as_draft
       template[:name] = params["name"]
       Offer::UpdateAsDraft.call(@offer, transform_attributes(template, @service))
@@ -66,6 +65,10 @@ class Backoffice::Services::OffersController < Backoffice::ApplicationController
     else
       render :edit, status: :bad_request
     end
+  end
+
+  def exit
+    redirect_to backoffice_service_offers_path(params[:service_id]), status: :see_other
   end
 
   def fetch_subtypes

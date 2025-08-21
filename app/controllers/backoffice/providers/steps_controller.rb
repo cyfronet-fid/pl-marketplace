@@ -121,7 +121,7 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
         )
       end
     when :summary
-      @logo = session[session_key]["logo"]
+      @logo = session[session_key]["logo"] if session[session_key]["logo"].present?
     end
   end
 

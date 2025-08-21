@@ -51,5 +51,5 @@
               value: "publicContacts",
               fields: f.fields_for(:public_contacts, PublicContact.new,
               child_index: "new_field") { |pcf| render_public_contact(pcf, provider) } }
-        = render "backoffice/providers/steps/buttons", f: f, current_step: provider.current_step
+        = render "backoffice/providers/steps/buttons", f: f, provider: provider
       = render "backoffice/providers/more_information"

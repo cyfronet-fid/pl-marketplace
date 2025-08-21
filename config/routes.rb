@@ -118,6 +118,7 @@ Rails.application.routes.draw do
       get "/c/:category_id", to: "services#index", as: :category_services
     end
     namespace :statuses do
+      resources :services, only: %i[create]
       resources :providers, only: %i[create]
       resources :catalogues, only: %i[create]
     end
@@ -128,6 +129,7 @@ Rails.application.routes.draw do
           resource :publish, controller: "offers/publishes", only: :create
           resource :draft, controller: "offers/drafts", only: :create
           resource :summary, controller: "offers/summaries", only: %i[create update]
+          post :exit
         end
         resources :bundles do
           resource :publish, controller: "bundles/publishes", only: :create

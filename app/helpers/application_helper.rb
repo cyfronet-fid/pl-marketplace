@@ -74,15 +74,24 @@ module ApplicationHelper
   end
 
   def eosc_commons_custom_tabs
-    links = []
+    provider_links = []
 
     if policy(%i[backoffice backoffice]).show?
-      links.push({ href: backoffice_path, caption: _("Backoffice"), "data-e2e": "backoffice" })
+      provider_links.push({ href: backoffice_path, caption: _("Backoffice"), "data-e2e": "backoffice" })
     end
-    links.push({ href: admin_path, caption: _("Admin") }) if policy(%i[admin admin]).show?
-    links.push({ href: api_docs_path, caption: "Marketplace API" })
+    provider_links.push({ href: admin_path, caption: _("Admin") }) if policy(%i[admin admin]).show?
+    provider_links.push({ href: api_docs_path, caption: "Marketplace API" })
 
-    [{ id: "provider", name: "Provider", links: links }].to_json
+    order_links = []
+    order_links.push({ href: "#", caption: _("BOS"), "data-e2e": "BOS" })
+    order_links.push({ href: "#", caption: _("Orders"), "data-e2e": "Orders" })
+    order_links.push({ href: "#", caption: _("Providers"), "data-e2e": "Providers" })
+    order_links.push({ href: "#", caption: _("Users"), "data-e2e": "Users" })
+
+    [
+      { id: "provider", name: "Provider", links: provider_links },
+      { id: "order", name: "Order", links: order_links }
+    ].to_json
   end
 
   def meta_og_title_content

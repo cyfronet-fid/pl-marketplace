@@ -17,5 +17,5 @@
                     disabled: cant_edit(:legal_entity),
                     boolean_style: :inline,
                     label: "Is the provider a legal entity?"
-        = render "backoffice/providers/steps/buttons", f: f
+        = render "backoffice/providers/steps/buttons", f: f, provider: provider
       = render "backoffice/providers/more_information"

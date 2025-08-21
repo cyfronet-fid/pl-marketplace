@@ -6530,6 +6530,10 @@ abbr[title] {
 
   &.suspended {
     background: $landing-01;
+
+    span {
+      color: $palette-white;
+    }
   }
 
   &.unpublished {
@@ -7804,6 +7808,11 @@ abbr[title] {
     &.btn-info {
       background: $custom-9;
     }
+  }
+
+  .btn-secondary {
+    padding: 8px 30px;
+    font-size: 16px;
   }
 
   .btn-back {

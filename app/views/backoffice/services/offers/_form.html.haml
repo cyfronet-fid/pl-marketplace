@@ -44,16 +44,17 @@
 
   .row.new-offer-form-controls
     = render "backoffice/services/offers/exit_modal", offer: offer, f: f, service: service
-    .col-4
+    .col-2
       .btn.btn-back.d-none{ data: { action: "click->offer#prevSection", "offer-target": "prevButton" } }
-        <- Back
+        %i.fa-solid.fa-arrow-left.me-2
+        Back
     .col-4.text-right
       .btn.btn-back{ data: { action: "click->exit#showModal" } }
         Exit
-    .col-4.text-right
+    .col-6.text-right
       .btn.btn-primary{ data: { action: "click->offer#nextSection", "offer-target": "nextButton" } }
-        Next ->
-
+        Next
+        %i.fa-solid.fa-arrow-right.ml-2
       .submit.d-none{ "data-offer-target": "submitRow" }
         = f.button :submit, class: "btn btn-primary pl-5 pr-5 mobile-bottom-margin", "data-e2e": "create-offer-btn"
         - if offer.persisted?

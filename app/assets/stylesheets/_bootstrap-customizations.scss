@@ -1619,7 +1619,7 @@ Service detail
   }
 
   .card {
-    padding-bottom: 2.5rem;
+    padding-bottom: 3.5rem;
 
     .card-body {
       overflow: hidden;
@@ -6530,6 +6530,10 @@ abbr[title] {
 
   &.suspended {
     background: $landing-01;
+
+    span {
+      color: $palette-white;
+    }
   }
 
   &.unpublished {
@@ -7605,7 +7609,8 @@ abbr[title] {
 
   .offer-step {
     cursor: pointer;
-    z-index: 100;
+    z-index: 2;
+    position: relative;
 
     &:before {
       content: "1";
@@ -7803,6 +7808,11 @@ abbr[title] {
     &.btn-info {
       background: $custom-9;
     }
+  }
+
+  .btn-secondary {
+    padding: 8px 30px;
+    font-size: 16px;
   }
 
   .btn-back {

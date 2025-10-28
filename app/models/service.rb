@@ -347,4 +347,16 @@ class Service < ApplicationRecord
   def main_category_missing?
     categorizations.where(main: true).count.zero?
   end
+
+  def logo_url
+    # Return URL to Services::LogosController#show for this service
+    # Use absolute URL if default host is configured, otherwise return a relative path
+    if Rails.application.routes.default_url_options[:host].present?
+      service_logo_url(self)
+    elsif ENV.fetch("ROOT_URL", nil).present?
+      service_logo_url(self, host: ENV.fetch("ROOT_URL"))
+    else
+      service_logo_path(self)
+    end
+  end
 end

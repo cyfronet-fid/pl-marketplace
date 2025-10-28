@@ -5,10 +5,11 @@ module Service::Search
 
   included do
     # ELASTICSEARCH
-    # scope :search_import working with should_indexe?
+    # scope :search_import working with should_index?
     # and define which services are indexed in elasticsearch
     searchkick word_middle: %i[
                  name
+                 abbreviation
                  tagline
                  description
                  offer_names

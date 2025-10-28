@@ -204,6 +204,10 @@ Rails.application.routes.draw do
         resources :offers, only: %i[index show]
         resources :bundles, only: %i[index show]
       end
+
+      namespace :catalogue do
+        resources :services, only: %i[index]
+      end
     end
   end
 

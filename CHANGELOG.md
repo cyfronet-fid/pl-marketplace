@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.1.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v3.60.1...v4.1.0) (2025-10-30)
+
+
+### Features
+
+* [[#46](https://github.com/cyfronet-fid/pl-marketplace/issues/46)] Service Catalogue API ([9258b0a](https://github.com/cyfronet-fid/pl-marketplace/commit/9258b0a39b78abbf6ff224439afbf17366307c7c))
+
+
+### Bug Fixes
+
+* [HOTFIX] Empty offer redirect ([4f71f15](https://github.com/cyfronet-fid/pl-marketplace/commit/4f71f1595f59a08501352b4b02a3d245cad9140b))
+
 ## [3.60.1](https://github.com/cyfronet-fid/pl-marketplace/compare/v3.60.0...v3.60.1) (2025-08-04)
 
 

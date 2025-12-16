@@ -14,9 +14,9 @@ class Services::OffersController < ApplicationController
       :show?,
       policy_class: ServiceContextPolicy
     )
-    if @service.offers.blank? || @service.offers.inclusive.published.empty?
-      redirect_to service_path(@service, q: session[:query][:q])
-    end
+
+    redirect_to service_path(@service, q: session.dig(:query, :q)) if @service.offers.blank? || !@service.public_offers?
+
     @service.store_analytics
     @service.monitoring_status = fetch_status(@service.pid)
     @offers = policy_scope(@service.offers.inclusive).order(:iid)

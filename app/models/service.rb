@@ -289,6 +289,10 @@ class Service < ApplicationRecord
     offers_count.positive?
   end
 
+  def public_offers?
+    offers.inclusive.published.exists?
+  end
+
   def bundles?
     bundles_count.positive?
   end

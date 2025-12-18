@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.2.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.1.0...v4.2.0) (2025-12-18)
+
+
+### Features
+
+* [[#129](https://github.com/cyfronet-fid/pl-marketplace/issues/129)] Provider creation wizard form ([8b230ca](https://github.com/cyfronet-fid/pl-marketplace/commit/8b230cae033ac91cdcbe45f55adccff5a3be3b3d))
+* [[#132](https://github.com/cyfronet-fid/pl-marketplace/issues/132)] Add panel for accept providers ([bb02166](https://github.com/cyfronet-fid/pl-marketplace/commit/bb02166364a2aa0879886ba51bc33daacd6c58b2))
+* [[#157](https://github.com/cyfronet-fid/pl-marketplace/issues/157)] Availability counters in Offers ([df24c35](https://github.com/cyfronet-fid/pl-marketplace/commit/df24c3511759293551575d4b7f608cc6aee8d19e))
+* [[#180](https://github.com/cyfronet-fid/pl-marketplace/issues/180)] Extend OpenID configuration ([c000836](https://github.com/cyfronet-fid/pl-marketplace/commit/c00083609a30d3b87829e8425412cc4e67b57524))
+* [[#23](https://github.com/cyfronet-fid/pl-marketplace/issues/23)] new admin panel, faq ([5a5258e](https://github.com/cyfronet-fid/pl-marketplace/commit/5a5258ea7f64b55fd653cd950f7606fc3170ae18))
+* [[#3414](https://github.com/cyfronet-fid/pl-marketplace/issues/3414)] Add node field and fix integration ([2233c31](https://github.com/cyfronet-fid/pl-marketplace/commit/2233c31c9e44f0e232f1e932f7e9ef4a5c49827f))
+* [[#3418](https://github.com/cyfronet-fid/pl-marketplace/issues/3418)] Hide some fields in the project creation form ([604d3eb](https://github.com/cyfronet-fid/pl-marketplace/commit/604d3ebf34c76a2fec4120041be254ba89e8786e))
+* [[#3423](https://github.com/cyfronet-fid/pl-marketplace/issues/3423)] Add recommended offers to service ([9647ee9](https://github.com/cyfronet-fid/pl-marketplace/commit/9647ee9078eb166134cdbec6c238718bdf8a0c4a))
+* [[#3441](https://github.com/cyfronet-fid/pl-marketplace/issues/3441)] Add node information to the frontend ([0a493f2](https://github.com/cyfronet-fid/pl-marketplace/commit/0a493f2745151957b680f78aa7b10c07b7e74b41))
+* [[#46](https://github.com/cyfronet-fid/pl-marketplace/issues/46)] Service Catalogue API ([9258b0a](https://github.com/cyfronet-fid/pl-marketplace/commit/9258b0a39b78abbf6ff224439afbf17366307c7c))
+* [[#65](https://github.com/cyfronet-fid/pl-marketplace/issues/65)] Add multiple status changes to objects ([581d25e](https://github.com/cyfronet-fid/pl-marketplace/commit/581d25e133a570f69fabff26fe5782cb1e659f2c))
+* [3480] Apply new tab feature to header ([cf6ddf4](https://github.com/cyfronet-fid/pl-marketplace/commit/cf6ddf4f130e3547a2c875337267bee325772bca)), closes [#3480](https://github.com/cyfronet-fid/pl-marketplace/issues/3480)
+
+
+### Bug Fixes
+
+* [[#4](https://github.com/cyfronet-fid/pl-marketplace/issues/4)] Add scope to the research products query ([ebd399b](https://github.com/cyfronet-fid/pl-marketplace/commit/ebd399be11cb42459d6d86c01d85e5c15e8d53ae))
+* [] redirect to the service page ([135f87e](https://github.com/cyfronet-fid/pl-marketplace/commit/135f87e534365a03b1e60e611ee1c5422278af67))
+* [HOTFIX] Empty offer redirect ([4f71f15](https://github.com/cyfronet-fid/pl-marketplace/commit/4f71f1595f59a08501352b4b02a3d245cad9140b))
+* Add new syntax for enums ([9c4ca91](https://github.com/cyfronet-fid/pl-marketplace/commit/9c4ca9170cccb338d2ce57f8507caf59f594f4ee))
+* Disable GA and Monitoring endpoint ([5911cd8](https://github.com/cyfronet-fid/pl-marketplace/commit/5911cd84e0eb2e6f8fa821013b00b0ebd53ba6a7))
+* Fix creating offers ([e3ff019](https://github.com/cyfronet-fid/pl-marketplace/commit/e3ff0195c4b8f3313c144b042438455179cc2e95))
+* Fix missing lines ([4c359cb](https://github.com/cyfronet-fid/pl-marketplace/commit/4c359cb37fe91a3ec92a6989161224fe2b87a5de))
+* Fix offers creating and optimize dev:prime ([c66102f](https://github.com/cyfronet-fid/pl-marketplace/commit/c66102feee1bd3790f9191a2be84f8c5f7867b1f))
+* Fix offers form ([2003b12](https://github.com/cyfronet-fid/pl-marketplace/commit/2003b12b1fd4801cc146630590478cc20089f65c))
+* Fix previous user counter decrementation ([08fea43](https://github.com/cyfronet-fid/pl-marketplace/commit/08fea43897110c3dfa78df17eced5a0269ea73ca))
+* Fix signing in for ordering scope ([8e23136](https://github.com/cyfronet-fid/pl-marketplace/commit/8e231361869256b637e6be9766c46571f2cd13ac))
+* Fix signing in for ordering scope ([61e320b](https://github.com/cyfronet-fid/pl-marketplace/commit/61e320b2137c380c2c6674ceac08b1b555b41be5))
+* Minor fixes ([8b625a4](https://github.com/cyfronet-fid/pl-marketplace/commit/8b625a44b3d7498efde07be79a072ef7692adbfd))
+* Remove ASSET_HOST and ASSET_PROTOCOL ([227ec4c](https://github.com/cyfronet-fid/pl-marketplace/commit/227ec4c998c51b02c6be14f14d818d1760513dfd))
+* Test fixes ([b189ac9](https://github.com/cyfronet-fid/pl-marketplace/commit/b189ac93af6cbfa77c1de1822182d9d73f62fc17))
+
 ## [4.1.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v3.60.1...v4.1.0) (2025-10-30)
 
 

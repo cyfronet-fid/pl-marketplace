@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 class Backoffice::ProviderPolicy < Backoffice::ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      if user&.coordinator?
+        scope.all
+      elsif user.present?
+        scope.managed_by(user)
+      else
+        scope.none
+      end
+    end
+  end
+
   def new?
     user.present?
   end
@@ -17,7 +29,15 @@ class Backoffice::ProviderPolicy < Backoffice::ApplicationPolicy
     edit_permissions?
   end
 
+  def show?
+    edit_permissions?
+  end
+
   def exit?
+    user.present?
+  end
+
+  def index?
     user.present?
   end
 

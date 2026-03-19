@@ -106,5 +106,9 @@ module Mp
 
     config.whitelabel = ActiveModel::Type::Boolean.new.cast(ENV.fetch("MP_WHITELABEL", true))
     config.enable_commons = ActiveModel::Type::Boolean.new.cast(ENV.fetch("ENABLE_COMMONS", true))
+
+    config.bos_base_url = ENV.fetch("BOS_API_URL", "http://localhost:8000")
+    config.bos_api_key = ENV.fetch("BOS_API_KEY", "")
+    config.bos_enabled = ActiveModel::Type::Boolean.new.cast(ENV.fetch("BOS_ENABLED", false))
   end
 end

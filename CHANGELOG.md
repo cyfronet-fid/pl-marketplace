@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.3.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.2.0...v4.3.0) (2026-03-26)
+
+
+### Features
+
+* [[#74](https://github.com/cyfronet-fid/pl-marketplace/issues/74)] Add BOS integration ([#76](https://github.com/cyfronet-fid/pl-marketplace/issues/76)) ([487579c](https://github.com/cyfronet-fid/pl-marketplace/commit/487579c4353f66b3ca4d900b1ad92e64f41eb8a5))
+
+
+### Bug Fixes
+
+* [[#67](https://github.com/cyfronet-fid/pl-marketplace/issues/67)] remove my dashboard button ([bcedcd1](https://github.com/cyfronet-fid/pl-marketplace/commit/bcedcd12a99dfbd9bb696390e7e276f390dd72ee))
+* [] Fix Become a Provider page ([32afe26](https://github.com/cyfronet-fid/pl-marketplace/commit/32afe26138a2eba1881e366308223676d4c33309))
+* [AdHoc] Add project ref to the BOS message api ([59a4881](https://github.com/cyfronet-fid/pl-marketplace/commit/59a4881b1a5498f92d58c2ecbf4736c7908057c3))
+
 ## [4.2.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.1.0...v4.2.0) (2025-12-18)
 
 

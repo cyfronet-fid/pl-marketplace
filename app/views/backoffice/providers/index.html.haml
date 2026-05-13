@@ -1,7 +1,7 @@
 - content_for :title, _("Providers")
 - breadcrumb :backoffice_providers
 
-.container.p-0.backoffice
+.container.p-0.backoffice{ "data-controller": "exit" }
   - if @providers.blank?
     = render "backoffice/providers/provider_prompt"
   - else
@@ -19,3 +19,4 @@
     = turbo_frame_tag "checkbox_form" do
       = render "backoffice/statuses/form", collection: @providers, pagy: @pagy,
         form_path: backoffice_statuses_providers_path
+  = render "common_parts/modals/become_provider_modal", provider: @created_provider, visible: true if @created_provider.present?

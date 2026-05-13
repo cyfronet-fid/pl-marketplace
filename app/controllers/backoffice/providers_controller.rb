@@ -14,6 +14,9 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     authorize(Provider)
     @pagy, @providers = pagy(policy_scope(Provider).order(:name))
     @approval_requests = policy_scope(ApprovalRequest.includes(:approvable).active.order(created_at: :desc))
+    if params[:created_provider].present?
+      @created_provider = policy_scope(Provider).friendly.find(params[:created_provider])
+    end
   end
 
   def show

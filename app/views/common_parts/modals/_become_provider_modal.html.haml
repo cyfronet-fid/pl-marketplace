@@ -1,17 +1,27 @@
-.exit-popup.d-none{ role: "document", "data-exit-target": "modal" }
+:ruby
+  visible = local_assigns.fetch(:visible, false)
+  modal_classes = ["exit-popup"]
+  modal_classes << "d-none" unless visible
+%div{ class: modal_classes.join(" "), role: "document", data: { exit_target: "modal",
+  action: "keyup@window->exit#closeWithKeyboard click@window->exit#closeBackground" } }
   .modal-overlay
-    .modal-content
+    .modal-content{ data: { exit_target: "modalContent" } }
       .modal-header
         %h3#popup-modal-title.modal-title
           Congratulations!!! You've completed
           all required fields
+        %button.close{ data: { action: "exit#hideModal" },
+          type: "button", aria: { label: _("Close") } }
+          %span{ aria: { hidden: "true" } } &times;
       .modal-body
         %p
           = _("Help users get to know you better by adding more details.")
 
       .modal-footer
         .buttons-row
-          %button.btn.btn-primary.btn-sm.mt-2
+          = link_to backoffice_providers_path,
+            class: "btn btn-secondary btn-sm mt-2", data: { turbo_frame: "_top" } do
             = _("Skip for now")
-          %button.btn.btn-primary.btn-sm.mt-2
+          = link_to backoffice_provider_path(provider),
+            class: "btn btn-primary btn-sm mt-2", data: { turbo_frame: "_top" } do
             = _("Complete profile")

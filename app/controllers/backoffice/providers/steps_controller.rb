@@ -32,12 +32,12 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
   end
 
   def update
-    saved_params = session[session_key]
+    saved_params = session[wizard_session_key]
     provider_attrs = saved_params.merge permitted_step_attributes
     @provider.assign_attributes provider_attrs.except("logo")
     provider_attrs["logo"] = logo(provider_attrs) if provider_attrs["logo"].present? && current_step_index.zero?
     if @provider.valid?
-      session[session_key] = provider_attrs
+      session[wizard_session_key] = provider_attrs
       redirect_to_next_step(params[:commit])
     else
       render :show, status: :unprocessable_entity
@@ -84,9 +84,10 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
   end
 
   def finish_wizard_path
-    saved_params = session[session_key]
+    creating_provider = params[:provider_id] == "new"
+    saved_params = session[wizard_session_key]
     @logo = saved_params.delete("logo")
-    if session_key == "new"
+    if creating_provider
       @provider.status = :unpublished
       if @provider.save
         if current_user.providers.published.empty? && !current_user.coordinator?
@@ -94,16 +95,20 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
           ar.save
         end
       else
-        render :show, status: :unprocessable_entity
+        render :show, status: :unprocessable_entity and return
       end
     else
-      init_provider(session_key, saved_params.except("logo"))
-      render :show, status: :unprocessable_entity unless @provider.update(saved_params)
+      init_provider(wizard_session_key, saved_params.except("logo"))
+      render :show, status: :unprocessable_entity and return unless @provider.update(saved_params)
     end
     @provider.update_logo!(@logo) if @logo.present?
     action = session.delete(:wizard_action)
     clear_session_data
-    redirect_to backoffice_providers_path(format: :html), notice: "Provider #{action}d successfully"
+    if creating_provider
+      redirect_to backoffice_providers_path(created_provider: @provider)
+    else
+      redirect_to backoffice_providers_path(format: :html), notice: "Provider #{action}d successfully"
+    end
   end
 
   def prepare_step(step_to_set)
@@ -121,7 +126,7 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
         )
       end
     when :summary
-      @logo = session[session_key]["logo"] if session[session_key]["logo"].present?
+      @logo = session[wizard_session_key]["logo"] if session[wizard_session_key]["logo"].present?
     end
   end
 
@@ -157,9 +162,13 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
   end
 
   def find_and_authorize
-    session[session_key] ||= {}
-    provider_attrs = session[session_key]
-    @provider = init_provider(session_key, provider_attrs.except("logo"))
+    session[wizard_session_key] ||= {}
+    provider_attrs = session[wizard_session_key]
+    @provider = init_provider(wizard_session_key, provider_attrs.except("logo"))
+  end
+
+  def wizard_session_key
+    params[:provider_id] || session_key
   end
 
   def init_provider(provider_id, provider_attrs)

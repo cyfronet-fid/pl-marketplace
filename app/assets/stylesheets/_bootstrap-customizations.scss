@@ -469,6 +469,17 @@ textarea:-ms-input-placeholder {
   background-color: $palette-gray-5;
   border: none;
 
+  &.dropdown-tabs {
+    background: transparent !important;
+
+    .nav-item {
+      .nav-link {
+        padding-bottom: 7px !important;
+        margin: 0;
+      }
+    }
+  }
+
   .question-link {
     position: absolute;
     top: 35px;

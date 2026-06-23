@@ -476,6 +476,10 @@ textarea:-ms-input-placeholder {
       .nav-link {
         padding-bottom: 7px !important;
         margin: 0;
+
+        &:focus {
+          outline: none !important;
+        }
       }
     }
   }

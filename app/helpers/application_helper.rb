@@ -79,13 +79,30 @@ module ApplicationHelper
     if policy(%i[backoffice backoffice]).show?
       provider_links.push({ href: backoffice_path, caption: _("Backoffice"), "data-e2e": "backoffice" })
     end
+
     provider_links.push({ href: admin_path, caption: _("Admin") }) if policy(%i[admin admin]).show?
-    provider_links.push({ href: backoffice_path, caption: _("Backoffice"), "data-e2e": "backoffice" })
-    provider_links.push({ href: api_docs_path, caption: "Ordering system", dividerAfter: true })
-    provider_links.push({ href: api_docs_path, caption: "+ Add new service" })
-    provider_links.push({ href: api_docs_path, caption: "+ Add new provider" })
-    provider_links.push({ href: api_docs_path, caption: "+ Add new catalogue", dividerAfter: true })
-    provider_links.push({ href: api_docs_path, caption: "Documentation" })
+
+    provider_links.push(
+      { href: "https://marketplace.eosc.pl/backoffice/services", caption: _("Backoffice"), "data-e2e": "backoffice" }
+    )
+
+    provider_links.push({ href: "https://bos.eosc.pl/", caption: "Ordering system", dividerAfter: true })
+
+    provider_links.push({ href: "https://marketplace.eosc.pl/backoffice/services/new", caption: "+ Add new service" })
+
+    provider_links.push(
+      { href: "https://marketplace.eosc.pl/backoffice/providers/new/wizard", caption: "+ Add new provider" }
+    )
+
+    provider_links.push(
+      {
+        href: "https://marketplace.eosc.pl/backoffice/catalogues/new",
+        caption: "+ Add new catalogue",
+        dividerAfter: true
+      }
+    )
+
+    provider_links.push({ href: "https://eosc.pl/documentation", caption: "Documentation" })
 
     [{ id: "provider", name: "Provider", links: provider_links }].to_json
   end

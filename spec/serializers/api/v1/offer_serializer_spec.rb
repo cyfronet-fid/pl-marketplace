@@ -74,6 +74,15 @@ RSpec.describe Api::V1::OfferSerializer, backend: true do
     expect(serialized).to eq(expected.deep_stringify_keys)
   end
 
+  it "serializes an internal offer without an available OMS" do
+    offer = create(:offer, order_type: :order_required, internal: true)
+
+    serialized = JSON.parse(described_class.new(offer).to_json)
+
+    expect(serialized["internal"]).to be(true)
+    expect(serialized).not_to have_key("primary_oms_id")
+  end
+
   it "properly serializes a non-order_required offer" do
     offer = create(:offer, order_type: :open_access, internal: false)
 

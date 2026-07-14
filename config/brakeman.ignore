@@ -630,6 +630,25 @@
       "note": ""
     },
     {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 122,
+      "fingerprint": "98b26f60d776fd41ee6f088c833725145be9aac2d7c5b33780241c273622db42",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 7.2.2.1 ends on 2026-08-09",
+      "file": "Gemfile.lock",
+      "line": 471,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Medium",
+      "cwe_id": [
+        1104
+      ],
+      "note": "Rails 7.2 remains supported until 2026-08-09. Upgrade tracked in https://github.com/cyfronet-fid/pl-marketplace/issues/103."
+    },
+    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "9bcc9c074fdeb52da2b4c931d01680ec00d58749a4a42b52d56fe0dc50d27a92",

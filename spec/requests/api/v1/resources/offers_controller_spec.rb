@@ -199,6 +199,39 @@ RSpec.describe Api::V1::Resources::OffersController, swagger_doc: "v1/offering_s
           end
         end
 
+        response 201, "internal offer without an available OMS created", document: false do
+          schema "$ref" => "offer/offer_read.json"
+
+          before { OMS.where(default: true).destroy_all }
+
+          let(:data_admin_user) { create(:user) }
+          let!(:data_administrator) { create(:data_administrator, email: data_admin_user.email) }
+          let!(:service) do
+            create(:service, resource_organisation: create(:provider, data_administrators: [data_administrator]))
+          end
+          let(:offer_payload) do
+            {
+              name: "New internal offer",
+              description: "sample description",
+              order_type: "order_required",
+              internal: true,
+              offer_category: service_category.eid
+            }
+          end
+          let(:resource_id) { service.slug }
+          let(:"X-User-Token") { data_admin_user.authentication_token }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            offer = service.reload.offers.first
+
+            expect(data["internal"]).to be(true)
+            expect(data).not_to have_key("primary_oms_id")
+            expect(offer).to be_internal
+            expect(offer.current_oms).to be_nil
+          end
+        end
+
         response 201, "offer with oms_params created", document: false do
           schema "$ref" => "offer/offer_read.json"
 

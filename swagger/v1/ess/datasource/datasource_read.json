@@ -7,79 +7,29 @@
     "pid": {
       "type": "string"
     },
-    "catalogues": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "abbreviation": {
-      "type": "string"
+    "ppid": {
+      "type": "string",
+      "nullable": true
     },
     "name": {
-      "type": "string"
-    },
-    "tagline": {
       "type": "string"
     },
     "description": {
       "type": "string"
     },
-    "status": {
+    "webpage_url": {
       "type": "string",
-      "enum": ["published"]
+      "nullable": true
     },
-    "order_type": {
+    "urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "logo": {
       "type": "string",
-      "enum": ["open_access", "fully_open_access", "order_required", "other"]
-    },
-    "categories": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "guidelines": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "resource_organisation": {
-      "type": "string"
-    },
-    "providers": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "multimedia_urls": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "$ref": "../link_read.json"
-      }
-    },
-    "use_cases_urls": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "$ref": "../link_read.json"
-      }
-    },
-    "horizontal": {
-      "type": "boolean"
-    },
-    "thematic": {
-      "type": "boolean"
-    },
-    "version_control": {
-      "type": "boolean"
+      "nullable": true
     },
     "scientific_domains": {
       "type": "array",
@@ -87,43 +37,29 @@
         "type": "string"
       }
     },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tag_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "access_types": {
       "type": "array",
-      "nullable": true,
       "items": {
         "type": "string"
       }
     },
-
-    "access_modes": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
+    "trls": {
+      "type": "string",
+      "nullable": true
     },
-    "platforms": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "funding_programs": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "funding_bodies": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "version": {
+    "jurisdiction": {
       "type": "string",
       "nullable": true
     },
@@ -131,45 +67,118 @@
       "type": "string",
       "nullable": true
     },
-    "status_monitoring_url": {
+    "privacy_policy_url": {
       "type": "string",
       "nullable": true
     },
-    "training_information_url": {
+    "access_policies_url": {
       "type": "string",
       "nullable": true
     },
-    "maintenance_url": {
+    "order_type": {
       "type": "string",
-      "nullable": true
-    },
-    "webpage_url": {
-      "type": "string",
-      "nullable": true
+      "enum": ["open_access", "fully_open_access", "order_required", "other"]
     },
     "order_url": {
       "type": "string",
       "nullable": true
     },
-    "manual_url": {
+    "resource_organisation": {
+      "type": "string"
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guidelines": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "public_contact_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["published", "errored"]
+    },
+    "upstream_id": {
+      "type": "integer",
+      "nullable": true
+    },
+    "synchronized_at": {
       "type": "string",
       "nullable": true
     },
-    "helpdesk_url": {
+    "updated_at": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "publication_date": {
+      "type": "string"
+    },
+    "usage_counts_downloads": {
+      "type": "integer"
+    },
+    "usage_counts_views": {
+      "type": "integer"
+    },
+    "thematic": {
+      "type": "boolean"
+    },
+    "research_product_access_policies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "research_product_metadata_access_policies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "research_entity_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "datasource_classification": {
       "type": "string",
       "nullable": true
     },
-    "helpdesk_email": {
-      "type": "string",
-      "nullable": true
+    "persistent_identity_systems": {
+      "type": "array",
+      "items": {
+        "$ref": "../persistent_identity_system_read.json"
+      }
     },
-    "pricing_url": {
-      "type": "string",
-      "nullable": true
+    "research_product_licensing_urls": {
+      "type": "array",
+      "items": {
+        "$ref": "../link_read.json"
+      }
     },
-    "payment_model_url": {
-      "type": "string",
-      "nullable": true
+    "research_product_metadata_license_urls": {
+      "type": "array",
+      "items": {
+        "$ref": "../link_read.json"
+      }
     },
     "submission_policy_url": {
       "type": "string",
@@ -179,189 +188,13 @@
       "type": "string",
       "nullable": true
     },
-    "changelog": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
+    "version_control": {
+      "type": "boolean",
+      "nullable": true
     },
-    "tag_list": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "eosc_if": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "privacy_policy_url": {
+    "node": {
       "type": "string",
       "nullable": true
-    },
-    "resource_level_url": {
-      "type": "string",
-      "nullable": true
-    },
-    "security_contact_email": {
-      "type": "string",
-      "nullable": true
-    },
-    "certifications": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "standards": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "open_source_technologies": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "grant_project_names": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "last_update": {
-      "type": "string",
-      "nullable": true
-    },
-    "upstream_id": {
-      "type": "integer",
-      "nullable": true
-    },
-    "publication_date": {
-      "type": "string"
-    },
-    "updated_at": {
-      "type": "string"
-    },
-    "synchronized_at": {
-      "type": "string",
-      "nullable": true
-    },
-    "geographical_availabilities": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "language_availability": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "unified_categories": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "dedicated_for": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "resource_geographic_locations": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "public_contacts": {
-      "type": "array",
-      "items": {
-        "$ref": "../contact_read.json"
-      }
-    },
-    "trl": {
-      "type": "string",
-      "nullable": true
-    },
-    "life_cycle_status": {
-      "type": "string",
-      "nullable": true
-    },
-    "datasource_classification": {
-      "type": "string",
-      "nullable": true
-    },
-    "jurisdiction": {
-      "type": "string",
-      "nullable": true
-    },
-    "research_product_access_policies": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "research_product_metadata_access_policies": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "research_entity_types": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "type": "string"
-      }
-    },
-    "persistent_identity_systems": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "$ref": "../persistent_identity_system_read.json"
-      }
-    },
-    "research_product_licensing_urls": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "$ref": "../link_read.json"
-      }
-    },
-    "research_product_metadata_license_urls": {
-      "type": "array",
-      "nullable": true,
-      "items": {
-        "$ref": "../link_read.json"
-      }
-    },
-    "usage_counts_downloads": {
-      "type": "integer"
-    },
-    "usage_counts_views": {
-      "type": "integer"
     }
   },
   "additionalProperties": false,

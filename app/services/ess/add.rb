@@ -20,7 +20,7 @@ class Ess::Add < ApplicationService
   private
 
   def payload
-    serializer_type = @object.is_a?(Service) ? "Service" : @object.class.name
+    serializer_type = @object.is_a?(Service) && @object.type == "Datasource" ? "Datasource" : @object.class.name
     {
       action: "update",
       data_type: @type,

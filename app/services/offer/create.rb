@@ -2,7 +2,10 @@
 
 class Offer::Create < Offer::ApplicationService
   def call
-    @offer.save
+    return @offer unless @offer.save
+
+    @service.reload
+    @service.propagate_to_ess(propagate_offers: false)
     @service.reindex
     @offer.reindex
     @offer

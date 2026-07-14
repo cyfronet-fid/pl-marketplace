@@ -4,7 +4,7 @@ class Api::V1::OfferSerializer < ActiveModel::Serializer
   attribute :iid, key: :id
   attributes :name, :description, :parameters, :order_type, :order_url, :offer_category
   attribute :internal, if: -> { object.order_required? }
-  attribute :primary_oms_id, if: -> { object.internal? }
+  attribute :primary_oms_id, if: -> { object.internal? && current_oms.present? }
 
   # TODO: https://github.com/cyfronet-fid/marketplace/issues/1964
   attribute :oms_params, if: -> { object.internal? && object.oms_params.present? }
@@ -16,10 +16,16 @@ class Api::V1::OfferSerializer < ActiveModel::Serializer
   end
 
   def primary_oms_id
-    object.current_oms.id
+    current_oms.id
   end
 
   def bundled_offers
     object.main_bundles.map { |b| { b.id => b.offers.map(&:slug_iid) } }
+  end
+
+  private
+
+  def current_oms
+    @current_oms ||= object.current_oms
   end
 end

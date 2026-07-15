@@ -34,7 +34,7 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
   def update
     saved_params = session[wizard_session_key]
     provider_attrs = saved_params.merge permitted_step_attributes
-    @provider.assign_attributes provider_attrs.except("logo")
+    @provider = init_provider(wizard_session_key, provider_attrs.except("logo"))
     provider_attrs["logo"] = logo(provider_attrs) if provider_attrs["logo"].present? && current_step_index.zero?
     if @provider.valid?
       session[wizard_session_key] = provider_attrs
@@ -98,8 +98,7 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
         render :show, status: :unprocessable_entity and return
       end
     else
-      init_provider(wizard_session_key, saved_params.except("logo"))
-      render :show, status: :unprocessable_entity and return unless @provider.update(saved_params)
+      render :show, status: :unprocessable_entity and return unless @provider.save
     end
     @provider.update_logo!(@logo) if @logo.present?
     action = session.delete(:wizard_action)

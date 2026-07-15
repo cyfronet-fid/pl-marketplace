@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.4.1](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.4.0...v4.4.1) (2026-07-15)
+
+
+### Bug Fixes
+
+* [[#98](https://github.com/cyfronet-fid/pl-marketplace/issues/98)] Restore resource publication ([d03a0c6](https://github.com/cyfronet-fid/pl-marketplace/commit/d03a0c68578123113db6c29dcdad3d7b29cc078d))
+
 ## [4.4.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.3.0...v4.4.0) (2026-07-14)
 
 

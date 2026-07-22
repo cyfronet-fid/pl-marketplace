@@ -12,11 +12,13 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
 
   def index
     authorize(Provider)
+    @show_provider_approval_modal = flash[:provider_approval_modal]
+    created_provider_id = flash[:provider_profile_completion]
+    flash.delete(:provider_approval_modal)
+    flash.delete(:provider_profile_completion)
+    @created_provider = policy_scope(Provider).find(created_provider_id) if created_provider_id.present?
     @pagy, @providers = pagy(policy_scope(Provider).order(:name))
     @approval_requests = policy_scope(ApprovalRequest.includes(:approvable).active.order(created_at: :desc))
-    if params[:created_provider].present?
-      @created_provider = policy_scope(Provider).friendly.find(params[:created_provider])
-    end
   end
 
   def show
@@ -50,13 +52,17 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     permitted_attributes = permitted_attributes(Provider)
     @provider = Provider.new(**permitted_attributes, status: :unpublished)
     authorize(@provider)
+    first_provider = current_user.providers.none?
 
     if valid_model_and_urls? && @provider.save(validate: false)
-      if current_user.providers.published.empty? && !current_user.coordinator?
-        ar = ApprovalRequest.new(approvable: @provider, user: current_user, status: :published)
-        ar.save
+      approval_request = request_approval(@provider)
+      if first_provider && approval_request&.persisted?
+        flash[:provider_approval_modal] = true
+        redirect_to backoffice_providers_path
+      else
+        redirect_to backoffice_provider_path(@provider, page: params[:page]),
+                    notice: "New provider created successfully"
       end
-      redirect_to backoffice_provider_path(@provider, page: params[:page]), notice: "New provider created successfully"
     else
       catalogue_scope
       render :new, status: :unprocessable_entity
@@ -149,6 +155,12 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
       @provider.send(association).build if @provider.send(association).empty?
     end
     @provider.build_main_contact if @provider.main_contact.blank?
+  end
+
+  def request_approval(provider)
+    return if current_user.coordinator? || current_user.providers.published.exists?
+
+    ApprovalRequest.create(approvable: provider, user: current_user, status: :published)
   end
 
   def valid_model_and_urls?

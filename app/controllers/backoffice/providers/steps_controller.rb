@@ -85,15 +85,14 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
 
   def finish_wizard_path
     creating_provider = params[:provider_id] == "new"
+    first_provider = creating_provider && current_user.providers.none?
     saved_params = session[wizard_session_key]
     @logo = saved_params.delete("logo")
+    approval_request = nil
     if creating_provider
       @provider.status = :unpublished
       if @provider.save
-        if current_user.providers.published.empty? && !current_user.coordinator?
-          ar = ApprovalRequest.new(approvable: @provider, user: current_user, status: :published)
-          ar.save
-        end
+        approval_request = request_approval(@provider)
       else
         render :show, status: :unprocessable_entity and return
       end
@@ -103,8 +102,12 @@ class Backoffice::Providers::StepsController < Backoffice::ProvidersController
     @provider.update_logo!(@logo) if @logo.present?
     action = session.delete(:wizard_action)
     clear_session_data
-    if creating_provider
-      redirect_to backoffice_providers_path(created_provider: @provider)
+    if first_provider && approval_request&.persisted?
+      flash[:provider_approval_modal] = true
+      redirect_to backoffice_providers_path
+    elsif creating_provider
+      flash[:provider_profile_completion] = @provider.id
+      redirect_to backoffice_providers_path
     else
       redirect_to backoffice_providers_path(format: :html), notice: "Provider #{action}d successfully"
     end

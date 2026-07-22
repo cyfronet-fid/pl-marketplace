@@ -1,4 +1,3 @@
--# = render "common_parts/modals/become_provider_modal", f: f
 = simple_form_for [:backoffice, provider],
   url: backoffice_provider_wizard_path(params[:provider_id]),
   html: { "data-controller": "administrator", "data-form-target": "form"  },

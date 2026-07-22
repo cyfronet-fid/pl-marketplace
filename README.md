@@ -282,9 +282,16 @@ We are currently using the following ENV variables:
 * `S3_ACCESS_KEY_ID` - active storage S3 access key
 * `S3_SECRET_ACCESS_KEY` - active storage S3 secret access key
 * `SMTP_ADDRESS` - smtp mail server address
+* `SMTP_PORT` (Optional) - smtp mail server port (default `587`)
 * `SMTP_USERNAME` - smtp user name or email address
 * `SMTP_PASSWORD` - smtp password
+* `SMTP_AUTHENTICATION` (Optional) - smtp authentication method (default `plain`)
+* `SMTP_STARTTLS` (Optional) - enable automatic STARTTLS (default `true`)
 * `FROM_EMAIL` - from email (if not set `from@example.com` will be used)
+
+The legacy `SMPT_ADDRESS`, `SMPT_USERNAME`, and `SMPT_PASSWORD` names remain supported as fallbacks. New
+deployments should use the documented `SMTP_*` names.
+
 * `GOOGLE_ANALYTICS` - google analytics key for GMT (if present than analytics
   script is added into head section)
 * `PORTAL_BASE_URL` - portal base URL used to generate footer and other static

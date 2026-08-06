@@ -208,6 +208,8 @@ Rails.application.routes.draw do
       namespace :catalogue do
         resources :services, only: %i[index]
       end
+
+      resources :users, only: :show, constraints: { id: pid_format_constraint }
     end
   end
 

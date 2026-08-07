@@ -8,6 +8,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   def find_user
     @user = User.find_by!(uid: params[:id])
+    raise ActiveRecord::RecordNotFound unless @user
+
     authorize @user
   rescue ActiveRecord::RecordNotFound
     render json: {

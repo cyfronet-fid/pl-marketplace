@@ -3,11 +3,11 @@
 class Api::V1::UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      user.admin? ? scope.all : scope.where(uid: user.uid)
+      user&.roles_mask == 7 ? scope.all : scope.none
     end
   end
 
   def show?
-    user.admin? || user.uid == record.uid
+    user&.roles_mask == 7
   end
 end

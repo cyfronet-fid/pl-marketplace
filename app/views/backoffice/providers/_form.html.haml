@@ -2,6 +2,7 @@
   html: { data: { controller: "form", form_target: "form",
   disabled: provider.upstream_id.present? } } do |f|
   = f.error_notification
+  = f.hidden_field :current_step, value: tab
   .row
     .col-12
       #provider-edit

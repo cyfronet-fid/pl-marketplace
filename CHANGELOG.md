@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.4.3](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.4.2...v4.4.3) (2026-08-12)
+
+
+### Bug Fixes
+
+* [[#102](https://github.com/cyfronet-fid/pl-marketplace/issues/102)] Restore SMTP mail delivery ([8d7c437](https://github.com/cyfronet-fid/pl-marketplace/commit/8d7c437c3e1a5e2ad3cde163513f64db12738330))
+
 ## [4.4.2](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.4.1...v4.4.2) (2026-07-15)
 
 

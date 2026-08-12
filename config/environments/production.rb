@@ -127,13 +127,17 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   # SMTP settings
+  smtp_address = ENV.fetch("SMTP_ADDRESS", nil).presence || ENV.fetch("SMPT_ADDRESS", nil)
+  smtp_username = ENV.fetch("SMTP_USERNAME", nil).presence || ENV.fetch("SMPT_USERNAME", nil)
+  smtp_password = ENV.fetch("SMTP_PASSWORD", nil).presence || ENV.fetch("SMPT_PASSWORD", nil)
+
   config.action_mailer.smtp_settings = {
-      address: ENV.fetch("SMPT_ADDRESS", nil),
-      port: ENV.fetch("SMTP_PORT", 587),
-      user_name: ENV.fetch("SMPT_USERNAME", nil),
-      password: ENV.fetch("SMPT_PASSWORD", nil),
-      authentication: ENV.fetch("SMTP_AUTHENTICATION", "plain"),
-      enable_starttls_auto: ENV.fetch("SMTP_STARTTLS", true)
+    address: smtp_address,
+    port: ENV.fetch("SMTP_PORT", 587).to_i,
+    user_name: smtp_username,
+    password: smtp_password,
+    authentication: ENV.fetch("SMTP_AUTHENTICATION", "plain"),
+    enable_starttls_auto: ActiveModel::Type::Boolean.new.cast(ENV.fetch("SMTP_STARTTLS", true))
   }
 
   # custom error pages with webpage layout

@@ -99,7 +99,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     permitted_attributes = permitted_attributes(provider_duplicate)
     if provider_duplicate.published? && provider_duplicate.catalogue.present? &&
          !provider_duplicate.catalogue.published?
-      attrs.merge(status: provider_duplicate&.catalogue&.status)
+      permitted_attributes = permitted_attributes.merge(status: provider_duplicate&.catalogue&.status)
     end
     @provider.assign_attributes(permitted_attributes)
 

@@ -24,7 +24,7 @@ jobs:
         bin/bundle exec rbprettier --check .
     - name: haml-lint
       run: |
-        bundle exec haml-lint --exclude 'lib/**/*.haml'
+        bundle exec haml-lint app --exclude 'lib/**/*.haml'
     - name: scss-lint
       run: |
         bundle exec scss-lint --format JSON

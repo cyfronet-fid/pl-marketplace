@@ -355,7 +355,7 @@ selectively on modified files only
 
 To run rubocop manually `$ rubocop`.
 
-To run haml-lint manually `$ haml-lint --exclude 'lib/**/*.haml'`.
+To run haml-lint manually `$ haml-lint app --exclude 'lib/**/*.haml'`.
 
 To run scss-lint manually `$ scss-lint --format JSON`.
 

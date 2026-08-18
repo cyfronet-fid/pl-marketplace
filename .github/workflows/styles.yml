@@ -14,7 +14,7 @@ jobs:
         bundle check
     - name: YAML syntax
       run: |
-        find . -path ./node_modules -prune -o -type f \( -name '*.yml' -o -name '*.yaml' \) -print \
+        find . \( -path ./node_modules -o -path ./vendor -o -path ./.git \) -prune -o -type f \( -name '*.yml' -o -name '*.yaml' \) -print \
           | xargs -I{} ruby -ryaml -e "YAML.unsafe_load_file('{}')"
     - name: RuboCop
       run: |

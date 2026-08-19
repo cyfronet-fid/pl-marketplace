@@ -12,10 +12,8 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
 
   def index
     authorize(Provider)
-    @show_provider_approval_modal = flash[:provider_approval_modal]
-    created_provider_id = flash[:provider_profile_completion]
-    flash.delete(:provider_approval_modal)
-    flash.delete(:provider_profile_completion)
+    @show_provider_approval_modal = session.delete(:provider_approval_modal)
+    created_provider_id = session.delete(:provider_profile_completion)
     @created_provider = policy_scope(Provider).find(created_provider_id) if created_provider_id.present?
     @pagy, @providers = pagy(policy_scope(Provider).order(:name))
     @approval_requests = policy_scope(ApprovalRequest.includes(:approvable).active.order(created_at: :desc))
@@ -55,14 +53,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     first_provider = current_user.providers.none?
 
     if valid_model_and_urls? && @provider.save(validate: false)
-      approval_request = request_approval(@provider)
-      if first_provider && approval_request&.persisted?
-        flash[:provider_approval_modal] = true
-        redirect_to backoffice_providers_path
-      else
-        redirect_to backoffice_provider_path(@provider, page: params[:page]),
-                    notice: "New provider created successfully"
-      end
+      redirect_to finalize_provider_creation(@provider, first_provider: first_provider)
     else
       catalogue_scope
       render :new, status: :unprocessable_entity
@@ -161,6 +152,18 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     return if current_user.coordinator? || current_user.providers.published.exists?
 
     ApprovalRequest.create(approvable: provider, user: current_user, status: :published)
+  end
+
+  def finalize_provider_creation(provider, first_provider:)
+    approval_request = request_approval(provider)
+
+    if first_provider && approval_request&.persisted?
+      session[:provider_approval_modal] = true
+    else
+      session[:provider_profile_completion] = provider.id
+    end
+
+    backoffice_providers_path
   end
 
   def valid_model_and_urls?

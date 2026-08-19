@@ -72,7 +72,7 @@ RSpec.describe Backoffice::Providers::StepsController, type: :controller, backen
         expect(approval_request).to have_attributes(approvable: provider, user: user, status: "published")
         expect(Backoffice::ServicePolicy.new(user.reload, Service.new).new?).to be(true)
         expect(response).to redirect_to(backoffice_providers_path)
-        expect(flash[:provider_approval_modal]).to be(true)
+        expect(session[:provider_approval_modal]).to be(true)
       end
 
       it "does not reopen the first-provider guidance for another provider" do
@@ -83,8 +83,8 @@ RSpec.describe Backoffice::Providers::StepsController, type: :controller, backen
         provider = Provider.find_by!(name: provider_attributes["name"])
 
         expect(response).to redirect_to(backoffice_providers_path)
-        expect(flash[:provider_approval_modal]).to be_nil
-        expect(flash[:provider_profile_completion]).to eq(provider.id)
+        expect(session[:provider_approval_modal]).to be_nil
+        expect(session[:provider_profile_completion]).to eq(provider.id)
       end
     end
 
@@ -101,8 +101,8 @@ RSpec.describe Backoffice::Providers::StepsController, type: :controller, backen
         provider = Provider.find_by!(name: provider_attributes["name"])
 
         expect(response).to redirect_to(backoffice_providers_path)
-        expect(flash[:provider_approval_modal]).to be_nil
-        expect(flash[:provider_profile_completion]).to eq(provider.id)
+        expect(session[:provider_approval_modal]).to be_nil
+        expect(session[:provider_profile_completion]).to eq(provider.id)
       end
     end
   end

@@ -20,5 +20,4 @@
       = render "backoffice/statuses/form", collection: @providers, pagy: @pagy,
         form_path: backoffice_statuses_providers_path
   = render "common_parts/modals/provider_approval_modal" if @show_provider_approval_modal
-  = render "common_parts/modals/provider_profile_completion_modal",
-    provider: @created_provider if @created_provider.present?
+  = render "common_parts/modals/provider_profile_completion_modal", provider: @created_provider if @created_provider.present?

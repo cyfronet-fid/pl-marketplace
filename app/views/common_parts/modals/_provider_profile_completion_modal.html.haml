@@ -13,8 +13,7 @@
 
   .modal-footer
     .buttons-row
-      = link_to backoffice_providers_path, class: "btn btn-secondary btn-sm", autofocus: true,
-        data: { turbo_frame: "_top" } do
+      = link_to backoffice_providers_path, class: "btn btn-secondary btn-sm", data: { turbo_frame: "_top" } do
         = _("Skip for now")
       = link_to backoffice_provider_path(provider), class: "btn btn-primary btn-sm",
         data: { turbo_frame: "_top" } do

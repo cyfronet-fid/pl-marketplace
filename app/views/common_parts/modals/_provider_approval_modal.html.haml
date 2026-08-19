@@ -14,9 +14,7 @@
 
   .modal-footer
     .buttons-row
-      %button.btn.btn-secondary.btn-sm{ type: "button", autofocus: true,
-        data: { action: "dialog#close" } }
+      %button.btn.btn-secondary.btn-sm{ type: "button", data: { action: "dialog#close" } }
         = _("Cancel")
-      = link_to new_backoffice_service_path, class: "btn btn-primary btn-sm",
-        data: { turbo_frame: "_top", e2e: "create-first-service" } do
+      = link_to new_backoffice_service_path, class: "btn btn-primary btn-sm", data: { turbo_frame: "_top", e2e: "create-first-service" } do
         = _("Create your first service")

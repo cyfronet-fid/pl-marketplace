@@ -16,42 +16,32 @@ RSpec.describe "Backoffice: manage providers", backend: true do
     context "deletes provider" do
       it "without any service" do
         provider
-        expect { delete backoffice_provider_path(provider) }.to change {
-          Provider.where(status: :deleted).count
-        }.by(1)
+        expect { delete backoffice_provider_path(provider) }.to change { Provider.where(status: :deleted).count }.by(1)
       end
 
       it "with all deleted services" do
         deleted_service
 
-        expect { delete backoffice_provider_path(provider) }.to change {
-          Provider.where(status: :deleted).count
-        }.by(1)
+        expect { delete backoffice_provider_path(provider) }.to change { Provider.where(status: :deleted).count }.by(1)
       end
 
       it "with an errored service" do
         errored_service
 
-        expect { delete backoffice_provider_path(provider) }.to change {
-          Provider.where(status: :deleted).count
-        }.by(1)
+        expect { delete backoffice_provider_path(provider) }.to change { Provider.where(status: :deleted).count }.by(1)
       end
 
       it "with a draft service" do
         draft_service
 
-        expect { delete backoffice_provider_path(provider) }.to change {
-          Provider.where(status: :deleted).count
-        }.by(1)
+        expect { delete backoffice_provider_path(provider) }.to change { Provider.where(status: :deleted).count }.by(1)
       end
     end
 
     context "on update" do
-      before do
-        put backoffice_provider_path(provider), params: { provider: { upstream_id: nil, **new_params } }
-      end
+      before { put backoffice_provider_path(provider), params: { provider: { upstream_id: nil, **new_params } } }
 
-      it "call permitted_attributes with provider with form upstream_id", :aggregate_failures do  
+      it "call permitted_attributes with provider with form upstream_id", :aggregate_failures do
         provider.reload
         expect(provider.upstream_id).to eq(nil)
         new_params.each { |key, value| expect(provider[key]).to eq(value) }
@@ -71,7 +61,7 @@ RSpec.describe "Backoffice: manage providers", backend: true do
           expect(response).to have_http_status(:success)
         end
 
-        it "can be saved" do  
+        it "can be saved" do
           expect(provider.reload.certifications).to eq(["ISO9001"])
         end
       end

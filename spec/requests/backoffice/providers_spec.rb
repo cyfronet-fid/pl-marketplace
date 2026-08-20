@@ -46,7 +46,7 @@ RSpec.describe "Backoffice: manage providers", backend: true do
       end
     end
 
-    context 'on update' do
+    context "on update" do
       before do
         put backoffice_provider_path(provider), params: { provider: { upstream_id: nil, **new_params } }
       end

@@ -4,7 +4,7 @@
 
   .row.justify-content-between
     %main.col-12.col-xl-9.pr-4.pt-4
-      = render "backoffice/providers/tabs/#{tab}", provider: provider, catalogues: catalogues
+      = render "backoffice/providers/tabs/#{safe_tab(tab)}", provider: provider, catalogues: catalogues
     %sidebar.col-12.col-xl-3.pt-4
       #actions
         - if tab == "profile" && policy([:backoffice, provider]).edit?

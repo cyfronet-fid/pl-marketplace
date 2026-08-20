@@ -22,15 +22,13 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
   def show
     add_missing_nested_models
     respond_to do |format|
-      current_tab = params[:tab]
-      partial = current_tab&.in?(extended_steps) ? current_tab : "profile"
       format.turbo_stream do
         render turbo_stream:
                  turbo_stream.replace(
                    "tab_content",
                    partial: "backoffice/providers/tabs/wrapper",
                    locals: {
-                     tab: partial,
+                     tab: safe_tab(params[:tab]),
                      provider: @provider,
                      catalogues: @catalogues
                    }
@@ -102,7 +100,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
                  "tab_content",
                  partial: "backoffice/providers/tabs/wrapper",
                  locals: {
-                   tab: params[:tab].presence || "profile",
+                   tab: safe_tab(params[:tab]),
                    provider: @provider,
                    catalogues: @catalogues
                  }

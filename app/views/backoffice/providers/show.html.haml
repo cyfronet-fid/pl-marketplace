@@ -18,7 +18,8 @@
                               comparison_enabled: @comparison_enabled,
                               preview: @provider.suspended? || local_assigns[:preview])
 
-  = render "backoffice/providers/tabs/wrapper", provider: @provider, tab: params.fetch(:step, "profile")
+  = render "backoffice/providers/tabs/wrapper", provider: @provider, catalogues: @catalogues,
+    tab: params[:tab] || params.fetch(:step, "profile")
   = link_to backoffice_providers_path, class: "backoffice-back-link mt-4 font-weight-bold" do
     %i.fa-solid.fa-arrow-left.me-2.mr-1
     = _("Go back to providers list")

@@ -30,7 +30,8 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
                    partial: "backoffice/providers/tabs/wrapper",
                    locals: {
                      tab: partial,
-                     provider: @provider
+                     provider: @provider,
+                     catalogues: @catalogues
                    }
                  )
       end
@@ -63,20 +64,21 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
   def edit
     session[:wizard_action] = "update"
     tab = session[:provider_step] = params[:step] || basic_steps.first
+
     if tab.in?(basic_steps)
       redirect_to backoffice_provider_wizard_path(@provider)
     else
       add_missing_nested_models
       render turbo_stream:
-               turbo_stream.replace(
-                 "tab_content",
-                 partial: "backoffice/providers/form",
-                 locals: {
-                   provider: @provider,
-                   catalogues: @catalogues,
-                   tab: tab
-                 }
-               )
+              turbo_stream.replace(
+                "tab_content",
+                partial: "backoffice/providers/form",
+                locals: {
+                  provider: @provider,
+                  catalogues: @catalogues,
+                  tab: tab
+                }
+              )
     end
   end
 
@@ -106,7 +108,22 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     else
       catalogue_scope
       add_missing_nested_models
-      render :edit, status: :bad_request
+
+      if params[:tab].present?
+        render turbo_stream:
+                 turbo_stream.replace(
+                   "tab_content",
+                   partial: "backoffice/providers/tabs/wrapper",
+                   locals: {
+                     tab: params[:tab],
+                     provider: @provider,
+                     catalogues: @catalogues
+                   }
+                 ),
+               status: :bad_request
+      else
+        render :edit, status: :bad_request
+      end
     end
   end
 

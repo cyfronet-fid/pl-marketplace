@@ -57,29 +57,14 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
       redirect_to finalize_provider_creation(@provider, first_provider: first_provider)
     else
       catalogue_scope
-      render :new, status: :unprocessable_entity
+      redirect_to backoffice_provider_wizard_path("new")
     end
   end
 
   def edit
     session[:wizard_action] = "update"
-    tab = session[:provider_step] = params[:step] || basic_steps.first
-
-    if tab.in?(basic_steps)
-      redirect_to backoffice_provider_wizard_path(@provider)
-    else
-      add_missing_nested_models
-      render turbo_stream:
-              turbo_stream.replace(
-                "tab_content",
-                partial: "backoffice/providers/form",
-                locals: {
-                  provider: @provider,
-                  catalogues: @catalogues,
-                  tab: tab
-                }
-              )
-    end
+    session[:provider_step] = params[:step] || basic_steps.first
+    redirect_to backoffice_provider_wizard_path(@provider)
   end
 
   def current_step_index
@@ -109,21 +94,17 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
       catalogue_scope
       add_missing_nested_models
 
-      if params[:tab].present?
-        render turbo_stream:
-                 turbo_stream.replace(
-                   "tab_content",
-                   partial: "backoffice/providers/tabs/wrapper",
-                   locals: {
-                     tab: params[:tab],
-                     provider: @provider,
-                     catalogues: @catalogues
-                   }
-                 ),
-               status: :bad_request
-      else
-        render :edit, status: :bad_request
-      end
+      render turbo_stream:
+               turbo_stream.replace(
+                 "tab_content",
+                 partial: "backoffice/providers/tabs/wrapper",
+                 locals: {
+                   tab: params[:tab].presence || "profile",
+                   provider: @provider,
+                   catalogues: @catalogues
+                 }
+               ),
+             status: :bad_request
     end
   end
 

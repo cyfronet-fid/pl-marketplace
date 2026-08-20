@@ -57,6 +57,8 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
       redirect_to finalize_provider_creation(@provider, first_provider: first_provider)
     else
       catalogue_scope
+      session["new"] = permitted_attributes.to_h.except("logo")
+      session["new"]["logo"] = ImageHelper.to_json(permitted_attributes[:logo]) if permitted_attributes[:logo].present?
       redirect_to backoffice_provider_wizard_path("new")
     end
   end

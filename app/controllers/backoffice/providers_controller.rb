@@ -20,6 +20,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
   end
 
   def show
+    add_missing_nested_models
     respond_to do |format|
       current_tab = params[:tab]
       partial = current_tab&.in?(extended_steps) ? current_tab : "profile"

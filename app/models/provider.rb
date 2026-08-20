@@ -229,12 +229,10 @@ class Provider < ApplicationRecord
   def set_default_logo
     assets_path = File.join(File.dirname(__FILE__), "../assets/images")
     default_logo_name = "provider_logo.svg"
-    extension = ".svg"
     io = File.open(assets_path + "/" + default_logo_name)
 
-    # This should be fixed by allowing svg extension in the db
     image = convert_to_png(io)
-    logo.attach(io: image, filename: SecureRandom.uuid + extension, content_type: "image/#{extension.delete(".", "")}")
+    logo.attach(io: image, filename: "#{SecureRandom.uuid}.png", content_type: "image/png")
   end
 
   def owned_by?(user)

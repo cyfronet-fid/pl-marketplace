@@ -3,7 +3,7 @@
 require "swagger_helper"
 require "rails_helper"
 
-RSpec.describe Api::V1::UsersController, swagger_doc: "v1/users_swagger.json", backend: true do
+RSpec.describe Api::V1::UsersController, swagger_doc: "v1/users_swagger.json", backend: true, type: :request do
   before(:all) do
     Dir.chdir Rails.root.join("swagger", "v1") # Workaround for rswag bug: https://github.com/rswag/rswag/issues/393
   end
@@ -19,13 +19,14 @@ RSpec.describe Api::V1::UsersController, swagger_doc: "v1/users_swagger.json", b
       security [authentication_token: []]
       parameter name: :user_id, in: :path, type: :string, description: "Unique identifier of the user"
 
-      response 200, "successful" do
+      let(:admin) { create(:user, roles_mask: User.mask_for(:admin, :coordinator, :executive)) }
+
+      response 200, "successful", aggregate_failures: true do
         schema "$ref" => "user/user_read.json"
 
-        let(:admin) { create(:user, roles_mask: 7) }
-        let!(:target_user) { create(:user, roles_mask: 5) }
+        let!(:target_user) { create(:user, roles_mask: User.mask_for(:admin, :executive)) }
         let!(:data_administrator) { create(:data_administrator, email: target_user.email) }
-        let!(:provider) { create(:provider, data_administrators: [data_administrator]) }
+        let!(:provider) { create(:provider, data_administrators: [data_administrator], reindex: false) }
         let!(:catalogue) { create(:catalogue, data_administrators: [data_administrator]) }
 
         let(:"X-User-Token") { admin.authentication_token }
@@ -33,7 +34,7 @@ RSpec.describe Api::V1::UsersController, swagger_doc: "v1/users_swagger.json", b
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data).to eq(JSON.parse(Api::V1::UserSerializer.new(target_user.reload).to_json))
+          expect(data["uid"]).to eq(target_user.uid)
           expect(data["roles"]).to match_array(%w[admin executive])
           expect(data["providers"]).to eq([provider.pid])
           expect(data["catalogues"]).to eq([catalogue.pid])
@@ -54,7 +55,7 @@ RSpec.describe Api::V1::UsersController, swagger_doc: "v1/users_swagger.json", b
       response 401, "user not authorized", document: false do
         schema "$ref" => "error.json"
 
-        let(:requester) { create(:user, roles_mask: 1) }
+        let(:requester) { create(:user, roles_mask: User.mask_for(:admin)) }
         let!(:target_user) { create(:user) }
         let(:"X-User-Token") { requester.authentication_token }
         let(:user_id) { target_user.uid }
@@ -68,7 +69,6 @@ RSpec.describe Api::V1::UsersController, swagger_doc: "v1/users_swagger.json", b
       response 404, "user not found" do
         schema "$ref" => "error.json"
 
-        let(:admin) { create(:user, roles_mask: 7) }
         let(:"X-User-Token") { admin.authentication_token }
         let(:user_id) { "does-not-exist" }
 

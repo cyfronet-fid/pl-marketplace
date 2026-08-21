@@ -73,6 +73,25 @@ RSpec.configure do |config|
         }
       }
     },
+    "v1/users_swagger.json" => {
+      openapi: "3.0.1",
+      info: {
+        title: "EOSC User API",
+        version: "v1",
+        description: "API for external clients loading user configuration"
+      },
+      paths: {
+      },
+      components: {
+        securitySchemes: {
+          authentication_token: {
+            type: :apiKey,
+            name: "X-User-Token",
+            in: :header
+          }
+        }
+      }
+    },
     "v1/catalogue_swagger.json" => {
       openapi: "3.0.1",
       info: {

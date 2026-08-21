@@ -208,6 +208,8 @@ Rails.application.routes.draw do
       namespace :catalogue do
         resources :services, only: %i[index]
       end
+
+      resources :users, only: :show, param: :user_id
     end
   end
 

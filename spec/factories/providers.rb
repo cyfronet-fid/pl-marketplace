@@ -3,6 +3,8 @@ require "image_processing/vips"
 
 FactoryBot.define do
   factory :provider do
+    transient { reindex { true } }
+
     sequence(:name) { |n| "provider #{n}" }
     sequence(:abbreviation) { |n| "provider #{n}" }
     sequence(:website) { "https://website.com" }
@@ -66,6 +68,6 @@ FactoryBot.define do
       provider.logo.attach(io: logo, filename: provider.pid + ".png", content_type: "image/png")
     end
 
-    after(:create) { |provider, _evaluator| provider.reindex(refresh: true) }
+    after(:create) { |provider, evaluator| provider.reindex(refresh: true) if evaluator.reindex }
   end
 end

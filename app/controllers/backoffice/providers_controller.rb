@@ -42,7 +42,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     @provider = Provider.new
     session[:wizard_action] = "create"
     session[:new] ||= {}
-    session[:provider_step] = params[:step] || "profile"
+    session[:provider_step] = safe_step(params[:step])
     redirect_to backoffice_provider_wizard_path("new")
   end
 
@@ -64,7 +64,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
 
   def edit
     session[:wizard_action] = "update"
-    session[:provider_step] = params[:step] || basic_steps.first
+    session[:provider_step] = safe_step(params[:step])
     redirect_to backoffice_provider_wizard_path(@provider)
   end
 

@@ -3,9 +3,7 @@ require "image_processing/vips"
 
 FactoryBot.define do
   factory :provider do
-    transient do
-      reindex { true }
-    end
+    transient { reindex { true } }
 
     sequence(:name) { |n| "provider #{n}" }
     sequence(:abbreviation) { |n| "provider #{n}" }

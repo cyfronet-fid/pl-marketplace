@@ -48,6 +48,10 @@ module Backoffice::ProvidersHelper
     extended_steps.include?(tab) ? tab : "profile"
   end
 
+  def safe_step(step)
+    basic_steps.include?(step) ? step : basic_steps.first
+  end
+
   def exit_confirm_details
     summary_step = link_to "summary step", "javascript:;", data: { action: "click->form#goToSummary" }
     _("If you leave, you will lose your changes, go to the #{summary_step} and save them")

@@ -5,14 +5,13 @@
     = render "services/offers/description", offer: offer
     = render "layouts/common_parts/services/parameters", technical_parameters: offer.attributes.map(&:to_json)
 
-    .card-button.text-center
+    .card-button.text-center.d-inline
       - if policy([:backoffice, offer]).edit?
-        .btn.btn-back{ data: {
+        .btn.btn-outline-primary{ data: {
           action: "click->duplicate#showModal",
           duplicate_url: duplicate_offer_path(offer.service, offer),
           offer_name: offer.name } }
           Duplicate
-        %label
-          = link_to edit_offer_link(offer.service, offer, controller_name) do
-            %span.btn.btn-outline-secondary.pl-5.pr-5
-              = _("Edit an offer")
+
+        = link_to edit_offer_link(offer.service, offer, controller_name), class: "btn btn-primary", data: { "turbo-prefetch": false } do
+          = _("Edit an offer")

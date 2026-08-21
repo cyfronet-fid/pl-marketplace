@@ -105,7 +105,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
                    catalogues: @catalogues
                  }
                ),
-             status: :bad_request
+             status: :unprocessable_entity
     end
   end
 

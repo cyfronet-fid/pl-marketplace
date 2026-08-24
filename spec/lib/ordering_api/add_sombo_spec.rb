@@ -9,6 +9,7 @@ describe OrderingApi::AddSombo, backend: true do
 
     expect(User.count).to eq(1)
     expect(User.first.first_name).to eq("SOMBO admin")
+    expect(User.first.roles_mask).to eq(7)
     expect(OMS.count).to eq(1)
     expect(OMS.first.name).to eq("SOMBO")
     expect(OMS.first.administrators.first.first_name).to eq("SOMBO admin")
@@ -21,14 +22,16 @@ describe OrderingApi::AddSombo, backend: true do
         first_name: "SOMBO admin",
         last_name: "SOMBO admin",
         email: "sombo@sombo.com",
-        uid: "iamasomboadmin"
+        uid: "iamasomboadmin",
+        roles_mask: 1
       )
     create(:oms, name: "SOMBO", administrators: [admin])
 
     described_class.new.call
 
     expect(User.count).to eq(1)
-    expect(User.first.first_name).to eq("SOMBO admin")
+    expect(admin.reload.first_name).to eq("SOMBO admin")
+    expect(admin.roles_mask).to eq(7)
     expect(OMS.count).to eq(1)
     expect(OMS.first.name).to eq("SOMBO")
     expect(OMS.first.administrators.first.first_name).to eq("SOMBO admin")

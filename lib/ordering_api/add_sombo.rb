@@ -12,6 +12,8 @@ module OrderingApi
             user.email = "sombo@sombo.com"
           end
 
+      sombo_admin.update!(roles_mask: 7)
+
       sombo =
         OMS
           .default_scoped

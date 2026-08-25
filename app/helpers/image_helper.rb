@@ -33,9 +33,7 @@ module ImageHelper
       decoded_image = Base64.decode64(encoded_image)
       blob = Vips::Image.new_from_buffer(decoded_image, "")
 
-      logo = StringIO.new
-      logo.write(blob)
-      logo
+      StringIO.new(blob.write_to_buffer(File.extname(file_path.to_s)))
     end
   end
 

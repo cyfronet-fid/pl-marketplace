@@ -7,7 +7,7 @@ task add_providers_default_logo: :environment do
   providers_without_logo =
     Provider.all.select { |provider| provider.logo.blank? || !provider.logo.attached? || !provider.logo.variable? }
   providers_without_logo.each do |provider_without_logo|
-    providers_without_logo.set_default_logo
+    providers_without_logo.set_default_logo("provider_logo.svg")
     provider_without_logo.save!
   end
 end

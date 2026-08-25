@@ -104,7 +104,7 @@ class Import::Providers
 
   def create_provider(parsed_provider_data, image_url, eid)
     current_provider = Provider.new(parsed_provider_data)
-    current_provider.set_default_logo
+    current_provider.set_default_logo("provider_logo.svg")
     current_provider.save(validate: false)
     provider_source = ProviderSource.create!(provider_id: current_provider.id, source_type: "eosc_registry", eid: eid)
     current_provider.upstream_id = provider_source.id

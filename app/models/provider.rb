@@ -226,15 +226,6 @@ class Provider < ApplicationRecord
     )
   end
 
-  def set_default_logo
-    assets_path = File.join(File.dirname(__FILE__), "../assets/images")
-    default_logo_name = "provider_logo.svg"
-    io = File.open(assets_path + "/" + default_logo_name)
-
-    image = convert_to_png(io)
-    logo.attach(io: image, filename: "#{SecureRandom.uuid}.png", content_type: "image/png")
-  end
-
   def owned_by?(user)
     data_administrators&.map(&:user_id)&.include?(user&.id) ||
       catalogue.data_administrators&.map(&:user_id)&.include?(user.id)

@@ -13,12 +13,13 @@ module LogoAttachable
     self.logo.attach(io: File.open(path), filename: logo["filename"])
   end
 
-  def set_default_logo
-    assets_path = File.join(File.dirname(__FILE__), "../../assets/images")
-    default_logo_name = "eosc-img.png"
-    extension = ".png"
-    io = ImageHelper.binary_to_blob_stream(assets_path + "/" + default_logo_name)
-    logo.attach(io: io, filename: SecureRandom.uuid + extension, content_type: "image/#{extension.delete(".", "")}")
+  def set_default_logo(image_name = "eosc-img.png")
+    image_path = Rails.root.join("app/assets/images", image_name)
+
+    io = File.open(image_path, "rb")
+    io = convert_to_png(io) unless File.extname(image_path) == ".png"
+
+    logo.attach(io: io, filename: "#{SecureRandom.uuid}.png" , content_type: "image/png")
   end
 
   def convert_to_png(logo)

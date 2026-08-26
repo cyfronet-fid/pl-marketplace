@@ -73,40 +73,6 @@ module ApplicationHelper
     []
   end
 
-  def eosc_commons_custom_tabs
-    provider_links = []
-
-    if policy(%i[backoffice backoffice]).show?
-      provider_links.push({ href: backoffice_path, caption: _("Backoffice"), "data-e2e": "backoffice" })
-    end
-
-    provider_links.push({ href: admin_path, caption: _("Admin") }) if policy(%i[admin admin]).show?
-
-    provider_links.push(
-      { href: "https://marketplace.eosc.pl/backoffice/services", caption: _("Backoffice"), "data-e2e": "backoffice" }
-    )
-
-    provider_links.push({ href: "https://bos.eosc.pl/", caption: "Ordering system", dividerAfter: true })
-
-    provider_links.push({ href: "https://marketplace.eosc.pl/backoffice/services/new", caption: "+ Add new service" })
-
-    provider_links.push(
-      { href: "https://marketplace.eosc.pl/backoffice/providers/new/wizard", caption: "+ Add new provider" }
-    )
-
-    provider_links.push(
-      {
-        href: "https://marketplace.eosc.pl/backoffice/catalogues/new",
-        caption: "+ Add new catalogue",
-        dividerAfter: true
-      }
-    )
-
-    provider_links.push({ href: "https://eosc.pl/documentation", caption: "Documentation" })
-
-    [{ id: "provider", name: "Provider", links: provider_links }].to_json
-  end
-
   def meta_og_title_content
     ENV.fetch(
       "MP_META_TITLE",

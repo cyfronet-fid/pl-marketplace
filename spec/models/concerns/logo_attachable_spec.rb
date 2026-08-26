@@ -7,9 +7,7 @@ RSpec.describe LogoAttachable, type: :model, backend: true do
     context "with no argument" do
       subject(:catalogue) { build(:catalogue) }
 
-      before do
-        allow(catalogue).to receive(:convert_to_png).and_call_original
-      end
+      before { allow(catalogue).to receive(:convert_to_png).and_call_original }
 
       it "attaches the default eosc-img.png logo" do
         catalogue.set_default_logo
@@ -35,9 +33,7 @@ RSpec.describe LogoAttachable, type: :model, backend: true do
     context "when given an asset name that already has a .png extension" do
       subject(:catalogue) { build(:catalogue) }
 
-      before do
-        allow(catalogue).to receive(:convert_to_png).and_call_original
-      end
+      before { allow(catalogue).to receive(:convert_to_png).and_call_original }
 
       it "does not convert it" do
         catalogue.set_default_logo("eosc-img.png")
@@ -48,9 +44,7 @@ RSpec.describe LogoAttachable, type: :model, backend: true do
     context "when given a non-png asset name (e.g. an SVG)" do
       subject(:provider) { build(:provider) }
 
-      before do
-        allow(provider).to receive(:convert_to_png).and_call_original
-      end
+      before { allow(provider).to receive(:convert_to_png).and_call_original }
 
       it "attaches the the logo" do
         provider.set_default_logo("provider_logo.svg")

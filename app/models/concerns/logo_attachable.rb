@@ -16,10 +16,11 @@ module LogoAttachable
   def set_default_logo(image_name = "eosc-img.png")
     image_path = Rails.root.join("app/assets/images", image_name)
 
-    io = File.open(image_path, "rb")
-    io = convert_to_png(io) unless File.extname(image_path) == ".png"
+    File.open(image_path, "rb") do |file|
+      io = File.extname(image_path) == ".png" ? StringIO.new(file.read) : convert_to_png(file)
 
-    logo.attach(io: io, filename: "#{SecureRandom.uuid}.png" , content_type: "image/png")
+      logo.attach(io: io, filename: "#{SecureRandom.uuid}.png" , content_type: "image/png")
+    end
   end
 
   def convert_to_png(logo)

@@ -15,7 +15,7 @@ RSpec.describe LogoAttachable, type: :model, backend: true do
         catalogue.set_default_logo
         expect(catalogue.logo).to be_attached
       end
-    
+
       it "attaches it as a PNG" do
         catalogue.set_default_logo
         expect(catalogue.logo.content_type).to eq("image/png")

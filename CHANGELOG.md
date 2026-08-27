@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.5.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.4.3...v4.5.0) (2026-08-27)
+
+
+### Features
+
+* [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] make provider show-page tabs editable forms ([dc774db](https://github.com/cyfronet-fid/pl-marketplace/commit/dc774dbd7a5edf8c3857bd8cec1afbc08d92ef8a))
+
+
+### Bug Fixes
+
+* [[#100](https://github.com/cyfronet-fid/pl-marketplace/issues/100)] Explain first provider approval ([905bde9](https://github.com/cyfronet-fid/pl-marketplace/commit/905bde92adbf1f1a74b2ce3678bb422a328aad1d))
+* [[#100](https://github.com/cyfronet-fid/pl-marketplace/issues/100)] remove autofocus from modal dismiss actions ([82040ff](https://github.com/cyfronet-fid/pl-marketplace/commit/82040ff2455e9bce2d892f73df8404508492c17a))
+* [[#100](https://github.com/cyfronet-fid/pl-marketplace/issues/100)] Stop passing first-provider modal state through flash ([a9938b9](https://github.com/cyfronet-fid/pl-marketplace/commit/a9938b92bdfd5a3cb74b07bb1461a4363157657f))
+* [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] attach default provider logo with correct content type ([5250d30](https://github.com/cyfronet-fid/pl-marketplace/commit/5250d3011befda994c803e78f80e10a8b9f1731a))
+* [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] build missing nested provider models on show ([c894fbc](https://github.com/cyfronet-fid/pl-marketplace/commit/c894fbcb7e2000a8ad028c448cb6d4b26bec117e))
+* [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] close file handle and fix default logo rake task ([d25995a](https://github.com/cyfronet-fid/pl-marketplace/commit/d25995a7423b4e8dbbc4dcab94d356299392f597))
+* [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] fix default logo attachment for non-png sources ([6b288ff](https://github.com/cyfronet-fid/pl-marketplace/commit/6b288ff267cdeef4433f5cba8bc795041e6a457b))
+* [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] preserve submitted attributes on failed provider creation ([b1cb4b7](https://github.com/cyfronet-fid/pl-marketplace/commit/b1cb4b7acbe3197dc217b11bcef4d9c647afae71))
+* [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] use unprocessable_entity status for invalid provider tab render ([cfc7bef](https://github.com/cyfronet-fid/pl-marketplace/commit/cfc7bef34bb2186a6f1555aadb822daaec4bc9bb))
+* [[#59](https://github.com/cyfronet-fid/pl-marketplace/issues/59)] redirect order page logo to services path ([805df14](https://github.com/cyfronet-fid/pl-marketplace/commit/805df14e5bcca51264f73d167c13ec5cd990d102))
+* [[#94](https://github.com/cyfronet-fid/pl-marketplace/issues/94)] wire up duplicate offer modal and restyle offer buttons ([fd1e5b4](https://github.com/cyfronet-fid/pl-marketplace/commit/fd1e5b4feba79a648f11614d773d311f6174d56d))
+* add user roles endpoint ([#125](https://github.com/cyfronet-fid/pl-marketplace/issues/125)) ([47237a5](https://github.com/cyfronet-fid/pl-marketplace/commit/47237a5d20ea89e56bdeb840adc6662d5290492d))
+* **security:** [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] whitelist provider step before dynamic partial render ([0dd7978](https://github.com/cyfronet-fid/pl-marketplace/commit/0dd7978b2c1f5309a8f740d3e15bda9dccf7f101))
+* **security:** [[#127](https://github.com/cyfronet-fid/pl-marketplace/issues/127)] whitelist provider tab before dynamic partial render ([ae87d5f](https://github.com/cyfronet-fid/pl-marketplace/commit/ae87d5f55ad408ddef27758543faf908950e169a))
+* set default roles_mask filed to 7 for sombo admin ([7d5a777](https://github.com/cyfronet-fid/pl-marketplace/commit/7d5a7774a54e7b1d427c7e1754e37cc4498a208c))
+
 ## [4.4.3](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.4.2...v4.4.3) (2026-08-12)
 
 

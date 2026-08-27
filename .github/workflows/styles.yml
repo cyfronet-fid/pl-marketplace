@@ -9,15 +9,25 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Sign overcommit
+    - name: Bundle check
       run: |
-        bundle exec overcommit --sign && bundle exec overcommit --sign pre-commit
-    - name: Run overcommit
+        bundle check
+    - name: YAML syntax
       run: |
-        bundle exec overcommit --run
-      env:
-        GIT_AUTHOR_NAME: John Doe
-        GIT_AUTHOR_EMAIL: john@example.com
+        find . \( -path ./node_modules -o -path ./vendor -o -path ./.git \) -prune -o -type f \( -name '*.yml' -o -name '*.yaml' \) -print \
+          | xargs -I{} ruby -ryaml -e "YAML.unsafe_load_file('{}')"
+    - name: RuboCop
+      run: |
+        bundle exec rubocop
+    - name: Prettier
+      run: |
+        bin/bundle exec rbprettier --check .
+    - name: haml-lint
+      run: |
+        bundle exec haml-lint app --exclude 'lib/**/*.haml'
+    - name: scss-lint
+      run: |
+        bundle exec scss-lint --format JSON
     - name: Setup and run brakeman
       run: |
         gem install brakeman

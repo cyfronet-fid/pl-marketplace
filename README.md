@@ -334,41 +334,13 @@ deployments should use the documented `SMTP_*` names.
 
 ## Commits
 
-Running `./bin/setup` automatically installs githooks
-(using `overcommit` gem) for code linting. But if you're using
-an IDE for repository management then
-you will probably experience problems with committing code changes.
-This is related to the fact that some IDE's do not inherit user's `.bash_profile`
-or any other scripts which traditionally set OS environmental variables.
+There are no local git hooks. Code linting and formatting (RuboCop,
+Prettier, haml-lint, scss-lint) are enforced in CI (see
+`.github/workflows/styles.yml`), not at commit time, so you can
+commit freely and check style before pushing.
 
-Installed githooks require access to ruby,
-so ruby environment must be available for IDE.
-
-If you are using asdf-based ruby installation and IDE like RubyMine,
-the solution is placing asdf
-sourcing commands at the end of your `.profile`
-file which is inherited by graphical applications
-(unlike `.bashrc` that is standard place for asdf sourcing commands):
-
-```shell
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
-```
-
-Other solutions could be:
-
-- For OSX: calling `sudo launchctl config user path $PATH`
-- For Linux systems: modifying `PATH` in `/etc/environment`.
-
-You can also skip githooks altogether using:
-
-```shell
- git <command> --no-verify
-```
-
-... or by unchecking 'run Git hooks' in RubyMine IDE
-when applying git operations, or setting `OVERCOMMIT_DISABLE=1`
-envvar globally in your system.
+Commit messages still follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+by convention; this is not currently linted in CI.
 
 ### Linting and code formatting
 
@@ -381,17 +353,14 @@ To correct formatting with prettier `$ rbprettier --write .`
 selectively on modified files only
 (just pass them as explicit arguments instead of a dot `.`).
 
-To manually run all overcommit checks `$ overcommit --run`
-(you may need to sign configs, first, just follow its instructions).
-It's configured in `.overcommit.yml`.
-
 To run rubocop manually `$ rubocop`.
 
-To run haml-lint manually `$ haml-lint --exclude 'lib/**/*.haml'`.
+To run haml-lint manually `$ haml-lint app --exclude 'lib/**/*.haml'`.
 
-To run brakeman (it's only run directly in CI though,
-not through overcommit) manually (in interactive mode)
-`$ brakeman -I`.
+To run scss-lint manually `$ scss-lint --format JSON`.
+
+To run brakeman (it's only run directly in CI) manually
+(in interactive mode) `$ brakeman -I`.
 
 ## Designing UI without dedicated controller
 

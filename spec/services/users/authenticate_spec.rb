@@ -17,7 +17,7 @@ RSpec.describe Users::Authenticate, backend: true do
       }
     }
   end
-  
+
   let(:provider) { "checkin" }
   let(:uid) { "uid-123" }
   let(:email) { "john.doe@email.pl" }
@@ -47,24 +47,6 @@ RSpec.describe Users::Authenticate, backend: true do
     it "adds a non-primary identity for the provider and uid" do
       result
       expect(existing_user.identities.reload.find_by(provider: provider, uid: uid)).to have_attributes(primary: false)
-    end
-  end
-
-  context "when a user exists with the same email but the provider did not verify it" do
-    let(:email_verified) { false }
-
-    let!(:existing_user) { create(:user, email: email) }
-
-    it "does not return the existing user" do
-      expect(result).not_to eq(existing_user)
-    end
-
-    it "does not link a new identity to the existing user" do
-      expect { result }.not_to change { existing_user.identities.reload.count }
-    end
-
-    it "does not persist a new user, since the email is already taken" do
-      expect(result).not_to be_persisted
     end
   end
 

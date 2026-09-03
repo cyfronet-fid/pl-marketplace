@@ -33,7 +33,8 @@ describe OrderingApi::AddProviderOMS, backend: true do
   end
 
   it "updates token if user exists and creates provider-OMS relationship" do
-    admin = create(:user, uid: "iamatest_provideradmin")
+    admin = create(:user)
+    admin.reload.primary_identity.update!(uid: "iamatest_provideradmin")
     create(:oms, name: "Test Provider OMS", administrators: [admin])
 
     expect(User.count).to eq(1)

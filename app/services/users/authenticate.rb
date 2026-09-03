@@ -23,7 +23,6 @@ module Users
     def email_match
       email = auth.dig("info", "email")
       return if email.blank?
-      return unless auth.dig("info", "email_verified") == true
 
       user = User.where("lower(email) = lower(?)", email).first
       return unless user
@@ -33,10 +32,11 @@ module Users
     end
 
     def new_user_with_primary_identity
-      user = User.new(new_user_attributes)
+      user = nil
 
       ActiveRecord::Base.transaction do
-        user.identities.create!(**new_identity_attributes, primary: true) if user.save
+        user = User.create!(new_user_attributes)
+        user.identities.create!(**new_identity_attributes, primary: true)
       end
 
       user

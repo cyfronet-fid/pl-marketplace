@@ -3,10 +3,19 @@
 module OrderingApi
   class AuthorizationTestSetup
     def call
-      oms_admin1 =
-        User.create!(uid: "oms2_admin", first_name: "oms2_admin", last_name: "oms2_admin", email: "email1@email.com")
-      oms_admin2 =
-        User.create!(uid: "oms3_admin", first_name: "oms3_admin", last_name: "oms3_admin", email: "email2@email.com")
+      oms_admin1 = create_user(
+        uid: "oms2_admin", 
+        first_name: "oms2_admin", 
+        last_name: "oms2_admin",
+        email: "email1@email.com"
+      )
+
+      oms_admin2 = create_user(
+        uid: "oms3_admin", 
+        first_name: "oms3_admin", 
+        last_name: "oms3_admin",
+        email: "email2@email.com"
+      )
 
       oms2 = OMS.create!(name: "OMS2", type: "global", administrators: [oms_admin1])
       oms3 = OMS.create!(name: "OMS3", type: "global", administrators: [oms_admin2])
@@ -53,7 +62,7 @@ module OrderingApi
           primary_oms: oms3
         )
 
-      project_owner = User.create!(uid: "user", first_name: "user", last_name: "user", email: "email3@email.com")
+      project_owner = create_user(uid: "user", first_name: "user", last_name: "user", email: "email3@email.com")
       project1 =
         Project.create!(
           user: project_owner,
@@ -121,6 +130,19 @@ module OrderingApi
         scope: "user_direct",
         message: "User direct provider message in project3"
       )
+    end
+
+    private
+
+    def create_user(uid:, first_name:, last_name:, email:)
+      user = nil
+
+      ActiveRecord::Base.transaction do
+        user = User.create!(first_name: first_name, last_name: last_name, email: email)
+        user.identities.create!(provider: "checkin", uid: uid, primary: true)
+      end
+
+      user
     end
   end
 end

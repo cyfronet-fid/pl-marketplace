@@ -22,9 +22,9 @@ describe OrderingApi::AddSombo, backend: true do
         first_name: "SOMBO admin",
         last_name: "SOMBO admin",
         email: "sombo@sombo.com",
-        uid: "iamasomboadmin",
         roles_mask: 1
       )
+    admin.reload.primary_identity.update!(uid: "iamasomboadmin")
     create(:oms, name: "SOMBO", administrators: [admin])
 
     described_class.new.call
@@ -38,14 +38,14 @@ describe OrderingApi::AddSombo, backend: true do
   end
 
   it "creates SOMBO OMS, SOMBO admin relationship if they exist" do
-    sombo_admin =
-      create(
-        :user,
-        first_name: "SOMBO admin",
-        last_name: "SOMBO admin",
-        email: "sombo@sombo.com",
-        uid: "iamasomboadmin"
-      )
+    sombo_admin = create(
+      :user, 
+      first_name: "SOMBO admin", 
+      last_name: "SOMBO admin", 
+      email: "sombo@sombo.com"
+    )
+    
+    sombo_admin.reload.primary_identity.update!(uid: "iamasomboadmin")
     create(:oms, name: "SOMBO")
 
     described_class.new.call
@@ -65,7 +65,7 @@ describe OrderingApi::AddSombo, backend: true do
     expect(OMS.count).to eq(1)
     OMS.all.each do |sombo|
       expect(sombo.administrators.count).to eq(3)
-      expect(sombo.administrators).to include(User.find_by(uid: "iamasomboadmin"))
+      expect(sombo.administrators).to include(UserIdentity.find_by(provider: "checkin", uid: "iamasomboadmin").user)
     end
   end
 end

@@ -7,7 +7,11 @@ FactoryBot.define do
     sequence(:last_name) { |n| "Doe#{n}" }
     sequence(:show_welcome_popup) { |_n| false }
     password { "12345678" }
-    sequence(:uid) { |n| "uid#{n}" }
+
+    after(:build) do |user|
+      create(:user_identity, user: user, provider: "checkin", primary: true)
+    end
+
     factory :user_with_interests do
       sequence(:scientific_domains) { |_n| [create(:scientific_domain)] }
       sequence(:categories) { |_n| [create(:category)] }

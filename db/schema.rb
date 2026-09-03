@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_10_072744) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_01_103100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -950,6 +950,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_10_072744) do
     t.index ["user_id"], name: "index_user_categories_on_user_id"
   end
 
+  create_table "user_identities", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.boolean "email_verified", default: false, null: false
+    t.boolean "primary", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider", "uid"], name: "index_user_identities_on_provider_and_uid", unique: true
+    t.index ["user_id"], name: "index_user_identities_on_user_id"
+    t.index ["user_id"], name: "index_user_identities_on_user_id_primary", unique: true, where: "\"primary\""
+  end
+
   create_table "user_scientific_domains", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "scientific_domain_id"
@@ -981,7 +994,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_10_072744) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "uid", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.integer "roles_mask"
@@ -991,8 +1003,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_10_072744) do
     t.string "authentication_token", limit: 30
     t.integer "providers_count", default: 0, null: false
     t.integer "catalogues_count", default: 0, null: false
+    t.index "lower((email)::text)", name: "index_users_on_lower_email", unique: true
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
-    t.index ["email"], name: "index_users_on_email"
   end
 
   create_table "vocabularies", force: :cascade do |t|
@@ -1066,6 +1078,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_10_072744) do
   add_foreign_key "tour_histories", "users"
   add_foreign_key "user_categories", "categories"
   add_foreign_key "user_categories", "users"
+  add_foreign_key "user_identities", "users"
   add_foreign_key "user_scientific_domains", "scientific_domains"
   add_foreign_key "user_scientific_domains", "users"
   add_foreign_key "user_services", "services"

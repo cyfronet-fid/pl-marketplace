@@ -8,7 +8,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       flash[:alert] = "Cannot extract user uid from checkin response"
       redirect_to root_path
     else
-      @user = User::Checkin.from_omniauth(auth)
+      @user = Users::Authenticate.call(auth)
 
       if @user.persisted?
         sign_in_and_redirect @user, event: :authentication, allow_other_host: true

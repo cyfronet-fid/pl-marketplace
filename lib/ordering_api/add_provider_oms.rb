@@ -3,7 +3,7 @@
 module OrderingApi
   class AddProviderOMS
     def initialize(oms_name, provider_pid, authentication_token)
-      @oms_name = oms_name.snakecase
+      @oms_name = oms_name.underscore
       @provider_pid = provider_pid
       @authentication_token = authentication_token
     end
@@ -15,12 +15,7 @@ module OrderingApi
         return
       end
 
-      admin =
-        User.find_or_initialize_by(uid: "iama#{@oms_name}admin") do |user|
-          user.first_name = @oms_name.titlecase
-          user.last_name = "admin"
-          user.email = "#{@oms_name}_admin@example.com"
-        end
+      admin = find_admin || initialize_admin
       admin.authentication_token = @authentication_token if @authentication_token.present?
       admin.save!
 
@@ -31,10 +26,25 @@ module OrderingApi
       oms.save!
 
       logger.info "OMS id: #{oms.id}, name: '#{oms.name}', providers: #{oms.providers.pluck(:pid).join(", ")}"
-      logger.info "Admin user uid: '#{admin.uid}', token: '#{admin.authentication_token}'"
+      logger.info "Admin user uid: '#{admin_uid}', token: '#{admin.authentication_token}'"
     end
 
     private
+
+    def admin_uid
+      "iama#{@oms_name}admin"
+    end
+
+    def find_admin
+      UserIdentity.find_by(provider: "checkin", uid: admin_uid)&.user
+    end
+
+    def initialize_admin
+      user = User.new(first_name: @oms_name.titlecase, last_name: "admin", email: "#{@oms_name}_admin@example.com")
+      user.identities.build(provider: "checkin", uid: admin_uid, primary: true)
+      
+      user
+    end
 
     def append_if_not_present(association, element)
       association << element if association.exclude?(element)

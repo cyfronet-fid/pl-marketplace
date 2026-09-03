@@ -2,7 +2,7 @@
 
 class OrderingApi::TriggersTestSetup
   def call
-    oms_admin = User.find_by!(uid: "iamasomboadmin")
+    oms_admin = UserIdentity.find_by!(provider: "checkin", uid: "iamasomboadmin").user
 
     oms1 = OMS.find_by!(default: true)
     add_trigger(oms1, url: "http://localhost:1080/oms1")

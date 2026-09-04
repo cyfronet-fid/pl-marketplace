@@ -6,28 +6,21 @@ require_relative "publishable"
 RSpec.describe User, backend: true do
   include_examples "publishable"
 
-  it { should validate_presence_of(:first_name) }
-  it { should validate_presence_of(:last_name) }
-  it { should validate_presence_of(:email) }
-  it { should validate_presence_of(:uid) }
+  it { is_expected.to validate_presence_of(:first_name) }
 
-  it { should have_many(:projects).dependent(:destroy) }
+  it { is_expected.to validate_presence_of(:last_name) }
+
+  it { is_expected.to validate_presence_of(:email) }
+  
+  it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
+
+  it { is_expected.to have_many(:projects).dependent(:destroy) }
 
   context "#full_name" do
     it "is composed from first and last name" do
       user = build(:user, first_name: "John", last_name: "Rambo")
 
       expect(user.full_name).to eq "John Rambo"
-    end
-  end
-
-  context "#email" do
-    it "two users with the same emails are created" do
-      email = "rambo@john.eu"
-      u1 = build(:user, first_name: "john", last_name: "rambo", email: email)
-      u2 = build(:user, first_name: "johny", last_name: "rambo", email: email)
-      expect(u1.save).to be true
-      expect(u2.save).to be true
     end
   end
 

@@ -32,14 +32,10 @@ module Users
     end
 
     def new_user_with_primary_identity
-      user = nil
+      user = User.new(new_user_attributes)
+      user.identities.build(**new_identity_attributes, primary: true)
 
-      ActiveRecord::Base.transaction do
-        user = User.create!(new_user_attributes)
-        user.identities.create!(**new_identity_attributes, primary: true)
-      end
-
-      user
+      user if user.save
     end
 
     def new_user_attributes

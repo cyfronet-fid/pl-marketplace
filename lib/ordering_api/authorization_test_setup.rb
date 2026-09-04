@@ -135,14 +135,10 @@ module OrderingApi
     private
 
     def create_user(uid:, first_name:, last_name:, email:)
-      user = nil
+      user = User.new(first_name: first_name, last_name: last_name, email: email)
+      user.identities.build(provider: "checkin", uid: uid, primary: true)
 
-      ActiveRecord::Base.transaction do
-        user = User.create!(first_name: first_name, last_name: last_name, email: email)
-        user.identities.create!(provider: "checkin", uid: uid, primary: true)
-      end
-
-      user
+      user if user.save
     end
   end
 end

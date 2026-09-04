@@ -27,14 +27,10 @@ module OrderingApi
     end
 
     def create_sombo_admin
-      user = nil
+      user = User.new(first_name: "SOMBO admin", last_name: "SOMBO admin", email: "sombo@sombo.com", roles_mask: 7)
+      user.identities.build(provider: "checkin", uid: SOMBO_ADMIN_UID, primary: true)
 
-      ActiveRecord::Base.transaction do
-        user = User.create!(first_name: "SOMBO admin", last_name: "SOMBO admin", email: "sombo@sombo.com")
-        user.identities.create!(provider: "checkin", uid: SOMBO_ADMIN_UID, primary: true)
-      end
-
-      user
+      user if user.save
     end
   end
 end

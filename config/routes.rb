@@ -209,7 +209,7 @@ Rails.application.routes.draw do
         resources :services, only: %i[index]
       end
 
-      resources :users, only: :show, param: :user_id
+      resources :users, only: :show, param: :user_id, constraints: { user_id: %r{[^/]+} }
     end
   end
 

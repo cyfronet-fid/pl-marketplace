@@ -41,6 +41,19 @@ RSpec.describe Api::V1::UsersController, swagger_doc: "v1/users_swagger.json", b
         end
       end
 
+      response 200, "successful with email-like uid containing @ and dots", document: false do
+        schema "$ref" => "user/user_read.json"
+
+        let!(:target_user) { create(:user, uid: "123456@access.eosc.pl", roles_mask: User.mask_for(:admin)) }
+        let(:"X-User-Token") { admin.authentication_token }
+        let(:user_id) { target_user.uid }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data["uid"]).to eq("123456@access.eosc.pl")
+        end
+      end
+
       response 401, "user not recognized" do
         schema "$ref" => "error.json"
         let(:"X-User-Token") { "invalid-token" }

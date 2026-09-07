@@ -15,7 +15,7 @@ module OrderingApi
         return
       end
 
-      admin = find_admin || initialize_admin
+      admin = Users::Authenticate.call(auth_params)
       admin.authentication_token = @authentication_token if @authentication_token.present?
       admin.save!
 
@@ -31,19 +31,29 @@ module OrderingApi
 
     private
 
+    def auth_params
+      {
+        "provider" =>"checkin",
+        "uid" => admin_uid,
+        "info" => {
+          "email" => admin_email,
+          "first_name" => admin_first_name,
+          "last_name" => "admin",
+          "email_verified" => true
+        }
+      }
+    end
+
     def admin_uid
       "iama#{@oms_name}admin"
     end
 
-    def find_admin
-      UserIdentity.find_by(provider: "checkin", uid: admin_uid)&.user
+    def admin_email
+      "#{@oms_name}_admin@example.com"
     end
 
-    def initialize_admin
-      user = User.new(first_name: @oms_name.titlecase, last_name: "admin", email: "#{@oms_name}_admin@example.com")
-      user.identities.build(provider: "checkin", uid: admin_uid, primary: true)
-      
-      user
+    def admin_first_name
+      @oms_name.titlecase
     end
 
     def append_if_not_present(association, element)

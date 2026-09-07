@@ -2,10 +2,8 @@
 
 module OrderingApi
   class AddSombo
-    SOMBO_ADMIN_UID = "iamasomboadmin"
-
     def call
-      sombo_admin = find_sombo_admin || create_sombo_admin
+      sombo_admin = Users::Authenticate.call(auth_params)
       sombo_admin.update!(roles_mask: 7)
 
       sombo =
@@ -22,15 +20,17 @@ module OrderingApi
 
     private
 
-    def find_sombo_admin
-      UserIdentity.find_by(provider: "checkin", uid: SOMBO_ADMIN_UID)&.user
-    end
-
-    def create_sombo_admin
-      user = User.new(first_name: "SOMBO admin", last_name: "SOMBO admin", email: "sombo@sombo.com", roles_mask: 7)
-      user.identities.build(provider: "checkin", uid: SOMBO_ADMIN_UID, primary: true)
-
-      user if user.save
+    def auth_params
+      {
+        "provider" =>"checkin",
+        "uid" => "iamasomboadmin",
+        "info" => {
+          "email" => "sombo@sombo.com",
+          "first_name" => "SOMBO admin",
+          "last_name" => "SOMBO admin",
+          "email_verified" => true
+        }
+      }
     end
   end
 end

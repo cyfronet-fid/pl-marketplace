@@ -3,19 +3,11 @@
 module OrderingApi
   class AuthorizationTestSetup
     def call
-      oms_admin1 = create_user(
-        uid: "oms2_admin", 
-        first_name: "oms2_admin", 
-        last_name: "oms2_admin",
-        email: "email1@email.com"
-      )
+      oms_admin1 =
+        create_user(uid: "oms2_admin", first_name: "oms2_admin", last_name: "oms2_admin", email: "email1@email.com")
 
-      oms_admin2 = create_user(
-        uid: "oms3_admin", 
-        first_name: "oms3_admin", 
-        last_name: "oms3_admin",
-        email: "email2@email.com"
-      )
+      oms_admin2 =
+        create_user(uid: "oms3_admin", first_name: "oms3_admin", last_name: "oms3_admin", email: "email2@email.com")
 
       oms2 = OMS.create!(name: "OMS2", type: "global", administrators: [oms_admin1])
       oms3 = OMS.create!(name: "OMS3", type: "global", administrators: [oms_admin2])

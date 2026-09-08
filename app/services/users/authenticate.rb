@@ -46,16 +46,12 @@ module Users
         email: auth.dig("info", "email"),
         password: SecureRandom.hex(32),
         first_name: auth.dig("info", "first_name"),
-        last_name: auth.dig("info", "last_name"),
+        last_name: auth.dig("info", "last_name")
       }
     end
 
     def new_identity_attributes
-      {
-        provider: auth["provider"],
-        email_verified: auth.dig("info", "email_verified") || false,
-        uid: auth["uid"]
-      }
+      { provider: auth["provider"], email_verified: auth.dig("info", "email_verified") || false, uid: auth["uid"] }
     end
   end
 end

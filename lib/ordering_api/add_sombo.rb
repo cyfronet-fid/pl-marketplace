@@ -22,7 +22,7 @@ module OrderingApi
 
     def auth_params
       {
-        "provider" =>"checkin",
+        "provider" => "checkin",
         "uid" => "iamasomboadmin",
         "info" => {
           "email" => "sombo@sombo.com",

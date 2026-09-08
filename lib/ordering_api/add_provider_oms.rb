@@ -33,7 +33,7 @@ module OrderingApi
 
     def auth_params
       {
-        "provider" =>"checkin",
+        "provider" => "checkin",
         "uid" => admin_uid,
         "info" => {
           "email" => admin_email,

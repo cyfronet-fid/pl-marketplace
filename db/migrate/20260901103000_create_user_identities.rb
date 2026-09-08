@@ -15,9 +15,9 @@ class CreateUserIdentities < ActiveRecord::Migration[7.2]
     add_index :user_identities, %i[provider uid], unique: true
 
     add_index(
-      :user_identities, 
-      :user_id, 
-      unique: true, 
+      :user_identities,
+      :user_id,
+      unique: true,
       where: "primary",
       name: "index_user_identities_on_user_id_primary"
     )

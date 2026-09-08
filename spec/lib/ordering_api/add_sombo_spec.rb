@@ -16,14 +16,7 @@ describe OrderingApi::AddSombo, backend: true do
   end
 
   it "doesn't create SOMBO OMS and SOMBO admin if they exist" do
-    admin =
-      create(
-        :user,
-        first_name: "SOMBO admin",
-        last_name: "SOMBO admin",
-        email: "sombo@sombo.com",
-        roles_mask: 1
-      )
+    admin = create(:user, first_name: "SOMBO admin", last_name: "SOMBO admin", email: "sombo@sombo.com", roles_mask: 1)
     admin.reload.primary_identity.update!(uid: "iamasomboadmin")
     create(:oms, name: "SOMBO", administrators: [admin])
 
@@ -38,13 +31,8 @@ describe OrderingApi::AddSombo, backend: true do
   end
 
   it "creates SOMBO OMS, SOMBO admin relationship if they exist" do
-    sombo_admin = create(
-      :user, 
-      first_name: "SOMBO admin", 
-      last_name: "SOMBO admin", 
-      email: "sombo@sombo.com"
-    )
-    
+    sombo_admin = create(:user, first_name: "SOMBO admin", last_name: "SOMBO admin", email: "sombo@sombo.com")
+
     sombo_admin.reload.primary_identity.update!(uid: "iamasomboadmin")
     create(:oms, name: "SOMBO")
 

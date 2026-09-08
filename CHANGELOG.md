@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.5.1](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.0...v4.5.1) (2026-09-08)
+
+
+### Bug Fixes
+
+* adapt commons header to use defaults and fix styles ([777695a](https://github.com/cyfronet-fid/pl-marketplace/commit/777695afd6efacfa646ea26a1403224d0a9530a3))
+* make api accept user_id values with @ sign ([bcfb544](https://github.com/cyfronet-fid/pl-marketplace/commit/bcfb544727318fe2bc96dc21772db9ccab75c737))
+
 ## [4.5.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.4.3...v4.5.0) (2026-08-27)
 
 

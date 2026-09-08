@@ -8,9 +8,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       flash[:alert] = "Cannot extract user uid from checkin response"
       redirect_to root_path
     else
-      @user = User::Checkin.from_omniauth(auth)
+      @user = Users::Authenticate.call(auth)
 
-      if @user.persisted?
+      if @user&.persisted?
         sign_in_and_redirect @user, event: :authentication, allow_other_host: true
         if cookies[:favourites].present?
           Array(cookies[:favourites].split("&")).each do |favourite|
@@ -22,7 +22,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         end
         flash[:notice] = I18n.t "devise.omniauth_callbacks.success", kind: "Checkin"
       else
-        flash[:alert] = "Cannot register user #{@user.errors.inspect}"
+        flash[:alert] = @user ? "Cannot register user #{@user.errors.inspect}" : "Cannot register user"
         session["devise.checkin_data"] = auth
         redirect_to root_url
       end

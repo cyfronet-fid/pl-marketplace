@@ -7,7 +7,9 @@ FactoryBot.define do
     sequence(:last_name) { |n| "Doe#{n}" }
     sequence(:show_welcome_popup) { |_n| false }
     password { "12345678" }
-    sequence(:uid) { |n| "uid#{n}" }
+
+    after(:build) { |user| user.identities.build(attributes_for(:user_identity, provider: "checkin", primary: true)) }
+
     factory :user_with_interests do
       sequence(:scientific_domains) { |_n| [create(:scientific_domain)] }
       sequence(:categories) { |_n| [create(:category)] }

@@ -10,7 +10,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   private
 
   def set_user
-    @user = User.find_by!(uid: params[:user_id])
+    @user = UserIdentity.find_by!(provider: "checkin", uid: params[:user_id]).user
     authorize @user
   rescue ActiveRecord::RecordNotFound
     render json: {

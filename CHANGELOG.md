@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.5.2](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.1...v4.5.2) (2026-09-08)
+
+
+### Bug Fixes
+
+* [[#139](https://github.com/cyfronet-fid/pl-marketplace/issues/139)] prevent duplicate user accounts across auth identities ([#140](https://github.com/cyfronet-fid/pl-marketplace/issues/140)) ([984192b](https://github.com/cyfronet-fid/pl-marketplace/commit/984192b21e2e77480df8bb87f0d9e9029643c886))
+
 ## [4.5.1](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.0...v4.5.1) (2026-09-08)
 
 

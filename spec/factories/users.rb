@@ -9,7 +9,7 @@ FactoryBot.define do
     password { "12345678" }
 
     after(:build) do |user|
-      create(:user_identity, user: user, provider: "checkin", primary: true)
+      user.identities.build(attributes_for(:user_identity, provider: "checkin", primary: true))
     end
 
     factory :user_with_interests do

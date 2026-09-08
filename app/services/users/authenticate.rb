@@ -36,8 +36,9 @@ module Users
     def new_user_with_primary_identity
       user = User.new(new_user_attributes)
       user.identities.build(**new_identity_attributes, primary: true)
+      user.save
 
-      user if user.save
+      user
     end
 
     def new_user_attributes

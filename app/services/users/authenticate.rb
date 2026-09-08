@@ -27,8 +27,10 @@ module Users
       user = User.where("lower(email) = lower(?)", email).first
       return unless user
 
-      user.identities.create(**new_identity_attributes, primary: false)
-      user
+      identity = user.identities.new(**new_identity_attributes, primary: false)
+      return user if identity.save
+
+      identity_match
     end
 
     def new_user_with_primary_identity

@@ -50,6 +50,26 @@ RSpec.describe Users::Authenticate, backend: true do
     end
   end
 
+  context "when the email matches one user but the provider/uid identity already belongs to another" do
+    let!(:email_matched_user) { create(:user, email: email) }
+    let(:identity_owner) { create(:user) }
+
+    before { create(:user_identity, user: identity_owner, provider: provider, uid: uid, primary: false) }
+
+    it "returns the identity's owner instead of the email-matched user" do
+      expect(result).to eq(identity_owner)
+    end
+
+    it "does not create a new user" do
+      expect { result }.not_to change(User, :count)
+    end
+
+    it "does not attach the identity to the email-matched user" do
+      result
+      expect(email_matched_user.identities.reload.find_by(provider: provider, uid: uid)).to be_nil
+    end
+  end
+
   context "when neither an identity nor an email match exists" do
     it "creates a new user" do
       expect { result }.to change(User, :count).by(1)

@@ -23,4 +23,19 @@ RSpec.describe Provider, type: :model, backend: true do
     subject { build(:provider, omses: build_list(:provider_group_oms, 2)) }
     it { should have_many(:omses) }
   end
+
+  describe "pid default value" do
+    it "generates a random UUID v4 if pid is blank" do
+      provider = build(:provider, pid: nil)
+      provider.valid?
+      expect(provider.pid).to be_present
+      expect(provider.pid).to match(/\A[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\z/i)
+    end
+
+    it "keeps existing pid if present" do
+      provider = build(:provider, pid: "custom-pid")
+      provider.valid?
+      expect(provider.pid).to eq("custom-pid")
+    end
+  end
 end

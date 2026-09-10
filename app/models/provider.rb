@@ -121,6 +121,7 @@ class Provider < ApplicationRecord
     remove_empty_array_fields
     self.legal_status = nil unless legal_entity
     self.status ||= :unpublished
+    self.pid = SecureRandom.uuid if pid.blank?
   end
 
   with_options if: -> { required_for_step?("profile") } do

@@ -38,6 +38,28 @@ RSpec.describe Provider, type: :model, backend: true do
       end
     end
 
+    context "when pid is nil and validations are skipped" do
+      before do
+        provider.pid = nil
+        provider.save(validate: false)
+      end
+
+      it "persists a generated pid" do
+        expect(provider.reload.pid).to be_present
+      end
+    end
+
+    context "when pid is blank and validations are skipped" do
+      before do
+        provider.pid = "  "
+        provider.save(validate: false)
+      end
+
+      it "persists a generated pid" do
+        expect(provider.reload.pid).to be_present
+      end
+    end
+
     context "when pid is present" do
       let(:provider) { build(:provider, pid: "custom-pid") }
 

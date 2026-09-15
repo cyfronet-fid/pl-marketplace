@@ -23,7 +23,11 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from Pundit::NotAuthorizedError do |exception|
-    redirect_to root_path(anchor: ""), alert: not_authorized_message(exception)
+    if current_user.blank?
+      authenticate_user!
+    else
+      redirect_to root_path(anchor: ""), alert: not_authorized_message(exception)
+    end
   end
 
   def tour_disabled

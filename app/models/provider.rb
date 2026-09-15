@@ -121,8 +121,10 @@ class Provider < ApplicationRecord
     remove_empty_array_fields
     self.legal_status = nil unless legal_entity
     self.status ||= :unpublished
-    self.pid = SecureRandom.uuid if pid.blank?
+    assign_generated_pid
   end
+
+  before_save :assign_generated_pid
 
   validates :pid, presence: true, uniqueness: true
 
@@ -260,6 +262,10 @@ class Provider < ApplicationRecord
           contact.attributes.except("contactable_type", "type", "contactable_id").all? { |_, value| value.blank? }
       end
     )
+  end
+
+  def assign_generated_pid
+    self.pid = SecureRandom.uuid if pid.blank?
   end
 
   def validate_array_values_uniqueness

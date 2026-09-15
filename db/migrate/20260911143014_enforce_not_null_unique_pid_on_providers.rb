@@ -19,7 +19,7 @@ class EnforceNotNullUniquePidOnProviders < ActiveRecord::Migration[7.2]
   private
 
   def backfill_blank_pids
-    select_values("SELECT id FROM providers WHERE pid IS NULL OR pid = ''").each do |id|
+    select_values("SELECT id FROM providers WHERE pid IS NULL OR BTRIM(pid) = ''").each do |id|
       update("UPDATE providers SET pid = #{quote(SecureRandom.uuid)} WHERE id = #{quote(id)}")
     end
   end

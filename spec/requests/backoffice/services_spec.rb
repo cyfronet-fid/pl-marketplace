@@ -6,49 +6,91 @@ RSpec.describe "Backoffice service", backend: true do
   include OmniauthHelper
   include ExternalServiceDataHelper
 
-  context "as a logged in service portfolio manager" do
+  context "when logged in as a service portfolio manager" do
     let(:user) { create(:user, roles: [:coordinator]) }
 
     before { login_as(user) }
 
-    it "I can delete service" do
-      service = create(:service, status: :draft)
+    context "when accessing Backoffice services" do
+      before { get backoffice_services_path }
 
-      delete backoffice_service_path(service)
-      expect(service.reload.status).to eq "deleted"
+      it "allows access" do
+        expect(response).to have_http_status(:ok)
+      end
     end
 
-    it "I can publish service" do
-      service = create(:service, status: :draft)
+    context "when deleting a draft service" do
+      let(:service) { create(:service, status: :draft) }
 
-      post backoffice_service_publish_path(service)
-      service.reload
+      before { delete backoffice_service_path(service) }
 
-      expect(service).to be_published
+      it "deletes the service" do
+        expect(service.reload.status).to eq "deleted"
+      end
     end
 
-    it "I can change service status to unpublished" do
-      service = create(:service, status: :published)
+    context "when publishing a draft service" do
+      let(:service) { create(:service, status: :draft) }
 
-      post backoffice_service_draft_path(service)
-      service.reload
+      before { post backoffice_service_publish_path(service) }
 
-      expect(service).to be_unpublished
+      it "publishes the service" do
+        expect(service.reload).to be_published
+      end
     end
 
-    it "I can't publish a service with deleted status" do
-      service = create(:service, status: :deleted)
+    context "when changing a published service to unpublished" do
+      let(:service) { create(:service, status: :published) }
 
-      post backoffice_service_publish_path(service)
-      expect(response).to redirect_to root_path(anchor: "")
-      expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
+      before { post backoffice_service_draft_path(service) }
+
+      it "changes the service to unpublished" do
+        expect(service.reload).to be_unpublished
+      end
     end
 
-    it "I can't change status to a service with deleted status" do
-      service = create(:service, status: :deleted)
+    context "when publishing a deleted service" do
+      let(:service) { create(:service, status: :deleted) }
 
-      post backoffice_service_draft_path(service)
-      expect(response).to redirect_to root_path(anchor: "")
+      before { post backoffice_service_publish_path(service) }
+
+      it "redirects to the root page" do
+        expect(response).to redirect_to(root_path(anchor: ""))
+      end
+
+      it "sets the authorization alert" do
+        expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
+      end
+    end
+
+    context "when changing a deleted service to unpublished" do
+      let(:service) { create(:service, status: :deleted) }
+
+      before { post backoffice_service_draft_path(service) }
+
+      it "redirects to the root page" do
+        expect(response).to redirect_to(root_path(anchor: ""))
+      end
+
+      it "sets the authorization alert" do
+        expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
+      end
+    end
+  end
+
+  context "when logged in without Backoffice permissions" do
+    let(:user) { create(:user) }
+
+    before do
+      login_as(user)
+      get backoffice_services_path
+    end
+
+    it "redirects to the root page" do
+      expect(response).to redirect_to(root_path(anchor: ""))
+    end
+
+    it "sets the authorization alert" do
       expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
     end
   end

@@ -6,7 +6,6 @@ class Backoffice::ServicesController < Backoffice::ApplicationController
   include Service::Monitorable
   include Service::Recommendable
   include Service::Searchable
-  include Service::Monitorable
   include Backoffice::ServicesSessionHelper
 
   before_action :find_and_authorize, only: %i[show edit update destroy]
@@ -14,7 +13,7 @@ class Backoffice::ServicesController < Backoffice::ApplicationController
   before_action :load_query_params_from_session, only: :index
   before_action :provider_scope
   before_action :catalogue_scope
-  prepend_before_action(only: [:index]) { authorize(Service) }
+  before_action :authorize_collection, only: :index
   helper_method :cant_edit
 
   def index
@@ -179,6 +178,10 @@ class Backoffice::ServicesController < Backoffice::ApplicationController
   def find_and_authorize
     @service = Service.friendly.find(params[:id])
     authorize(@service)
+  end
+
+  def authorize_collection
+    authorize(Service)
   end
 
   def favourites

@@ -6,70 +6,89 @@ RSpec.describe "Backoffice service", backend: true do
   include OmniauthHelper
   include ExternalServiceDataHelper
 
-  context "as a logged in service portfolio manager" do
+  context "when logged in as a service portfolio manager" do
     let(:user) { create(:user, roles: [:coordinator]) }
 
     before { login_as(user) }
 
-    it "I can access the services backoffice without checkin redirect" do
-      get backoffice_services_path
+    context "when accessing Backoffice services" do
+      before { get backoffice_services_path }
 
-      expect(response).not_to redirect_to(user_checkin_omniauth_authorize_path)
-      expect(response).to have_http_status(:ok)
+      it "allows access" do
+        expect(response).to have_http_status(:ok)
+      end
     end
 
-    it "I can delete service" do
+    it "deletes services" do
       service = create(:service, status: :draft)
 
       delete backoffice_service_path(service)
+
       expect(service.reload.status).to eq "deleted"
     end
 
-    it "I can publish service" do
+    it "publishes draft services" do
       service = create(:service, status: :draft)
 
       post backoffice_service_publish_path(service)
-      service.reload
 
-      expect(service).to be_published
+      expect(service.reload).to be_published
     end
 
-    it "I can change service status to unpublished" do
+    it "changes published services to unpublished" do
       service = create(:service, status: :published)
 
       post backoffice_service_draft_path(service)
-      service.reload
 
-      expect(service).to be_unpublished
+      expect(service.reload).to be_unpublished
     end
 
-    it "I can't publish a service with deleted status" do
+    it "redirects to the root page when publishing a deleted service" do
       service = create(:service, status: :deleted)
 
       post backoffice_service_publish_path(service)
-      expect(response).to redirect_to root_path(anchor: "")
+
+      expect(response).to redirect_to(root_path(anchor: ""))
+    end
+
+    it "sets the authorization alert when publishing a deleted service" do
+      service = create(:service, status: :deleted)
+
+      post backoffice_service_publish_path(service)
+
       expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
     end
 
-    it "I can't change status to a service with deleted status" do
+    it "redirects to the root page when changing a deleted service status" do
       service = create(:service, status: :deleted)
 
       post backoffice_service_draft_path(service)
-      expect(response).to redirect_to root_path(anchor: "")
+
+      expect(response).to redirect_to(root_path(anchor: ""))
+    end
+
+    it "sets the authorization alert when changing a deleted service status" do
+      service = create(:service, status: :deleted)
+
+      post backoffice_service_draft_path(service)
+
       expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
     end
   end
 
-  context "as a logged in user without backoffice permissions" do
+  context "when logged in without Backoffice permissions" do
     let(:user) { create(:user) }
 
-    before { login_as(user) }
-
-    it "I get the existing authorization failure instead of checkin redirect" do
+    before do
+      login_as(user)
       get backoffice_services_path
+    end
 
+    it "redirects to the root page" do
       expect(response).to redirect_to(root_path(anchor: ""))
-      expect(response).not_to redirect_to(user_checkin_omniauth_authorize_path)
+    end
+
+    it "sets the authorization alert" do
       expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
     end
   end

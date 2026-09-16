@@ -19,60 +19,62 @@ RSpec.describe "Backoffice service", backend: true do
       end
     end
 
-    it "deletes services" do
-      service = create(:service, status: :draft)
+    context "when deleting a draft service" do
+      let(:service) { create(:service, status: :draft) }
 
-      delete backoffice_service_path(service)
+      before { delete backoffice_service_path(service) }
 
-      expect(service.reload.status).to eq "deleted"
+      it "deletes the service" do
+        expect(service.reload.status).to eq "deleted"
+      end
     end
 
-    it "publishes draft services" do
-      service = create(:service, status: :draft)
+    context "when publishing a draft service" do
+      let(:service) { create(:service, status: :draft) }
 
-      post backoffice_service_publish_path(service)
+      before { post backoffice_service_publish_path(service) }
 
-      expect(service.reload).to be_published
+      it "publishes the service" do
+        expect(service.reload).to be_published
+      end
     end
 
-    it "changes published services to unpublished" do
-      service = create(:service, status: :published)
+    context "when changing a published service to unpublished" do
+      let(:service) { create(:service, status: :published) }
 
-      post backoffice_service_draft_path(service)
+      before { post backoffice_service_draft_path(service) }
 
-      expect(service.reload).to be_unpublished
+      it "changes the service to unpublished" do
+        expect(service.reload).to be_unpublished
+      end
     end
 
-    it "redirects to the root page when publishing a deleted service" do
-      service = create(:service, status: :deleted)
+    context "when publishing a deleted service" do
+      let(:service) { create(:service, status: :deleted) }
 
-      post backoffice_service_publish_path(service)
+      before { post backoffice_service_publish_path(service) }
 
-      expect(response).to redirect_to(root_path(anchor: ""))
+      it "redirects to the root page" do
+        expect(response).to redirect_to(root_path(anchor: ""))
+      end
+
+      it "sets the authorization alert" do
+        expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
+      end
     end
 
-    it "sets the authorization alert when publishing a deleted service" do
-      service = create(:service, status: :deleted)
+    context "when changing a deleted service to unpublished" do
+      let(:service) { create(:service, status: :deleted) }
 
-      post backoffice_service_publish_path(service)
+      before { post backoffice_service_draft_path(service) }
 
-      expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
-    end
+      it "redirects to the root page" do
+        expect(response).to redirect_to(root_path(anchor: ""))
+      end
 
-    it "redirects to the root page when changing a deleted service status" do
-      service = create(:service, status: :deleted)
-
-      post backoffice_service_draft_path(service)
-
-      expect(response).to redirect_to(root_path(anchor: ""))
-    end
-
-    it "sets the authorization alert when changing a deleted service status" do
-      service = create(:service, status: :deleted)
-
-      post backoffice_service_draft_path(service)
-
-      expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
+      it "sets the authorization alert" do
+        expect(flash[:alert]).to eq(I18n.t("default", scope: :pundit))
+      end
     end
   end
 

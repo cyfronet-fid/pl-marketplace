@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.5.3](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.2...v4.5.3) (2026-09-16)
+
+
+### Bug Fixes
+
+* assign provider pid on saves that skip validation ([9cba524](https://github.com/cyfronet-fid/pl-marketplace/commit/9cba524f5c7555bf1454f3ef9456920381c04853))
+* enforce not null and unique pid on providers ([#150](https://github.com/cyfronet-fid/pl-marketplace/issues/150)) ([e0dfb77](https://github.com/cyfronet-fid/pl-marketplace/commit/e0dfb77ad001fb6d604c5bbaf64db1e84f154070))
+* redirect unautenticated backoffice users through checkin ([80a3a62](https://github.com/cyfronet-fid/pl-marketplace/commit/80a3a62fd1647c7e2f878198aa06683ed2607a22))
+
 ## [4.5.2](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.1...v4.5.2) (2026-09-08)
 
 

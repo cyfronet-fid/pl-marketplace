@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_01_103100) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_11_143014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -642,7 +642,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_01_103100) do
     t.string "name", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "pid"
+    t.string "pid", null: false
     t.string "abbreviation"
     t.string "website"
     t.boolean "legal_entity"
@@ -663,6 +663,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_01_103100) do
     t.string "status"
     t.integer "usage_counts_views", default: 0, null: false
     t.string "ppid"
+    t.index ["pid"], name: "index_providers_on_pid", unique: true
   end
 
   create_table "research_products", force: :cascade do |t|

@@ -15,7 +15,7 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     @show_provider_approval_modal = session.delete(:provider_approval_modal)
     created_provider_id = session.delete(:provider_profile_completion)
     @created_provider = policy_scope(Provider).find(created_provider_id) if created_provider_id.present?
-    @pagy, @providers = pagy(policy_scope(Provider).order(:name))
+    @pagy, @providers = pagy(policy_scope(Provider.where.not(status: "deleted")).order(:name))
     @approval_requests = policy_scope(ApprovalRequest.includes(:approvable).active.order(created_at: :desc))
   end
 

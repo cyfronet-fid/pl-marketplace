@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.5.4](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.3...v4.5.4) (2026-09-23)
+
+
+### Bug Fixes
+
+* **providers:** [[#206](https://github.com/cyfronet-fid/pl-marketplace/issues/206)] hide deleted providers from backoffice list ([#156](https://github.com/cyfronet-fid/pl-marketplace/issues/156)) ([ce767a2](https://github.com/cyfronet-fid/pl-marketplace/commit/ce767a2118fb78cf2098d301edb38beb80b2c03f))
+
 ## [4.5.3](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.2...v4.5.3) (2026-09-16)
 
 

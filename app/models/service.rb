@@ -315,9 +315,7 @@ class Service < ApplicationRecord
 
   def owned_by?(user)
     administrators =
-      resource_organisation&.data_administrators.presence || 
-        catalogue&.data_administrators.presence || 
-        []
+      resource_organisation&.data_administrators.presence || catalogue&.data_administrators.presence || []
 
     administrators.map(&:user_id).include?(user.id)
   end

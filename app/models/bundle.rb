@@ -90,7 +90,7 @@ class Bundle < ApplicationRecord
   end
 
   def all_offers
-    [main_offer] + offers
+    [main_offer, *offers].compact
   end
 
   def bundles_count

@@ -24,7 +24,6 @@ module Presentable::LinksHelper
       name: "links",
       template: "links",
       fields: %w[
-        webpage_url
         helpdesk_url
         helpdesk_email
         manual_url
@@ -36,7 +35,6 @@ module Presentable::LinksHelper
         maintenance_url
       ],
       active_when_suspended: %w[
-        webpage_url
         helpdesk_url
         helpdesk_email
         manual_url

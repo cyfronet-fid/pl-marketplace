@@ -274,12 +274,11 @@ RSpec.feature "Services in backoffice", manager_frontend: true do
       expect(page).to have_link(service.resource_organisation.website, href: "javascript:;")
 
       # expect(page).to have_link(service.providers.first.name, href: "javascript:;")
-      expect(page).to have_link("Webpage", href: "javascript:;")
       expect(page).to have_link("Manual", href: "javascript:;")
       expect(page).to have_link("Helpdesk", href: "javascript:;")
       expect(page).to have_link("Training information", href: "javascript:;")
       expect(page).to have_link("Contact provider", href: "javascript:;")
-      expect(page).to have_link("Access the service", href: "javascript:;")
+      expect(page).to have_link("Order the service", href: "javascript:;")
       expect(page).to have_link("tag", href: "javascript:;")
       expect(page).to have_link(service.related_services.first.name, href: "javascript:;")
     end

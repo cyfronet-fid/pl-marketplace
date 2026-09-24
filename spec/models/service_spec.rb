@@ -61,19 +61,70 @@ RSpec.describe Service, backend: true do
   end
 
   context "#owned_by?" do
-    it "is true when user is in the data administrator of provider" do
-      owner = create(:user)
-      provider = create(:provider, data_administrators: [build(:data_administrator, email: owner.email)])
-      service = create(:service, resource_organisation: provider)
+    let(:user) { create(:user) }
+    let(:user_as_admin) { build(:data_administrator, email: user.email) }
 
-      expect(service.owned_by?(owner)).to be_truthy
+    context "when user is a data administrator of the resource organisation" do
+      it "is true" do
+        provider = create(:provider, data_administrators: [user_as_admin])
+        service = create(:service, resource_organisation: provider)
+
+        expect(service.owned_by?(user)).to be_truthy
+      end
     end
 
-    it "is false when user is not in the owners list" do
-      stranger = create(:user)
-      service = create(:service)
+    context "when user is a data administrator of the catalogue" do
+      let(:service) { create(:service, catalogue: create(:catalogue, data_administrators: [user_as_admin])) }
 
-      expect(service.owned_by?(stranger)).to be_falsy
+      it "leaves the resource organisation with its own administrators" do
+        expect(service.resource_organisation.data_administrators).not_to be_empty
+      end
+
+      it "is true even though the resource organisation has other administrators" do
+        expect(service.owned_by?(user)).to be_truthy
+      end
+    end
+
+    context "when user administers both the resource organisation and the catalogue" do
+      it "is true" do
+        provider = create(:provider, data_administrators: [user_as_admin])
+        catalogue = create(:catalogue, data_administrators: [build(:data_administrator, email: user.email)])
+        service = create(:service, resource_organisation: provider, catalogue: catalogue)
+
+        expect(service.owned_by?(user)).to be_truthy
+      end
+    end
+
+    context "when user administers neither the resource organisation nor the catalogue" do
+      it "is false" do
+        service = create(:service)
+
+        expect(service.owned_by?(user)).to be_falsy
+      end
+    end
+
+    context "when user administers another service's resource organisation" do
+      it "is false" do
+        create(:provider, data_administrators: [user_as_admin])
+        service = create(:service)
+
+        expect(service.owned_by?(user)).to be_falsy
+      end
+    end
+
+    context "when the service has no catalogue" do
+      it "is true for a resource organisation administrator" do
+        provider = create(:provider, data_administrators: [user_as_admin])
+        service = create(:service, resource_organisation: provider, catalogue: nil, pid: "no.catalogue.service")
+
+        expect(service.owned_by?(user)).to be_truthy
+      end
+
+      it "is false for anyone else" do
+        service = create(:service, catalogue: nil, pid: "no.catalogue.service")
+
+        expect(service.owned_by?(user)).to be_falsy
+      end
     end
   end
 

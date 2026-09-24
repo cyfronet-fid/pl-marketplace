@@ -314,10 +314,8 @@ class Service < ApplicationRecord
   end
 
   def owned_by?(user)
-    administrators =
-      resource_organisation&.data_administrators.presence || catalogue&.data_administrators.presence || []
-
-    administrators.map(&:user_id).include?(user.id)
+    resource_organisation&.data_administrators&.exists?(user_id: user.id) ||
+      catalogue&.data_administrators&.exists?(user_id: user.id)
   end
 
   def organisation_search_link(target, default_path = nil)

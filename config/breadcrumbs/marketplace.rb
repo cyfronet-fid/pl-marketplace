@@ -27,9 +27,19 @@ crumb :services do
   parent :all_collections
 end
 
+crumb :datasources do
+  if Mp::Application.config.enable_external_search
+    link _("Data Sources"), "#{Mp::Application.config.search_service_base_url}/search/data_source"
+  else
+    link _("Data Sources"), services_path(params: (session[:query].blank? ? {} : session[:query]))
+  end
+
+  parent :all_collections
+end
+
 crumb :service do |service|
   link service.name, service_path(service)
-  parent :services
+  parent service.is_a?(Datasource) ? :datasources : :services
 end
 
 crumb :ordering_configuration do |service|

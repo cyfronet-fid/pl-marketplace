@@ -8680,22 +8680,10 @@ footer {
 
     a {
       color: $palette-white !important;
-
-      &:first-child {
-        background: url("home-icon-backoffice.svg");
-        opacity: 1;
-        margin-top: 4px;
-        margin-right: 7px;
-      }
     }
 
     .current {
       color: $palette-white !important;
-    }
-
-    .data-probe {
-      padding: 0;
-      border: 0;
     }
   }
 }

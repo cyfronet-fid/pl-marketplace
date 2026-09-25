@@ -9,32 +9,27 @@ crumb :profile do
   parent :marketplace_root
 end
 
-crumb :services do |category|
-  if category
-    link category.name, backoffice_category_services_path(category_id: category)
-    if category.parent
-      parent :backoffice_services, category.parent
-    else
-      parent :backoffice_services
-    end
+crumb :all_collections do
+  if Mp::Application.config.enable_external_search
+    link _("All collections"), "#{Mp::Application.config.search_service_base_url}/search/all_collection"
   else
-    link "Services & Datasources", services_path(params: (session[:query].blank? ? {} : session[:query]))
-    parent :marketplace_root
+    link _("All collections"), root_path
   end
+end
+
+crumb :services do
+  if Mp::Application.config.enable_external_search
+    link _("Services"), "#{Mp::Application.config.search_service_base_url}/search/service"
+  else
+    link _("Services"), services_path(params: (session[:query].blank? ? {} : session[:query]))
+  end
+  
+  parent :all_collections
 end
 
 crumb :service do |service|
   link service.name, service_path(service)
-  category = params[:fromc] ? service.categories.find_by(slug: params[:fromc]) : nil
-  if params[:comp_link]
-    parent :comparison
-  elsif category
-    parent :category, category
-  elsif service.main_category
-    parent :category, service.main_category
-  else
-    parent :services
-  end
+  parent :services
 end
 
 crumb :ordering_configuration do |service|

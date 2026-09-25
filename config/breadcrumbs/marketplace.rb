@@ -1,11 +1,46 @@
 # frozen_string_literal: true
 
 crumb :marketplace_root do
-  link "Home", root_path
+  link _("Home"), root_path
 end
 
 crumb :profile do
-  link "My profile", profile_path
+  link _("My profile"), profile_path
+  parent :marketplace_root
+end
+
+crumb :communities do
+  link _("Communities and infrastructures"), communities_path
+  parent :marketplace_root
+end
+
+crumb :help do
+  link _("Help"), help_path
+  parent :marketplace_root
+end
+
+crumb :about do
+  link _("About Marketplace"), about_path
+  parent :marketplace_root
+end
+
+crumb :target_users do
+  link _("Target users"), target_users_path
+  parent :marketplace_root
+end
+
+crumb :api_docs do
+  link _("Marketplace API"), api_docs_path
+  parent :marketplace_root
+end
+
+crumb :favourites do
+  link _("Favourite services"), favourites_path
+  parent :marketplace_root
+end
+
+crumb :congratulations do |project_item|
+  link _("Congratulations"), project_service_path(project_item.project, project_item)
   parent :marketplace_root
 end
 
@@ -43,32 +78,32 @@ crumb :service do |service|
 end
 
 crumb :ordering_configuration do |service|
-  link "Ordering configuration", service_ordering_configuration_path(service, from: params[:from])
+  link _("Ordering configuration"), service_ordering_configuration_path(service, from: params[:from])
   parent :service, service
 end
 
 crumb :ordering_configuration_offer_new do |service|
-  link "New", new_service_ordering_configuration_offer_path(service)
+  link _("New offer"), new_service_ordering_configuration_offer_path(service)
   parent :ordering_configuration, service
 end
 
 crumb :ordering_configuration_offer_edit do |offer|
-  link "Edit", edit_service_ordering_configuration_offer_path(offer, from: params[:from])
+  link _("Edit"), edit_service_ordering_configuration_offer_path(offer, from: params[:from])
   parent :ordering_configuration, offer.service
 end
 
 crumb :ordering_configuration_bundle_new do |service|
-  link "New", new_service_ordering_configuration_bundle_path(service)
+  link _("New bundle"), new_service_ordering_configuration_bundle_path(service)
   parent :ordering_configuration, service
 end
 
 crumb :ordering_configuration_bundle_edit do |bundle|
-  link "Edit", edit_service_ordering_configuration_bundle_path(bundle.service, bundle, from: params[:from])
+  link _("Edit"), edit_service_ordering_configuration_bundle_path(bundle.service, bundle, from: params[:from])
   parent :ordering_configuration, bundle.service
 end
 
 crumb :comparison do
-  link "Comparison", comparisons_path(fromc: params[:fromc])
+  link _("Comparison"), comparisons_path(fromc: params[:fromc])
   parent :services
 end
 
@@ -103,12 +138,12 @@ crumb :catalogue do |catalogue|
 end
 
 crumb :projects do
-  link "My projects", projects_path
+  link _("My projects"), projects_path
   parent :marketplace_root
 end
 
 crumb :project_new do
-  link "New project", new_project_path
+  link _("New project"), new_project_path
   parent :projects
 end
 
@@ -118,7 +153,7 @@ crumb :project do |project|
 end
 
 crumb :project_edit do |project|
-  link "Edit", edit_project_path(project)
+  link _("Edit"), edit_project_path(project)
   parent :project, project
 end
 
@@ -137,42 +172,6 @@ crumb :project_item do |project_item|
 end
 
 crumb :research_product do |project, rp|
-  link "Research Product", project_research_product_path(project, rp)
+  link _("Research Product"), project_research_product_path(project, rp)
   parent :project, project
-end
-
-crumb :congratulations do |project_item|
-  link "Congratulations", project_service_path(project_item.project, project_item)
-  parent :marketplace_root
-end
-
-
-crumb :communities do
-  link "Communities and infrastructures", communities_path
-  parent :marketplace_root
-end
-
-crumb :help do
-  link "Help", help_path
-  parent :marketplace_root
-end
-
-crumb :about do
-  link "About Marketplace", about_path
-  parent :marketplace_root
-end
-
-crumb :target_users do
-  link "Target users", target_users_path
-  parent :marketplace_root
-end
-
-crumb :api_docs do
-  link "Marketplace API", api_docs_path
-  parent :marketplace_root
-end
-
-crumb :favourites do
-  link "Favourite services", favourites_path
-  parent :marketplace_root
 end

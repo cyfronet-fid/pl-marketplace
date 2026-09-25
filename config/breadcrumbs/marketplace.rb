@@ -57,37 +57,69 @@ crumb :ordering_configuration_offer_edit do |offer|
   parent :ordering_configuration, offer.service
 end
 
-crumb :resource_details do |service|
-  link "Details", service_details_path(service)
-  if params[:from]
-    parent params[:from].to_sym, service
-  else
-    parent :service, service
-  end
+crumb :ordering_configuration_bundle_new do |service|
+  link "New", new_service_ordering_configuration_bundle_path(service)
+  parent :ordering_configuration, service
 end
 
-crumb :resource_opinions do |service|
-  link "Reviews", service_opinions_path(service)
-  if params[:from]
-    parent params[:from].to_sym, service
-  else
-    parent :service, service
-  end
-end
-
-crumb :category do |category|
-  link category.name, category_services_path(category, params: (session[:query].blank? ? {} : session[:query]))
-  parent category.parent || :services
+crumb :ordering_configuration_bundle_edit do |bundle|
+  link "Edit", edit_service_ordering_configuration_bundle_path(bundle.service, bundle, from: params[:from])
+  parent :ordering_configuration, bundle.service
 end
 
 crumb :comparison do
   link "Comparison", comparisons_path(fromc: params[:fromc])
-  category = params[:fromc] ? Category.find_by(slug: params[:fromc]) : nil
-  if category
-    parent :category, category
+  parent :services
+end
+
+crumb :providers do
+  if Mp::Application.config.enable_external_search
+    link _("Providers"), "#{Mp::Application.config.search_service_base_url}/search/provider"
   else
-    parent :services
+    link _("Providers"), providers_path
   end
+
+  parent :all_collections
+end
+
+crumb :provider do |provider|
+  link provider.name, provider_path(provider)
+  parent :providers
+end
+
+crumb :catalogues do
+  if Mp::Application.config.enable_external_search
+    link _("Catalogues"), "#{Mp::Application.config.search_service_base_url}/search/catalogue"
+  else
+    link _("Catalogues"), catalogues_path
+  end
+
+  parent :all_collections
+end
+
+crumb :catalogue do |catalogue|
+  link catalogue.name, catalogue_path(catalogue)
+  parent :catalogues
+end
+
+crumb :projects do
+  link "My projects", projects_path
+  parent :marketplace_root
+end
+
+crumb :project_new do
+  link "New project", new_project_path
+  parent :projects
+end
+
+crumb :project do |project|
+  link project.name, project_path(project)
+  parent :projects
+end
+
+crumb :project_edit do |project|
+  link "Edit", edit_project_path(project)
+  parent :project, project
 end
 
 crumb :project_item do |project_item|
@@ -109,50 +141,9 @@ crumb :research_product do |project, rp|
   parent :project, project
 end
 
-crumb :projects do
-  link "My projects", projects_path
-  parent :marketplace_root
-end
-
 crumb :congratulations do |project_item|
-  link "Congratulations",
-       project_service_path(project_item.project, project_item)
+  link "Congratulations", project_service_path(project_item.project, project_item)
   parent :marketplace_root
-end
-
-crumb :project_new do
-  link "New project", new_project_path
-  parent :projects
-end
-
-crumb :project do |project|
-  link project.name, project_path(project)
-  parent :projects
-end
-
-crumb :project_edit do |project|
-  link "Edit", edit_project_path(project)
-  parent :project, project
-end
-
-crumb :providers do
-  link "Providers", providers_path
-  parent :marketplace_root
-end
-
-crumb :provider do |provider|
-  link provider.name, provider_path(provider)
-  parent :providers
-end
-
-crumb :catalogues do
-  link "Catalogues", catalogues_path
-  parent :marketplace_root
-end
-
-crumb :catalogue do |catalogue|
-  link catalogue.name, catalogue_path(catalogue)
-  parent :catalogues
 end
 
 

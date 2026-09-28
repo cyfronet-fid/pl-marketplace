@@ -18,11 +18,11 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
     @approval_request.assign_attributes(
       permitted_attributes(ApprovalRequest).merge(status: assign_status(current_action), last_action: current_action)
     )
-    provider_action_successful = process_provider_action(current_action)
     @message = create_message
+    provider_action_successful = process_provider_action(current_action)
     list_approvals
     respond_to do |format|
-      if @approval_request.save && Message::Create.call(@message) && provider_action_successful
+      if @approval_request.save && (@message.persisted? || Message::Create.call(@message)) && provider_action_successful
         respond_with_success(format)
       else
         respond_with_error(format)
@@ -51,6 +51,8 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
       Provider::Approve.call(@approval_request)
     when "rejected"
       Provider::Reject.call(@approval_request)
+    when "requested_for_changes"
+      Provider::RequestChanges.call(@approval_request, @message)
     else
       Provider::Unpublish.call(provider)
     end

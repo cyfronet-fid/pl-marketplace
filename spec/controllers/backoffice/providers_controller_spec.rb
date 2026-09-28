@@ -89,5 +89,26 @@ RSpec.describe Backoffice::ProvidersController, type: :controller, backend: true
         expect { update_provider }.not_to have_enqueued_mail(ProviderMailer, :rejected)
       end
     end
+
+    context "when changes were requested for the provider" do
+      let(:provider) { create(:provider, status: :unpublished) }
+
+      before do
+        ApprovalRequest.create!(
+          approvable: provider,
+          user: create(:user),
+          status: :published,
+          last_action: :requested_for_changes
+        )
+      end
+
+      it "updates the provider" do
+        expect { update_provider }.to change { provider.reload.name }.to("Renamed provider")
+      end
+
+      it "does not send the changes requested email again" do
+        expect { update_provider }.not_to have_enqueued_mail(ProviderMailer, :changes_requested)
+      end
+    end
   end
 end

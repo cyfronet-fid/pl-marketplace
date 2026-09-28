@@ -39,12 +39,57 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
     context "when the coordinator requests changes" do
       let(:current_action) { "requested_for_changes" }
 
+      it "stores the coordinator message once" do
+        expect { review }.to change(approval_request.messages, :count).by(1)
+      end
+
+      it "keeps the message unedited" do
+        review
+        expect(approval_request.messages.last).not_to be_edited
+      end
+
+      it "keeps the approval request open" do
+        expect { review }.not_to(change { approval_request.reload.status }.from("published"))
+      end
+
+      it "notifies the provider manager with the coordinator message" do
+        expect { review }.to have_enqueued_mail(ProviderMailer, :changes_requested).with(
+          having_attributes(message: "Review message"),
+          submitter.email
+        )
+      end
+
       it "does not send the approval email" do
         expect { review }.not_to have_enqueued_mail(ProviderMailer, :approved)
       end
 
       it "does not send the rejection email" do
         expect { review }.not_to have_enqueued_mail(ProviderMailer, :rejected)
+      end
+    end
+
+    context "when the coordinator requests changes without a message" do
+      subject(:review) do
+        patch :update,
+              params: {
+                id: approval_request.id,
+                approval_request: {
+                  current_action: "requested_for_changes",
+                  message: ""
+                }
+              }
+      end
+
+      it "does not send the changes requested email" do
+        expect { review }.not_to have_enqueued_mail(ProviderMailer, :changes_requested)
+      end
+    end
+
+    context "when the coordinator only sends a message" do
+      let(:current_action) { "" }
+
+      it "does not send the changes requested email" do
+        expect { review }.not_to have_enqueued_mail(ProviderMailer, :changes_requested)
       end
     end
 

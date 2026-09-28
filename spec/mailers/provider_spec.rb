@@ -117,4 +117,99 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       expect(mail.text_part.body.decoded).to include("mailto:support@marketplace.test")
     end
   end
+
+  describe "#changes_requested" do
+    subject(:mail) { described_class.changes_requested(message, "manager@provider.com") }
+
+    let(:provider) { create(:provider, name: "Awesome provider", status: :unpublished) }
+    let(:coordinator) { create(:user, roles: [:coordinator], email: "coordinator@marketplace.test") }
+    let(:approval_request) { ApprovalRequest.create!(approvable: provider, user: create(:user), status: :published) }
+    let(:message_text) { "Please add a logo." }
+    let(:message) do
+      Message.create!(
+        message: message_text,
+        author: coordinator,
+        author_role: :mediator,
+        scope: :user_direct,
+        messageable: approval_request
+      )
+    end
+    let(:html_body) { Capybara.string(mail.html_part.body.decoded) }
+    let(:reply_href) do
+      "mailto:coordinator@marketplace.test?subject=" +
+        ERB::Util.url_encode("Re: Provider - Awesome provider needs more information")
+    end
+    let(:provider_url) do
+      Rails.application.routes.url_helpers.backoffice_provider_url(provider, host: "localhost:3000")
+    end
+
+    before { allow(Mp::Application.config).to receive(:helpdesk_email).and_return("support@marketplace.test") }
+
+    it "is sent to the provider manager" do
+      expect(mail.to).to contain_exactly("manager@provider.com")
+    end
+
+    it "has the provider name in the subject" do
+      expect(mail.subject).to eq("Provider - Awesome provider needs more information")
+    end
+
+    it "sends replies to the coordinator who asked" do
+      expect(mail.reply_to).to contain_exactly("coordinator@marketplace.test")
+    end
+
+    it "says the provider was reviewed" do
+      expect(html_body).to have_content(/Our team reviewed\s+Awesome provider\s+and needs this:/)
+    end
+
+    it "includes the coordinator message" do
+      expect(html_body).to have_css(".coordinator-message", text: "Please add a logo.")
+    end
+
+    it "includes the coordinator message in the text part" do
+      expect(mail.text_part.body.decoded).to include("Please add a logo.")
+    end
+
+    it "asks for a reply or a helpdesk contact" do
+      expect(html_body).to have_content(
+        "Please reply to the email below with the requested information, " \
+          "or contact us through the Helpdesk using the link below."
+      )
+    end
+
+    it "links the Reply via email button to the coordinator" do
+      expect(html_body).to have_link("Reply via email", href: reply_href)
+    end
+
+    it "links the Contact Helpdesk button to the configured helpdesk address" do
+      expect(html_body).to have_link("Contact Helpdesk", href: "mailto:support@marketplace.test")
+    end
+
+    it "links to the provider form in Marketplace" do
+      expect(html_body).to have_link("Awesome provider", href: provider_url)
+    end
+
+    context "when the message contains HTML" do
+      let(:message_text) { "<script>alert('x')</script><b>Add a logo</b>" }
+
+      it "does not render the HTML" do
+        expect(html_body).to have_no_css(".coordinator-message script, .coordinator-message b")
+      end
+
+      it "shows the markup as text" do
+        expect(html_body).to have_css(".coordinator-message", text: "<b>Add a logo</b>")
+      end
+    end
+
+    context "when the message has several lines" do
+      let(:message_text) { "Please add a logo.\nAnd a public contact." }
+
+      it "keeps the line breaks" do
+        expect(html_body).to have_css(".coordinator-message br")
+      end
+
+      it "keeps both lines" do
+        expect(html_body).to have_css(".coordinator-message", text: /Please add a logo\.\s+And a public contact\./)
+      end
+    end
+  end
 end

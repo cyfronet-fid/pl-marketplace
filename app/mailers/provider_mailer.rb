@@ -35,4 +35,15 @@ class ProviderMailer < ApplicationMailer
 
     mail(to: recipient_email, subject: "Provider - #{@provider.name} was not approved")
   end
+
+  # ONB-04
+  def changes_requested(message, recipient_email)
+    @provider = message.messageable.approvable
+    @message_text = message.message
+    @helpdesk_email = Mp::Application.config.helpdesk_email
+    @reply_email = message.author&.email.presence || @helpdesk_email
+    @subject = "Provider - #{@provider.name} needs more information"
+
+    mail(to: recipient_email, reply_to: @reply_email, subject: @subject)
+  end
 end

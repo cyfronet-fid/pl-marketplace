@@ -9,4 +9,15 @@ class ProviderMailer < ApplicationMailer
 
     mail(to: recipient_email, subject: "Question about #{@provider.name}", template_name: "new_question")
   end
+
+  # ONB-01
+  def waiting_for_approval(approval_request)
+    @provider = approval_request.approvable
+    @user = approval_request.user
+
+    mail(
+      to: @user.email,
+      subject: "New provider - #{@provider.name} is waiting for approval"
+    )
+  end
 end

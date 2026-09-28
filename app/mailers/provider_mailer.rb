@@ -20,4 +20,11 @@ class ProviderMailer < ApplicationMailer
       subject: "New provider - #{@provider.name} is waiting for approval"
     )
   end
+
+  # ONB-02
+  def approved(provider, recipient_email)
+    @provider = provider
+
+    mail(to: recipient_email, subject: "Provider - #{@provider.name} is approved")
+  end
 end

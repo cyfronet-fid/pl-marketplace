@@ -130,6 +130,10 @@ RSpec.describe Backoffice::Providers::StepsController, type: :controller, backen
       it "does not enqueue the waiting for approval email" do
         expect { finish_wizard }.not_to have_enqueued_mail(ProviderMailer, :waiting_for_approval)
       end
+
+      it "does not enqueue the approved email" do
+        expect { finish_wizard }.not_to have_enqueued_mail(ProviderMailer, :approved)
+      end
     end
   end
 end

@@ -13,4 +13,8 @@ class ProviderPreview < ActionMailer::Preview
     approval_request = ApprovalRequest.last || ApprovalRequest.new(approvable: Provider.last, user: User.last)
     ProviderMailer.waiting_for_approval(approval_request)
   end
+
+  def approved
+    ProviderMailer.approved(Provider.last, "john@doe.com")
+  end
 end

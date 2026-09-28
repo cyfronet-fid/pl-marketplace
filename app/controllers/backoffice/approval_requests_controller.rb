@@ -48,7 +48,7 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
     provider = @approval_request.approvable
     case current_action
     when "accepted"
-      Provider::Publish.call(provider)
+      Provider::Approve.call(@approval_request)
     when "rejected"
       Provider::Delete.call(provider)
     else

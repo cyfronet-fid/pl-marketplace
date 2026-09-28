@@ -28,7 +28,7 @@ RSpec.feature "Question about provider", end_user_frontend: true do
       expect do
         click_on "SEND"
         expect(page).to have_content("Your message was successfully sent")
-      end.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end.to have_enqueued_mail(ProviderMailer, :new_question)
 
       expect(Jms::PublishJob).to have_been_enqueued.with(hash_including(message_type: "provider_question"))
     end
@@ -66,7 +66,7 @@ RSpec.feature "Question about provider", end_user_frontend: true do
       expect do
         click_on "SEND"
         expect(page).to have_content("Your message was successfully sent")
-      end.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end.to have_enqueued_mail(ProviderMailer, :new_question)
 
       expect(Jms::PublishJob).to have_been_enqueued.with(hash_including(message_type: "provider_question"))
     end

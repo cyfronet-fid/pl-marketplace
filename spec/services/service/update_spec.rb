@@ -51,9 +51,10 @@ RSpec.describe Service::Update, backend: true do
       bundled_offer = build(:offer)
       create(:bundle, service: service, offers: [bundled_offer])
 
-      expect { described_class.call(service, { status: "published" }) }.to change {
-        ActionMailer::Base.deliveries.count
-      }.by(1)
+      expect { described_class.call(service, { status: "published" }) }.to have_enqueued_mail(
+        OfferMailer,
+        :offer_bundled
+      )
     end
 
     it "sends notification and unbundles if service made non-public" do
@@ -64,9 +65,10 @@ RSpec.describe Service::Update, backend: true do
 
       service.reload
 
-      expect { described_class.call(service, { status: "draft" }) }.to change {
-        ActionMailer::Base.deliveries.count
-      }.by(1)
+      expect { described_class.call(service, { status: "draft" }) }.to have_enqueued_mail(
+        OfferMailer,
+        :offer_unbundled
+      )
 
       bundle.reload
       expect(bundle).to be_draft

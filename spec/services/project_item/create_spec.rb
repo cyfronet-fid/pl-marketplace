@@ -61,21 +61,24 @@ RSpec.describe ProjectItem::Create, backend: true do
     let(:service) { create(:open_access_service) }
 
     it "sends email to project_item owner - added to the project" do
-      expect { described_class.new(project_item_template).call }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect { described_class.new(project_item_template).call }.to have_enqueued_mail(
+        ProjectItemMailer,
+        :added_to_project
+      )
     end
   end
 
   context "when external service has been added to Project" do
     let(:service) { create(:external_service) }
 
-    it "sends email to project_item owner - added to the project" do
-      expect { described_class.new(project_item_template).call }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    it "sends email to project_item owner - created" do
+      expect { described_class.new(project_item_template).call }.to have_enqueued_mail(ProjectItemMailer, :created)
     end
   end
 
   context "when orderable service has been ordered" do
     it "sends email to project_item owner" do
-      expect { described_class.new(project_item_template).call }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect { described_class.new(project_item_template).call }.to have_enqueued_mail(ProjectItemMailer, :created)
     end
   end
 
@@ -88,9 +91,10 @@ RSpec.describe ProjectItem::Create, backend: true do
     let(:project_item_template) { build(:project_item, project: project, offer: offer, bundle: bundle) }
 
     it "creates bundled project_items" do
-      expect { described_class.new(project_item_template, "test-msg", bundle_params: {}).call }.to change {
-        ActionMailer::Base.deliveries.count
-      }.by(3).and change { ProjectItem.count }.by(3)
+      expect { described_class.new(project_item_template, "test-msg", bundle_params: {}).call }.to have_enqueued_mail(
+        ProjectItemMailer,
+        :created
+      ).exactly(3).and change { ProjectItem.count }.by(3)
 
       ProjectItem.all.each do |project_item|
         expect(ProjectItem::RegisterJob).to have_been_enqueued.with(project_item, "test-msg")
@@ -101,9 +105,8 @@ RSpec.describe ProjectItem::Create, backend: true do
       let(:child2) { build(:offer_with_parameters) }
 
       it "creates nothing" do
-        expect { described_class.new(project_item_template, "test-msg", bundle_params: {}).call }.to change {
-          ActionMailer::Base.deliveries.count
-        }.by(0).and change { ProjectItem.count }.by(0)
+        expect { described_class.new(project_item_template, "test-msg", bundle_params: {}).call }.to have_enqueued_mail
+          .exactly(0).and change { ProjectItem.count }.by(0)
 
         expect(ProjectItem::RegisterJob).not_to have_been_enqueued
       end

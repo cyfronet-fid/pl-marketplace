@@ -17,4 +17,8 @@ class ProviderPreview < ActionMailer::Preview
   def approved
     ProviderMailer.approved(Provider.last, "john@doe.com")
   end
+
+  def rejected
+    ProviderMailer.rejected(Provider.last, "john@doe.com")
+  end
 end

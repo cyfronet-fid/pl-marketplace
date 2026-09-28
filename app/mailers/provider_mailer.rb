@@ -27,4 +27,12 @@ class ProviderMailer < ApplicationMailer
 
     mail(to: recipient_email, subject: "Provider - #{@provider.name} is approved")
   end
+
+  # ONB-03
+  def rejected(provider, recipient_email)
+    @provider = provider
+    @helpdesk_email = Mp::Application.config.helpdesk_email
+
+    mail(to: recipient_email, subject: "Provider - #{@provider.name} was not approved")
+  end
 end

@@ -42,13 +42,39 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
       it "does not send the approval email" do
         expect { review }.not_to have_enqueued_mail(ProviderMailer, :approved)
       end
+
+      it "does not send the rejection email" do
+        expect { review }.not_to have_enqueued_mail(ProviderMailer, :rejected)
+      end
     end
 
     context "when the coordinator rejects the provider" do
       let(:current_action) { "rejected" }
 
+      it "keeps the provider unpublished" do
+        expect { review }.not_to(change { provider.reload.status }.from("unpublished"))
+      end
+
+      it "closes the approval request" do
+        expect { review }.to change { approval_request.reload.status }.from("published").to("deleted")
+      end
+
+      it "notifies the provider manager that the provider was not approved" do
+        expect { review }.to have_enqueued_mail(ProviderMailer, :rejected).with(provider, submitter.email)
+      end
+
       it "does not send the approval email" do
         expect { review }.not_to have_enqueued_mail(ProviderMailer, :approved)
+      end
+    end
+
+    context "when the coordinator rejects an already rejected provider" do
+      let(:current_action) { "rejected" }
+
+      before { approval_request.update_columns(status: "deleted", last_action: "Reject") }
+
+      it "does not send the rejection email again" do
+        expect { review }.not_to have_enqueued_mail(ProviderMailer, :rejected)
       end
     end
   end

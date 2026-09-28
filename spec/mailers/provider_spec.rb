@@ -76,4 +76,45 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       expect(mail.text_part.body.decoded).to include(resources_url)
     end
   end
+
+  describe "#rejected" do
+    subject(:mail) { described_class.rejected(provider, "manager@provider.com") }
+
+    let(:provider) { create(:provider, name: "Awesome provider", status: :unpublished) }
+    let(:html_body) { Capybara.string(mail.html_part.body.decoded) }
+
+    before { allow(Mp::Application.config).to receive(:helpdesk_email).and_return("support@marketplace.test") }
+
+    it "is sent to the provider manager" do
+      expect(mail.to).to contain_exactly("manager@provider.com")
+    end
+
+    it "has the provider name in the subject" do
+      expect(mail.subject).to eq("Provider - Awesome provider was not approved")
+    end
+
+    it "says the provider was reviewed and not approved" do
+      expect(html_body).to have_content(/Our team reviewed\s+Awesome provider\s+and did not approve it\./)
+    end
+
+    it "explains the provider stays unpublished and hidden" do
+      expect(html_body).to have_content(
+        "It stays in your account as unpublished, so it is not visible to users."
+      )
+    end
+
+    it "invites the manager to write to the configured helpdesk" do
+      expect(html_body).to have_content(
+        "Write to support@marketplace.test if you want to add missing information or ask about the decision."
+      )
+    end
+
+    it "links the Contact helpdesk button to the configured helpdesk address" do
+      expect(html_body).to have_link("Contact helpdesk", href: "mailto:support@marketplace.test")
+    end
+
+    it "includes the helpdesk mailto link in the text part" do
+      expect(mail.text_part.body.decoded).to include("mailto:support@marketplace.test")
+    end
+  end
 end

@@ -50,7 +50,7 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
     when "accepted"
       Provider::Approve.call(@approval_request)
     when "rejected"
-      Provider::Delete.call(provider)
+      Provider::Reject.call(@approval_request)
     else
       Provider::Unpublish.call(provider)
     end

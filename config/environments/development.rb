@@ -41,6 +41,10 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = ENV["S3_STORAGE"] == "true" ? :s3 : :local
 
+  # Use mailcatcher for mailer verification
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { address: "localhost", port: 1025 }
+  
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 

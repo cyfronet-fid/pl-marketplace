@@ -105,6 +105,10 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       expect(mail.subject).to eq("Provider - Awesome provider was not approved")
     end
 
+    it "sends replies to the helpdesk" do
+      expect(mail.reply_to).to contain_exactly("support@marketplace.test")
+    end
+
     it "says the provider was reviewed and not approved" do
       expect(html_body).to have_content(/Our team reviewed\s+Awesome provider\s+and did not approve it\./)
     end
@@ -141,10 +145,6 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       create(:coordinator_message, message: message_text, author: coordinator, messageable: approval_request)
     end
     let(:html_body) { Capybara.string(mail.html_part.body.decoded) }
-    let(:reply_href) do
-      "mailto:support@marketplace.test?subject=" +
-        ERB::Util.url_encode("Re: Provider - Awesome provider needs more information")
-    end
     let(:provider_url) do
       Rails.application.routes.url_helpers.backoffice_provider_url(provider, host: "localhost:3000")
     end
@@ -184,10 +184,6 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
         "Please reply to the email below with the requested information, " \
           "or contact us through the Helpdesk using the link below."
       )
-    end
-
-    it "links the Reply via email button to the helpdesk" do
-      expect(html_body).to have_link("Reply via email", href: reply_href)
     end
 
     it "links the Contact Helpdesk button to the configured helpdesk address" do

@@ -11,7 +11,6 @@
   = link_to @provider.name, backoffice_provider_url(@provider)
 
 %p
-  = email_button "Reply via email", "mailto:#{@helpdesk_email}?subject=#{ERB::Util.url_encode("Re: #{@subject}")}"
   = email_button "Contact Helpdesk", "mailto:#{@helpdesk_email}"
 
 - content_for :recipient_reason, "You received this email because you are a provider manager in EOSC PL."

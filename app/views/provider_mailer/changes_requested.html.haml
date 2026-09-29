@@ -8,5 +8,5 @@
   You can update the provider in Marketplace:
   = link_to @provider.name, backoffice_provider_url(@provider)
 %p.center
-  = mail_to @reply_email, "Reply via email", subject: "Re: #{@subject}", class: "button"
+  = mail_to @helpdesk_email, "Reply via email", subject: "Re: #{@subject}", class: "button"
   = mail_to @helpdesk_email, "Contact Helpdesk", class: "button"

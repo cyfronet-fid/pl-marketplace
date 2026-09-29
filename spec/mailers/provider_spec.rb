@@ -136,7 +136,7 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
     end
     let(:html_body) { Capybara.string(mail.html_part.body.decoded) }
     let(:reply_href) do
-      "mailto:coordinator@marketplace.test?subject=" +
+      "mailto:support@marketplace.test?subject=" +
         ERB::Util.url_encode("Re: Provider - Awesome provider needs more information")
     end
     let(:provider_url) do
@@ -153,8 +153,8 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       expect(mail.subject).to eq("Provider - Awesome provider needs more information")
     end
 
-    it "sends replies to the coordinator who asked" do
-      expect(mail.reply_to).to contain_exactly("coordinator@marketplace.test")
+    it "sends replies to the helpdesk" do
+      expect(mail.reply_to).to contain_exactly("support@marketplace.test")
     end
 
     it "says the provider was reviewed" do
@@ -176,7 +176,7 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       )
     end
 
-    it "links the Reply via email button to the coordinator" do
+    it "links the Reply via email button to the helpdesk" do
       expect(html_body).to have_link("Reply via email", href: reply_href)
     end
 

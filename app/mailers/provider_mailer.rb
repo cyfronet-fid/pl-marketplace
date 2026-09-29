@@ -41,9 +41,8 @@ class ProviderMailer < ApplicationMailer
     @provider = message.messageable.approvable
     @message_text = message.message
     @helpdesk_email = Mp::Application.config.helpdesk_email
-    @reply_email = message.author&.email.presence || @helpdesk_email
     @subject = "Provider - #{@provider.name} needs more information"
 
-    mail(to: recipient_email, reply_to: @reply_email, subject: @subject)
+    mail(to: recipient_email, reply_to: @helpdesk_email, subject: @subject)
   end
 end

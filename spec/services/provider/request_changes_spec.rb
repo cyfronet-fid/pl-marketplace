@@ -15,16 +15,8 @@ RSpec.describe Provider::RequestChanges, backend: true do
   end
   let(:submitter) { create(:user) }
   let(:provider) { create(:provider, status: :unpublished, data_administrators: managers) }
-  let!(:approval_request) { ApprovalRequest.create!(approvable: provider, user: submitter, status: :published) }
-  let(:message) do
-    Message.create!(
-      message: "Please add a logo.",
-      author: create(:user, roles: [:coordinator]),
-      author_role: :mediator,
-      scope: :user_direct,
-      messageable: approval_request
-    )
-  end
+  let!(:approval_request) { create(:approval_request, approvable: provider, user: submitter) }
+  let(:message) { create(:coordinator_message, message: "Please add a logo.", messageable: approval_request) }
 
   context "when the approval request is pending" do
     it "keeps the provider unpublished" do

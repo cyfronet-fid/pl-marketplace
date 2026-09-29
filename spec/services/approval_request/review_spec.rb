@@ -10,7 +10,7 @@ RSpec.describe ApprovalRequest::Review, backend: true do
   let(:provider) do
     create(:provider, status: :unpublished, data_administrators: [build(:data_administrator, email: manager_email)])
   end
-  let!(:approval_request) { ApprovalRequest.create!(approvable: provider, user: create(:user), status: :published) }
+  let!(:approval_request) { create(:approval_request, approvable: provider) }
   let(:text) { "Review message" }
 
   context "when the coordinator accepts the provider" do

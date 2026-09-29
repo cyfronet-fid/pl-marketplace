@@ -51,14 +51,7 @@ RSpec.describe Backoffice::ProvidersController, type: :controller, backend: true
     context "when the provider is already approved" do
       let(:provider) { create(:provider, status: :published) }
 
-      before do
-        ApprovalRequest.create!(
-          approvable: provider,
-          user: create(:user),
-          status: :deleted,
-          last_action: :accepted
-        )
-      end
+      before { create(:approval_request, :accepted, approvable: provider) }
 
       it "updates the provider" do
         expect { update_provider }.to change { provider.reload.name }.to("Renamed provider")
@@ -72,14 +65,7 @@ RSpec.describe Backoffice::ProvidersController, type: :controller, backend: true
     context "when the provider was rejected" do
       let(:provider) { create(:provider, status: :unpublished) }
 
-      before do
-        ApprovalRequest.create!(
-          approvable: provider,
-          user: create(:user),
-          status: :deleted,
-          last_action: :rejected
-        )
-      end
+      before { create(:approval_request, :rejected, approvable: provider) }
 
       it "updates the provider" do
         expect { update_provider }.to change { provider.reload.name }.to("Renamed provider")
@@ -93,14 +79,7 @@ RSpec.describe Backoffice::ProvidersController, type: :controller, backend: true
     context "when changes were requested for the provider" do
       let(:provider) { create(:provider, status: :unpublished) }
 
-      before do
-        ApprovalRequest.create!(
-          approvable: provider,
-          user: create(:user),
-          status: :published,
-          last_action: :requested_for_changes
-        )
-      end
+      before { create(:approval_request, :changes_requested, approvable: provider) }
 
       it "updates the provider" do
         expect { update_provider }.to change { provider.reload.name }.to("Renamed provider")

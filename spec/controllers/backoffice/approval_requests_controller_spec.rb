@@ -20,7 +20,7 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
     let(:provider) do
       create(:provider, status: :unpublished, data_administrators: [build(:data_administrator, email: submitter.email)])
     end
-    let(:approval_request) { ApprovalRequest.create!(approvable: provider, user: submitter, status: :published) }
+    let(:approval_request) { create(:approval_request, approvable: provider, user: submitter) }
 
     before { sign_in create(:user, roles: [:coordinator]) }
 

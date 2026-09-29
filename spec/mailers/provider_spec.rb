@@ -8,7 +8,7 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
 
     let(:user) { create(:user) }
     let(:provider) { create(:provider, name: "Awesome provider", status: :unpublished) }
-    let(:approval_request) { ApprovalRequest.create!(approvable: provider, user: user, status: :published) }
+    let(:approval_request) { create(:approval_request, approvable: provider, user: user) }
     let(:html_body) { Capybara.string(mail.html_part.body.decoded) }
     let(:provider_url) do
       Rails.application.routes.url_helpers.backoffice_provider_url(provider, host: "localhost:3000")
@@ -123,16 +123,10 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
 
     let(:provider) { create(:provider, name: "Awesome provider", status: :unpublished) }
     let(:coordinator) { create(:user, roles: [:coordinator], email: "coordinator@marketplace.test") }
-    let(:approval_request) { ApprovalRequest.create!(approvable: provider, user: create(:user), status: :published) }
+    let(:approval_request) { create(:approval_request, approvable: provider) }
     let(:message_text) { "Please add a logo." }
     let(:message) do
-      Message.create!(
-        message: message_text,
-        author: coordinator,
-        author_role: :mediator,
-        scope: :user_direct,
-        messageable: approval_request
-      )
+      create(:coordinator_message, message: message_text, author: coordinator, messageable: approval_request)
     end
     let(:html_body) { Capybara.string(mail.html_part.body.decoded) }
     let(:reply_href) do

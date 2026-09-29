@@ -7,7 +7,7 @@ RSpec.describe Provider::Publish, backend: true do
 
   let(:provider) { create(:provider, status: :unpublished) }
 
-  before { ApprovalRequest.create!(approvable: provider, user: create(:user), status: :published) }
+  before { create(:approval_request, approvable: provider) }
 
   it "publishes the provider" do
     expect { publish }.to change { provider.reload.status }.from("unpublished").to("published")

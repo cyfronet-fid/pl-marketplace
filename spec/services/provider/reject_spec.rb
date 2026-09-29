@@ -15,7 +15,7 @@ RSpec.describe Provider::Reject, backend: true do
   end
   let(:submitter) { create(:user) }
   let(:provider) { create(:provider, status: :unpublished, data_administrators: managers) }
-  let!(:approval_request) { ApprovalRequest.create!(approvable: provider, user: submitter, status: :published) }
+  let!(:approval_request) { create(:approval_request, approvable: provider, user: submitter) }
 
   context "when the approval request is pending" do
     it "keeps the provider unpublished" do

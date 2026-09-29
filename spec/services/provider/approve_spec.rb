@@ -5,10 +5,12 @@ require "rails_helper"
 RSpec.describe Provider::Approve, backend: true do
   subject(:approve) { described_class.call(approval_request) }
 
+  let(:first_manager) { create(:user, email: "first@manager.com") }
+  let(:second_manager) { create(:user, email: "second@manager.com") }
   let(:managers) do
     [
-      build(:data_administrator, email: "first@manager.com"),
-      build(:data_administrator, email: "second@manager.com")
+      build(:data_administrator, email: first_manager.email),
+      build(:data_administrator, email: second_manager.email)
     ]
   end
   let(:provider) { create(:provider, status: :unpublished, data_administrators: managers) }
@@ -44,16 +46,33 @@ RSpec.describe Provider::Approve, backend: true do
     end
   end
 
-  context "when provider managers share an email address" do
+  context "when the same account manages the provider twice" do
     let(:managers) do
       [
-        build(:data_administrator, email: "shared@manager.com"),
-        build(:data_administrator, email: "SHARED@manager.com")
+        build(:data_administrator, email: first_manager.email),
+        build(:data_administrator, email: first_manager.email)
       ]
     end
 
-    it "notifies the address once" do
+    it "notifies the account once" do
       expect { approve }.to have_enqueued_mail(ProviderMailer, :approved).once
+    end
+  end
+
+  context "when a provider manager has no Marketplace account" do
+    let(:managers) do
+      [
+        build(:data_administrator, email: first_manager.email),
+        build(:data_administrator, email: "no-account@manager.com")
+      ]
+    end
+
+    it "notifies only the manager with an account" do
+      expect { approve }.to have_enqueued_mail(ProviderMailer, :approved).once
+    end
+
+    it "does not notify the manager without an account" do
+      expect { approve }.not_to have_enqueued_mail(ProviderMailer, :approved).with(provider, "no-account@manager.com")
     end
   end
 

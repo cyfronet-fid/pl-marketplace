@@ -20,11 +20,12 @@ class Provider::ApprovalDecision < Provider::ApplicationService
   # Emails go out only once the surrounding transaction commits, and never after a rollback.
   def notify_managers(&build_mail)
     ActiveRecord.after_all_transactions_commit do
-      manager_emails.each { |email| build_mail.call(email).deliver_later }
+      manager_users.each { |user| build_mail.call(user.email).deliver_later }
     end
   end
 
-  def manager_emails
-    @provider.data_administrators.map(&:email).compact_blank.uniq(&:downcase)
+  # Only managers linked to a Marketplace account (see DataAdministrator#connect_user) are notified.
+  def manager_users
+    User.where(id: @provider.data_administrators.select(:user_id))
   end
 end

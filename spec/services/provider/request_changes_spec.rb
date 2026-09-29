@@ -12,18 +12,12 @@ RSpec.describe Provider::RequestChanges, backend: true do
     ]
   end
   let(:submitter) { create(:user) }
-  let(:coordinator) { create(:user, roles: [:coordinator]) }
   let(:provider) { create(:provider, status: :unpublished, data_administrators: managers) }
-  let!(:approval_request) do
-    ApprovalRequest
-      .create!(approvable: provider, user: submitter, status: :published)
-      .tap { |request| request.assign_attributes(current_action: "requested_for_changes", message: message_text) }
-  end
-  let(:message_text) { "Please add a logo." }
+  let!(:approval_request) { ApprovalRequest.create!(approvable: provider, user: submitter, status: :published) }
   let(:message) do
-    Message.new(
-      message: message_text,
-      author: coordinator,
+    Message.create!(
+      message: "Please add a logo.",
+      author: create(:user, roles: [:coordinator]),
       author_role: :mediator,
       scope: :user_direct,
       messageable: approval_request
@@ -31,10 +25,6 @@ RSpec.describe Provider::RequestChanges, backend: true do
   end
 
   context "when the approval request is pending" do
-    it "stores the coordinator message" do
-      expect { request_changes }.to change(approval_request.messages, :count).by(1)
-    end
-
     it "keeps the provider unpublished" do
       expect { request_changes }.not_to(change { provider.reload.status }.from("unpublished"))
     end
@@ -43,16 +33,16 @@ RSpec.describe Provider::RequestChanges, backend: true do
       expect(request_changes).to be(true)
     end
 
-    it "notifies the first provider manager with the stored message" do
+    it "notifies the first provider manager with the coordinator message" do
       expect { request_changes }.to have_enqueued_mail(ProviderMailer, :changes_requested).with(
-        having_attributes(message: message_text, persisted?: true),
+        message,
         "first@manager.com"
       )
     end
 
     it "notifies the second provider manager" do
       expect { request_changes }.to have_enqueued_mail(ProviderMailer, :changes_requested).with(
-        anything,
+        message,
         "second@manager.com"
       )
     end
@@ -91,12 +81,8 @@ RSpec.describe Provider::RequestChanges, backend: true do
     end
   end
 
-  context "when the coordinator message is blank" do
-    let(:message_text) { "" }
-
-    it "does not store a message" do
-      expect { request_changes }.not_to change(Message, :count)
-    end
+  context "when the approval request is already closed" do
+    before { approval_request.update_columns(status: "deleted", last_action: "Reject") }
 
     it "does not notify the provider managers" do
       expect { request_changes }.not_to have_enqueued_mail(ProviderMailer, :changes_requested)
@@ -104,24 +90,6 @@ RSpec.describe Provider::RequestChanges, backend: true do
 
     it "reports that nothing was requested" do
       expect(request_changes).to be(false)
-    end
-  end
-
-  context "when the approval request is already closed" do
-    before { approval_request.update_columns(status: "deleted", last_action: "Reject") }
-
-    it "does not store a message" do
-      expect { request_changes }.not_to change(Message, :count)
-    end
-
-    it "does not notify the provider managers" do
-      expect { request_changes }.not_to have_enqueued_mail(ProviderMailer, :changes_requested)
-    end
-  end
-
-  context "when the coordinator message is stored" do
-    it "does not enqueue the generic message email" do
-      expect { request_changes }.not_to have_enqueued_mail(MessageMailer)
     end
   end
 end

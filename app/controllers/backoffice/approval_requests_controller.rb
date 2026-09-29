@@ -4,7 +4,7 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
   before_action :find_and_authorize, only: %i[show update]
 
   def index
-    list_approvals
+    @approval_requests = ApprovalRequest.active.order(created_at: :desc)
   end
 
   def edit
@@ -14,19 +14,13 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
   end
 
   def update
-    current_action = permitted_attributes(ApprovalRequest).fetch("current_action", nil)
-    @approval_request.assign_attributes(
-      permitted_attributes(ApprovalRequest).merge(status: assign_status(current_action), last_action: current_action)
-    )
-    @message = create_message
-    provider_action_successful = process_provider_action(current_action)
-    list_approvals
-    respond_to do |format|
-      if @approval_request.save && (@message.persisted? || Message::Create.call(@message)) && provider_action_successful
-        respond_with_success(format)
-      else
-        respond_with_error(format)
-      end
+    result = ApprovalRequest::Review.call(@approval_request, reviewer: current_user, **review_params)
+
+    @approval_requests = ApprovalRequest.active.order(created_at: :desc)
+    @message = result.message
+
+    respond_to do |format| 
+      result.success? ? respond_with_success(format) : respond_with_error(format)
     end
   end
 
@@ -36,36 +30,9 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
     @approval_request = authorize(ApprovalRequest.includes(:messages).find(params[:id]))
   end
 
-  def list_approvals
-    @approval_requests = ApprovalRequest.active.order(created_at: :desc)
-  end
-
-  def assign_status(action)
-    action == "requested_for_changes" || action.blank? ? :published : :deleted
-  end
-
-  def process_provider_action(current_action)
-    provider = @approval_request.approvable
-    case current_action
-    when "accepted"
-      Provider::Approve.call(@approval_request)
-    when "rejected"
-      Provider::Reject.call(@approval_request)
-    when "requested_for_changes"
-      Provider::RequestChanges.call(@approval_request, @message)
-    else
-      Provider::Unpublish.call(provider)
-    end
-  end
-
-  def create_message
-    Message.new(
-      message: params.dig(:approval_request, :message),
-      author: current_user,
-      author_role: :mediator,
-      scope: :user_direct,
-      messageable: @approval_request
-    )
+  def review_params
+    attributes = permitted_attributes(ApprovalRequest)
+    { action: attributes["current_action"], text: attributes["message"] }
   end
 
   def respond_with_success(format)

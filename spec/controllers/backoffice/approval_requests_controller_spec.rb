@@ -36,6 +36,35 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
       end
     end
 
+    context "when the coordinator accepts the provider without a message" do
+      subject(:review) do
+        patch :update,
+              params: {
+                id: approval_request.id,
+                approval_request: {
+                  current_action: "accepted",
+                  message: ""
+                }
+              },
+              format: :turbo_stream
+      end
+
+      render_views
+
+      it "responds successfully" do
+        review
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "publishes the provider" do
+        expect { review }.to change { provider.reload.status }.from("unpublished").to("published")
+      end
+
+      it "does not store an empty message" do
+        expect { review }.not_to change(Message, :count)
+      end
+    end
+
     context "when the coordinator requests changes" do
       let(:current_action) { "requested_for_changes" }
 
@@ -87,6 +116,15 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
 
     context "when the coordinator only sends a message" do
       let(:current_action) { "" }
+      let(:provider) { create(:provider, status: :published) }
+
+      it "stores the message" do
+        expect { review }.to change(approval_request.messages, :count).by(1)
+      end
+
+      it "does not change the provider" do
+        expect { review }.not_to(change { provider.reload.status }.from("published"))
+      end
 
       it "does not send the changes requested email" do
         expect { review }.not_to have_enqueued_mail(ProviderMailer, :changes_requested)

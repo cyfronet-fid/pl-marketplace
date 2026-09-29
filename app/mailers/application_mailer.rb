@@ -4,7 +4,7 @@ class ApplicationMailer < ActionMailer::Base
   LOGO_NAME = "eoscpl-logo.png"
   LOGO_PATH = Rails.root.join("app/assets/images/eoscpl-email-logo.png")
 
-  default from: ENV["FROM_EMAIL"] || "from@example.com"
+  default from: ENV.fetch("FROM_EMAIL", "EOSC PL <eosc-noreply@eosc.pl>")
   layout "mailer"
   
   helper MailerHelper

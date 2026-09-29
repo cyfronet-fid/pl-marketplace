@@ -14,6 +14,10 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       Rails.application.routes.url_helpers.backoffice_provider_url(provider, host: "localhost:3000")
     end
 
+    it "is sent from EOSC PL" do
+      expect(mail[:from].value).to eq("EOSC PL <eosc-noreply@eosc.pl>")
+    end
+
     it "is sent to the submitting user" do
       expect(mail.to).to contain_exactly(user.email)
     end
@@ -50,6 +54,10 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
       Rails.application.routes.url_helpers.backoffice_services_url(providers: provider.id, host: "localhost:3000")
     end
 
+    it "is sent from EOSC PL" do
+      expect(mail[:from].value).to eq("EOSC PL <eosc-noreply@eosc.pl>")
+    end
+
     it "is sent to the provider manager" do
       expect(mail.to).to contain_exactly("manager@provider.com")
     end
@@ -84,6 +92,10 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
     let(:html_body) { Capybara.string(mail.html_part.body.decoded) }
 
     before { allow(Mp::Application.config).to receive(:helpdesk_email).and_return("support@marketplace.test") }
+
+    it "is sent from EOSC PL" do
+      expect(mail[:from].value).to eq("EOSC PL <eosc-noreply@eosc.pl>")
+    end
 
     it "is sent to the provider manager" do
       expect(mail.to).to contain_exactly("manager@provider.com")
@@ -138,6 +150,10 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
     end
 
     before { allow(Mp::Application.config).to receive(:helpdesk_email).and_return("support@marketplace.test") }
+
+    it "is sent from EOSC PL" do
+      expect(mail[:from].value).to eq("EOSC PL <eosc-noreply@eosc.pl>")
+    end
 
     it "is sent to the provider manager" do
       expect(mail.to).to contain_exactly("manager@provider.com")

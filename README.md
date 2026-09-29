@@ -287,7 +287,7 @@ We are currently using the following ENV variables:
 * `SMTP_PASSWORD` - smtp password
 * `SMTP_AUTHENTICATION` (Optional) - smtp authentication method (default `plain`)
 * `SMTP_STARTTLS` (Optional) - enable automatic STARTTLS (default `true`)
-* `FROM_EMAIL` - from email (if not set `from@example.com` will be used)
+* `FROM_EMAIL` - full email sender, including the name, e.g. `EOSC PL <eosc-noreply@eosc.pl>` (if not set `EOSC PL <eosc-noreply@eosc.pl>` will be used)
 
 The legacy `SMPT_ADDRESS`, `SMPT_USERNAME`, and `SMPT_PASSWORD` names remain supported as fallbacks. New
 deployments should use the documented `SMTP_*` names.

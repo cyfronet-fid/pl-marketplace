@@ -21,7 +21,7 @@ RSpec.describe MessageMailer, type: :mailer, backend: true do
       end
 
       it "informs about the new message" do
-        expect(mail.body.encoded).to include("A new message was added to your service request")
+        expect(mail.text_part.body.decoded).to include("A new message was added to your service request")
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe MessageMailer, type: :mailer, backend: true do
       end
 
       it "informs about the new message" do
-        expect(mail.body.encoded).to include("You have received a message related to your Project")
+        expect(mail.text_part.body.decoded).to include("You have received a message related to your Project")
       end
     end
   end
@@ -57,7 +57,7 @@ RSpec.describe MessageMailer, type: :mailer, backend: true do
       end
 
       it "informs about the modification" do
-        expect(mail.body.encoded).to include("has been modified by the service provider")
+        expect(mail.text_part.body.decoded).to include("has been modified by the service provider")
       end
     end
 
@@ -69,7 +69,7 @@ RSpec.describe MessageMailer, type: :mailer, backend: true do
       end
 
       it "informs about the modification" do
-        expect(mail.body.encoded).to include("has been modified by the service provider")
+        expect(mail.text_part.body.decoded).to include("has been modified by the service provider")
       end
     end
   end

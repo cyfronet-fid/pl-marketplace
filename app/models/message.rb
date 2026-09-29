@@ -56,7 +56,6 @@ class Message < ApplicationRecord
     self.edited = true
   end
 
-  # Approval request decisions are announced by the ProviderMailer onboarding emails.
   def dispatch_email?
     !role_user? && !internal_scope? && messageable_type != "ApprovalRequest"
   end

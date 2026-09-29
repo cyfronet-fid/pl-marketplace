@@ -3,6 +3,8 @@
   = succeed "." do
     %strong= @provider.name
   Our team will review it.
+
 %p You can add resources now, but you can publish them only after the provider is approved.
-%p.center
-  = link_to "View provider", backoffice_provider_url(@provider), class: "button"
+
+%p
+  = email_button "View provider", backoffice_provider_url(@provider)

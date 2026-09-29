@@ -3,10 +3,15 @@
   %strong= @provider.name
   and needs this:
 %blockquote.coordinator-message= simple_format(h(@message_text))
+
 %p Please reply to the email below with the requested information, or contact us through the Helpdesk using the link below.
+
 %p
   You can update the provider in Marketplace:
   = link_to @provider.name, backoffice_provider_url(@provider)
-%p.center
-  = mail_to @helpdesk_email, "Reply via email", subject: "Re: #{@subject}", class: "button"
-  = mail_to @helpdesk_email, "Contact Helpdesk", class: "button"
+
+%p
+  = email_button "Reply via email", "mailto:#{@helpdesk_email}?subject=#{ERB::Util.url_encode("Re: #{@subject}")}"
+  = email_button "Contact Helpdesk", "mailto:#{@helpdesk_email}"
+
+- content_for :recipient_reason, "You received this email because you are a provider manager in EOSC PL."

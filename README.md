@@ -259,7 +259,7 @@ We are currently using the following ENV variables:
 * `RAILS_MASTER_KEY` (Optional) - if you want to use encrypted credentials in development, 
   you need to set the provided value
 * `MP_VERSION` (Optional) - the application's version (default taken from the file `./VERSION`)
-* `PORT` (Optional) - http server port (default 5000)
+* `PORT` (Optional) - http server port (default `3000`; foreman starts the web process on `5000`)
 * `CHECKIN_HOST` (Optional) - checkin IDP host (default `aai-dev.egi.eu`)
 * `CHECKIN_SCOPE` (Optional) - checkin IDP scope (default `["openid", "profile", "email", "refeds_edu"]`)
   multiple scopes separated by `,`, e.g `CHECKIN_SCOPE=openid,email`
@@ -268,9 +268,10 @@ We are currently using the following ENV variables:
 * `CHECKIN_SECRET` (Optional if you have master key) - checkin IDP secret (default taken from
   encrypted properties)
 * `OIDC_AAI_NEW_API` - if you want to use old AAI endpoints, set it to false
-* `ROOT_URL` (Optional) - root application URL (default
-  `http://localhost:#{ENV["PORT"] || 3000}` (when foreman is used to start
-  application 5000 ENV variable is set)
+* `ROOT_URL` - root application URL, used to build links in emails. Required in production.
+  In development it defaults to `http://localhost:PORT`; when running with foreman, set it in `.env`
+  (e.g. `ROOT_URL=http://localhost:5000`), otherwise mails rendered by Sidekiq link to the jobs process
+  port (e.g. `5300`)
 * `ELASTICSEARCH_URL` - elasticsearch url
 * `RECOMMENDER_HOST` - address of the recommender system. For example: `http://127.0.0.1:5001`
 * `RECOMMENDATION_ENGINE` - the name of the engine that is requested to serve recommendations when a request from MP is sent to the RS `/recommendations` endpoint. We currently support RL and NCF.
@@ -287,7 +288,8 @@ We are currently using the following ENV variables:
 * `SMTP_PASSWORD` - smtp password
 * `SMTP_AUTHENTICATION` (Optional) - smtp authentication method (default `plain`)
 * `SMTP_STARTTLS` (Optional) - enable automatic STARTTLS; only the exact value `true` enables it, any other value disables it (default `true`)
-* `FROM_EMAIL` - full email sender, including the name, e.g. `EOSC PL <eosc-noreply@eosc.pl>` (if not set `EOSC PL <eosc-noreply@eosc.pl>` will be used)
+* `FROM_EMAIL` (Optional) - full email sender, including the name (default `EOSC PL <eosc-noreply@eosc.pl>`)
+* `MP_HELPDESK_EMAIL` (Optional) - helpdesk address used for replies and "Contact helpdesk" links in provider emails (default `helpdesk@eosc.pl`)
 * `GOOGLE_ANALYTICS` - google analytics key for GMT (if present than analytics
   script is added into head section)
 * `PORTAL_BASE_URL` - portal base URL used to generate footer and other static

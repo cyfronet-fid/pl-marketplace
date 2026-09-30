@@ -286,12 +286,8 @@ We are currently using the following ENV variables:
 * `SMTP_USERNAME` - smtp user name or email address
 * `SMTP_PASSWORD` - smtp password
 * `SMTP_AUTHENTICATION` (Optional) - smtp authentication method (default `plain`)
-* `SMTP_STARTTLS` (Optional) - enable automatic STARTTLS (default `true`)
+* `SMTP_STARTTLS` (Optional) - enable automatic STARTTLS; only the exact value `true` enables it, any other value disables it (default `true`)
 * `FROM_EMAIL` - full email sender, including the name, e.g. `EOSC PL <eosc-noreply@eosc.pl>` (if not set `EOSC PL <eosc-noreply@eosc.pl>` will be used)
-
-The legacy `SMPT_ADDRESS`, `SMPT_USERNAME`, and `SMPT_PASSWORD` names remain supported as fallbacks. New
-deployments should use the documented `SMTP_*` names.
-
 * `GOOGLE_ANALYTICS` - google analytics key for GMT (if present than analytics
   script is added into head section)
 * `PORTAL_BASE_URL` - portal base URL used to generate footer and other static

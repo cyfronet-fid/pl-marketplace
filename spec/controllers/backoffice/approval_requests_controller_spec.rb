@@ -56,6 +56,11 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
         expect(response).to have_http_status(:ok)
       end
 
+      it "shows the success notice" do
+        review
+        expect(response.body).to include("Message sent successfully")
+      end
+
       it "publishes the provider" do
         expect { review }.to change { provider.reload.status }.from("unpublished").to("published")
       end
@@ -158,6 +163,27 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
 
       it "does not send the rejection email again" do
         expect { review }.not_to have_enqueued_mail(ProviderMailer, :rejected)
+      end
+    end
+
+    context "when the review fails" do
+      let(:current_action) { "accepted" }
+
+      render_views
+
+      before do
+        allow(ApprovalRequest::Review).to receive(:call)
+          .and_return(ApprovalRequest::Review::Result.new(success: false, message: nil))
+      end
+
+      it "responds with unprocessable entity" do
+        review
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "shows the error alert" do
+        review
+        expect(response.body).to include("Message not sent")
       end
     end
   end

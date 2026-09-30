@@ -19,7 +19,7 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
     @approval_requests = ApprovalRequest.active.order(created_at: :desc)
     @message = result.message
 
-    respond_to do |format| 
+    respond_to do |format|
       result.success? ? respond_with_success(format) : respond_with_error(format)
     end
   end
@@ -36,15 +36,15 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
   end
 
   def respond_with_success(format)
-    notice = _("Message sent successfully")
-    format.turbo_stream { flash.now[:notice] = notice }
-    format.html { redirect_to backoffice_providers_path(notice: notice) }
+    flash.now[:notice] = _("Message sent successfully")
+    format.turbo_stream { render :update, status: :ok }
+    format.html { redirect_to backoffice_providers_path }
   end
 
   def respond_with_error(format)
-    alert = _("Message not sent")
-    flash.now[:alert] = alert
+    flash.now[:alert] = _("Message not sent")
+    format.turbo_stream { render :update, status: :unprocessable_entity }
+    format.html { render :show, status: :unprocessable_entity }
     format.json { render :edit, status: :unprocessable_entity }
-    format.html { render :show, status: :unprocessable_entity, alert: alert }
   end
 end

@@ -8,7 +8,7 @@ linters:
 
   ViewLength:
     enabled: false
-    
+
   RuboCop:
     ignored_cops:
       - Style/IfUnlessModifier

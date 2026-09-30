@@ -1,12 +1,14 @@
 linters:
-  ViewLength:
-    enabled: true
-    max: 620
-
-  LineLength:
-    enabled: true
-    max: 140
-
   ClassesBeforeIds:
     enabled: true
     EnforcedStyle: 'id'
+
+  LineLength:
+    enabled: false
+
+  ViewLength:
+    enabled: false
+    
+  RuboCop:
+    ignored_cops:
+      - Style/IfUnlessModifier

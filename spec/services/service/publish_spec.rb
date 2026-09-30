@@ -29,9 +29,20 @@ RSpec.describe Service::Publish, backend: true do
       common_scientific_domains = users.first.scientific_domains + users.second.scientific_domains
       common_categories = users.first.categories + users.second.categories
       service = create(:service, scientific_domains: common_scientific_domains, categories: common_categories)
-      expect { described_class.call(service) }.to have_enqueued_mail(ServiceMailer, :new_service).twice
-        .and have_enqueued_mail(ServiceMailer, :new_service).with(service, anything, anything, users.first.email)
-        .and have_enqueued_mail(ServiceMailer, :new_service).with(service, anything, anything, users.second.email)
+      expect { described_class.call(service) }.to have_enqueued_mail(
+        ServiceMailer,
+        :new_service
+      ).twice.and have_enqueued_mail(ServiceMailer, :new_service).with(
+                    service,
+                    anything,
+                    anything,
+                    users.first.email
+                  ).and have_enqueued_mail(ServiceMailer, :new_service).with(
+                          service,
+                          anything,
+                          anything,
+                          users.second.email
+                        )
     end
   end
 

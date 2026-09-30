@@ -8,10 +8,7 @@ RSpec.describe Provider::Approve, backend: true do
   let(:first_manager) { create(:user, email: "first@manager.com") }
   let(:second_manager) { create(:user, email: "second@manager.com") }
   let(:managers) do
-    [
-      build(:data_administrator, email: first_manager.email),
-      build(:data_administrator, email: second_manager.email)
-    ]
+    [build(:data_administrator, email: first_manager.email), build(:data_administrator, email: second_manager.email)]
   end
   let(:provider) { create(:provider, status: :unpublished, data_administrators: managers) }
   let!(:approval_request) { create(:approval_request, approvable: provider) }
@@ -48,10 +45,7 @@ RSpec.describe Provider::Approve, backend: true do
 
   context "when the same account manages the provider twice" do
     let(:managers) do
-      [
-        build(:data_administrator, email: first_manager.email),
-        build(:data_administrator, email: first_manager.email)
-      ]
+      [build(:data_administrator, email: first_manager.email), build(:data_administrator, email: first_manager.email)]
     end
 
     it "notifies the account once" do

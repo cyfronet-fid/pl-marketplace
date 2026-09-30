@@ -23,14 +23,15 @@ class ProviderPreview < ActionMailer::Preview
   end
 
   def changes_requested
-    message = Message.where(messageable_type: "ApprovalRequest").last ||
-      Message.new(
-        message: "Please add a logo\nand a public contact.",
-        author: User.last,
-        author_role: :mediator,
-        scope: :user_direct,
-        messageable: ApprovalRequest.new(approvable: Provider.last, user: User.last)
-      )
+    message =
+      Message.where(messageable_type: "ApprovalRequest").last ||
+        Message.new(
+          message: "Please add a logo\nand a public contact.",
+          author: User.last,
+          author_role: :mediator,
+          scope: :user_direct,
+          messageable: ApprovalRequest.new(approvable: Provider.last, user: User.last)
+        )
     ProviderMailer.changes_requested(message, "john@doe.com")
   end
 end

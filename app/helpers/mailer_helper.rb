@@ -2,7 +2,7 @@
 
 module MailerHelper
   BUTTON_COLOR = "#257B85"
-  
+
   BUTTON_STYLE = [
     "display:inline-block",
     "padding:12px 24px",

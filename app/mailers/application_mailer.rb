@@ -6,7 +6,7 @@ class ApplicationMailer < ActionMailer::Base
 
   default from: ENV.fetch("FROM_EMAIL", "EOSC PL <eosc-noreply@eosc.pl>")
   layout "mailer"
-  
+
   helper MailerHelper
 
   before_action :attach_logo

@@ -8,10 +8,7 @@ RSpec.describe Provider::RequestChanges, backend: true do
   let(:first_manager) { create(:user, email: "first@manager.com") }
   let(:second_manager) { create(:user, email: "second@manager.com") }
   let(:managers) do
-    [
-      build(:data_administrator, email: first_manager.email),
-      build(:data_administrator, email: second_manager.email)
-    ]
+    [build(:data_administrator, email: first_manager.email), build(:data_administrator, email: second_manager.email)]
   end
   let(:submitter) { create(:user) }
   let(:provider) { create(:provider, status: :unpublished, data_administrators: managers) }
@@ -64,10 +61,7 @@ RSpec.describe Provider::RequestChanges, backend: true do
 
   context "when the same account manages the provider twice" do
     let(:managers) do
-      [
-        build(:data_administrator, email: first_manager.email),
-        build(:data_administrator, email: first_manager.email)
-      ]
+      [build(:data_administrator, email: first_manager.email), build(:data_administrator, email: first_manager.email)]
     end
 
     it "notifies the account once" do

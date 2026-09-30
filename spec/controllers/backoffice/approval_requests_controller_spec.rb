@@ -172,8 +172,9 @@ RSpec.describe Backoffice::ApprovalRequestsController, type: :controller, backen
       render_views
 
       before do
-        allow(ApprovalRequest::Review).to receive(:call)
-          .and_return(ApprovalRequest::Review::Result.new(success: false, message: nil))
+        allow(ApprovalRequest::Review).to receive(:call).and_return(
+          ApprovalRequest::Review::Result.new(success: false, message: nil)
+        )
       end
 
       it "responds with unprocessable entity" do

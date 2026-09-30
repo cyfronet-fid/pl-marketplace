@@ -105,8 +105,9 @@ RSpec.describe ProjectItem::Create, backend: true do
       let(:child2) { build(:offer_with_parameters) }
 
       it "creates nothing" do
-        expect { described_class.new(project_item_template, "test-msg", bundle_params: {}).call }.to have_enqueued_mail
-          .exactly(0).and change { ProjectItem.count }.by(0)
+        expect do
+          described_class.new(project_item_template, "test-msg", bundle_params: {}).call
+        end.to have_enqueued_mail.exactly(0).and change { ProjectItem.count }.by(0)
 
         expect(ProjectItem::RegisterJob).not_to have_been_enqueued
       end

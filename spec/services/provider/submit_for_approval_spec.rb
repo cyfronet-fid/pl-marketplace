@@ -20,8 +20,9 @@ RSpec.describe Provider::SubmitForApproval, backend: true do
     end
 
     it "enqueues the waiting for approval email for the approval request" do
-      expect { submit }.to have_enqueued_mail(ProviderMailer, :waiting_for_approval)
-        .with(having_attributes(approvable: provider, user: user))
+      expect { submit }.to have_enqueued_mail(ProviderMailer, :waiting_for_approval).with(
+        having_attributes(approvable: provider, user: user)
+      )
     end
   end
 

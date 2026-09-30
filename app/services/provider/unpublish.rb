@@ -11,7 +11,7 @@ class Provider::Unpublish < Provider::ApplicationService
         @provider.reindex
       end
     end
-    
+
     result
   end
 end

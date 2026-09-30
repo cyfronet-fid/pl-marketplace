@@ -23,10 +23,9 @@ RSpec.describe ProjectItem::OnStatusTypeUpdated, backend: true do
     end
 
     it "sends email on :ready" do
-      expect { project_item.update!(status_type: :ready) }.to have_enqueued_mail(
-        ProjectItemMailer,
-        :ready_to_use
-      ).with(project_item)
+      expect { project_item.update!(status_type: :ready) }.to have_enqueued_mail(ProjectItemMailer, :ready_to_use).with(
+        project_item
+      )
     end
 
     it "sends email on :rejected" do

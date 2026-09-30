@@ -9,9 +9,7 @@ class ApprovalRequest::Review < ApplicationService
     "requested_for_changes" => Provider::RequestChanges
   }.freeze
 
-  Result = Struct.new(:success, :message, keyword_init: true) do
-    alias_method :success?, :success
-  end
+  Result = Struct.new(:success, :message, keyword_init: true) { alias_method :success?, :success }
 
   def initialize(approval_request, reviewer:, action:, text:)
     super()
@@ -36,13 +34,14 @@ class ApprovalRequest::Review < ApplicationService
   def build_message
     return if text.blank?
 
-    @message = Message.new(
-      messageable: approval_request,
-      author: reviewer,
-      message: text,
-      author_role: :mediator,
-      scope: :user_direct
-    )
+    @message =
+      Message.new(
+        messageable: approval_request,
+        author: reviewer,
+        message: text,
+        author_role: :mediator,
+        scope: :user_direct
+      )
   end
 
   def assign_review

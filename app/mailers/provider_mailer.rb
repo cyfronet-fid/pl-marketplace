@@ -15,20 +15,14 @@ class ProviderMailer < ApplicationMailer
     @provider = approval_request.approvable
     @user = approval_request.user
 
-    mail(
-      to: @user.email,
-      subject: "New provider - #{@provider.name} is waiting for approval"
-    )
+    mail(to: @user.email, subject: "New provider - #{@provider.name} is waiting for approval")
   end
 
   # ONB-02
   def approved(provider, recipient_email)
     @provider = provider
 
-    mail(
-      to: recipient_email,
-      subject: "Provider - #{@provider.name} is approved"
-    )
+    mail(to: recipient_email, subject: "Provider - #{@provider.name} is approved")
   end
 
   # ONB-03
@@ -36,11 +30,7 @@ class ProviderMailer < ApplicationMailer
     @provider = provider
     @helpdesk_email = Mp::Application.config.helpdesk_email
 
-    mail(
-      to: recipient_email,
-      reply_to: @helpdesk_email,
-      subject: "Provider - #{@provider.name} was not approved"
-    )
+    mail(to: recipient_email, reply_to: @helpdesk_email, subject: "Provider - #{@provider.name} was not approved")
   end
 
   # ONB-04
@@ -49,10 +39,6 @@ class ProviderMailer < ApplicationMailer
     @message_text = message.message
     @helpdesk_email = Mp::Application.config.helpdesk_email
 
-    mail(
-      to: recipient_email,
-      reply_to: @helpdesk_email,
-      subject: "Provider - #{@provider.name} needs more information"
-    )
+    mail(to: recipient_email, reply_to: @helpdesk_email, subject: "Provider - #{@provider.name} needs more information")
   end
 end

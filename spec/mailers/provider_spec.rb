@@ -114,9 +114,7 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
     end
 
     it "explains the provider stays unpublished and hidden" do
-      expect(html_body).to have_content(
-        "It stays in your account as unpublished, so it is not visible to users."
-      )
+      expect(html_body).to have_content("It stays in your account as unpublished, so it is not visible to users.")
     end
 
     it "invites the manager to write to the configured helpdesk" do

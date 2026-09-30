@@ -64,9 +64,10 @@ RSpec.describe ProjectItem::Ready, backend: true do
 
       project_item.new_status(status: "custom_created", status_type: :created)
 
-      expect { described_class.new(project_item).call }.to have_enqueued_mail(ProjectItemMailer, :activate_message)
-        .with(project_item, service)
-        .and have_enqueued_mail(ProjectItemMailer, :rate_service).with(project_item)
+      expect { described_class.new(project_item).call }.to have_enqueued_mail(
+        ProjectItemMailer,
+        :activate_message
+      ).with(project_item, service).and have_enqueued_mail(ProjectItemMailer, :rate_service).with(project_item)
     end
 
     it "do not send email with activate message if not present" do
@@ -76,8 +77,10 @@ RSpec.describe ProjectItem::Ready, backend: true do
 
       project_item.new_status(status: "custom_created", status_type: :created)
 
-      expect { described_class.new(project_item).call }.to have_enqueued_mail.once
-        .and have_enqueued_mail(ProjectItemMailer, :rate_service).with(project_item)
+      expect { described_class.new(project_item).call }.to have_enqueued_mail.once.and have_enqueued_mail(
+                                    ProjectItemMailer,
+                                    :rate_service
+                                  ).with(project_item)
     end
 
     it "creates new JIRA issue and do the transition" do
@@ -96,9 +99,9 @@ RSpec.describe ProjectItem::Ready, backend: true do
         # project_item change email is sent only when there is more than 1 change
         project_item.new_status(status: "custom_created", status_type: :created)
 
-        expect { described_class.new(project_item).call }.to have_enqueued_mail(ProjectItemMailer, :ready_to_use)
-          .with(project_item)
-          .and have_enqueued_mail(ProjectItemMailer, :rate_service).with(project_item)
+        expect { described_class.new(project_item).call }.to have_enqueued_mail(ProjectItemMailer, :ready_to_use).with(
+          project_item
+        ).and have_enqueued_mail(ProjectItemMailer, :rate_service).with(project_item)
       end
     end
 
@@ -123,8 +126,10 @@ RSpec.describe ProjectItem::Ready, backend: true do
       it "sends only rate service email to owner" do
         project_item.new_status(status: "custom_ready", status_type: :ready)
 
-        expect { described_class.new(project_item).call }.to have_enqueued_mail.once
-          .and have_enqueued_mail(ProjectItemMailer, :rate_service).with(project_item)
+        expect { described_class.new(project_item).call }.to have_enqueued_mail.once.and have_enqueued_mail(
+                                      ProjectItemMailer,
+                                      :rate_service
+                                    ).with(project_item)
       end
     end
 

@@ -76,9 +76,9 @@ RSpec.describe Backoffice::Providers::StepsController, type: :controller, backen
       end
 
       it "enqueues the waiting for approval email for the submitting user" do
-        expect { finish_wizard }
-          .to have_enqueued_mail(ProviderMailer, :waiting_for_approval)
-          .with(having_attributes(user: user))
+        expect { finish_wizard }.to have_enqueued_mail(ProviderMailer, :waiting_for_approval).with(
+          having_attributes(user: user)
+        )
       end
 
       context "when a step before the summary is submitted" do

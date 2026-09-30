@@ -65,10 +65,7 @@ RSpec.describe Service::Update, backend: true do
 
       service.reload
 
-      expect { described_class.call(service, { status: "draft" }) }.to have_enqueued_mail(
-        OfferMailer,
-        :offer_unbundled
-      )
+      expect { described_class.call(service, { status: "draft" }) }.to have_enqueued_mail(OfferMailer, :offer_unbundled)
 
       bundle.reload
       expect(bundle).to be_draft

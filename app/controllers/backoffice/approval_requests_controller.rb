@@ -19,9 +19,7 @@ class Backoffice::ApprovalRequestsController < Backoffice::ApplicationController
     @approval_requests = ApprovalRequest.active.order(created_at: :desc)
     @message = result.message
 
-    respond_to do |format|
-      result.success? ? respond_with_success(format) : respond_with_error(format)
-    end
+    respond_to { |format| result.success? ? respond_with_success(format) : respond_with_error(format) }
   end
 
   private

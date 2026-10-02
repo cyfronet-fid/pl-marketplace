@@ -75,6 +75,28 @@ RSpec.describe Backoffice::Providers::StepsController, type: :controller, backen
         expect(session[:provider_approval_modal]).to be(true)
       end
 
+      it "enqueues the waiting for approval email for the submitting user" do
+        expect { finish_wizard }.to have_enqueued_mail(ProviderMailer, :waiting_for_approval).with(
+          having_attributes(user: user)
+        )
+      end
+
+      context "when a step before the summary is submitted" do
+        subject(:submit_step) do
+          put :update, params: { provider_id: "new", commit: "Next", provider: { name: provider_attributes["name"] } }
+        end
+
+        before { session[:provider_step] = "profile" }
+
+        it "does not create the provider" do
+          expect { submit_step }.not_to change(Provider, :count)
+        end
+
+        it "does not enqueue the waiting for approval email" do
+          expect { submit_step }.not_to have_enqueued_mail(ProviderMailer, :waiting_for_approval)
+        end
+      end
+
       it "does not reopen the first-provider guidance for another provider" do
         create(:provider, status: :unpublished, data_administrators: [build(:data_administrator, email: user.email)])
 
@@ -103,6 +125,14 @@ RSpec.describe Backoffice::Providers::StepsController, type: :controller, backen
         expect(response).to redirect_to(backoffice_providers_path)
         expect(session[:provider_approval_modal]).to be_nil
         expect(session[:provider_profile_completion]).to eq(provider.id)
+      end
+
+      it "does not enqueue the waiting for approval email" do
+        expect { finish_wizard }.not_to have_enqueued_mail(ProviderMailer, :waiting_for_approval)
+      end
+
+      it "does not enqueue the approved email" do
+        expect { finish_wizard }.not_to have_enqueued_mail(ProviderMailer, :approved)
       end
     end
   end

@@ -147,14 +147,8 @@ class Backoffice::ProvidersController < Backoffice::ApplicationController
     @provider.build_main_contact if @provider.main_contact.blank?
   end
 
-  def request_approval(provider)
-    return if current_user.coordinator? || current_user.providers.published.exists?
-
-    ApprovalRequest.create(approvable: provider, user: current_user, status: :published)
-  end
-
   def finalize_provider_creation(provider, first_provider:)
-    approval_request = request_approval(provider)
+    approval_request = Provider::SubmitForApproval.call(provider, current_user)
 
     if first_provider && approval_request&.persisted?
       session[:provider_approval_modal] = true

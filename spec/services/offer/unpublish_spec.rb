@@ -7,7 +7,7 @@ RSpec.describe Offer::Unpublish, backend: true do
     it "doesn't send notification if no bundle offers" do
       drafted_offer = create(:offer)
 
-      expect { described_class.call(drafted_offer) }.not_to change { ActionMailer::Base.deliveries.count }
+      expect { described_class.call(drafted_offer) }.not_to have_enqueued_mail
     end
 
     context "Bundle mutations" do
@@ -19,7 +19,7 @@ RSpec.describe Offer::Unpublish, backend: true do
       end
 
       it "sends notification if bundled offer drafted" do
-        expect { described_class.call(bundled_offer) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect { described_class.call(bundled_offer) }.to have_enqueued_mail(OfferMailer, :offer_unbundled)
 
         bundled_offer.reload
         bundle.reload
@@ -29,7 +29,7 @@ RSpec.describe Offer::Unpublish, backend: true do
       end
 
       it "change to draft for main offer" do
-        expect { described_class.call(bundle_offer) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect { described_class.call(bundle_offer) }.to have_enqueued_mail(OfferMailer, :offer_unbundled)
 
         bundle_offer.reload
         bundle.reload

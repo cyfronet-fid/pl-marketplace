@@ -101,6 +101,8 @@ module Mp
 
     config.eosc_helpdesk_form_link = ENV.fetch("EOSC_HELPDESK_FORM_URL",
                                                "https://helpdesk.sandbox.eosc-beyond.eu/assets/form/form.js")
+    config.helpdesk_email = ENV.fetch("MP_HELPDESK_EMAIL", "helpdesk@eosc.pl")
+    config.mail_logo_path = ENV["MAIL_LOGO_PATH"].presence&.then { |path| Rails.root.join(path) }
     config.enable_external_search = ActiveModel::Type::Boolean.new.cast(ENV.fetch("MP_ENABLE_EXTERNAL_SEARCH", false))
     config.analytics_enabled = ActiveModel::Type::Boolean.new.cast(ENV.fetch("ANALYTICS_ENABLED", false))
 

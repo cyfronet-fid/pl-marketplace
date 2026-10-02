@@ -290,6 +290,8 @@ We are currently using the following ENV variables:
 * `SMTP_STARTTLS` (Optional) - enable automatic STARTTLS; only the exact value `true` enables it, any other value disables it (default `true`)
 * `FROM_EMAIL` (Optional) - full email sender, including the name (default `EOSC PL <eosc-noreply@eosc.pl>`)
 * `MP_HELPDESK_EMAIL` (Optional) - helpdesk address used for replies and "Contact helpdesk" links in provider emails (default `helpdesk@eosc.pl`)
+* `MAIL_LOGO_PATH` (Optional) - logo shown in the email header, absolute or relative to the application root
+  (e.g. `app/assets/images/eoscpl-email-logo.png`); no logo is shown when blank (default)
 * `GOOGLE_ANALYTICS` - google analytics key for GMT (if present than analytics
   script is added into head section)
 * `PORTAL_BASE_URL` - portal base URL used to generate footer and other static

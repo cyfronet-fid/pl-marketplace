@@ -43,6 +43,25 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
     it "includes the provider page link in the text part" do
       expect(mail.text_part.body.decoded).to include(provider_url)
     end
+
+    it "shows no logo by default" do
+      expect(mail.attachments).to be_empty
+    end
+
+    context "with a logo configured" do
+      before do
+        allow(Rails.configuration).to receive(:mail_logo_path)
+          .and_return(Rails.root.join("app/assets/images/eoscpl-email-logo.png"))
+      end
+
+      it "embeds the logo" do
+        expect(mail.attachments.map(&:filename)).to contain_exactly("header_eoscpl-email-logo.png")
+      end
+
+      it "shows the logo in the header" do
+        expect(html_body).to have_css("img.logo-img[src^='cid:']")
+      end
+    end
   end
 
   describe "#approved" do

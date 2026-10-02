@@ -1,20 +1,25 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  LOGO_NAME = "eoscpl-logo.png"
-  LOGO_PATH = Rails.root.join("app/assets/images/eoscpl-email-logo.png")
-
   default from: ENV.fetch("FROM_EMAIL", "EOSC PL <eosc-noreply@eosc.pl>")
   layout "mailer"
 
   helper MailerHelper
+  helper_method :logo_name
 
-  before_action :attach_logo
+  before_action :attach_logo, if: -> { logo_path.present? }
 
   private
 
-  # Embedded in the email, so the logo shows without an asset host.
   def attach_logo
-    attachments.inline[LOGO_NAME] = File.binread(LOGO_PATH)
+    attachments.inline[logo_name] = File.binread(logo_path)
+  end
+
+  def logo_name
+    logo_path.present? ? "header_#{File.basename(logo_path)}" : nil
+  end
+
+  def logo_path
+    Rails.configuration.mail_logo_path
   end
 end

@@ -99,14 +99,15 @@
         %td{ align: "left", style: "padding:0;" }
           %table.wrapper{ email_table_attributes, style: "width:100%; background-color:#ffffff;" }
             -# Logo
-            %tr
-              %td.gutter{ align: "left", style: "padding:32px 40px 24px 40px;" }
-                = image_tag attachments[ApplicationMailer::LOGO_NAME].url,
-                  class: "logo-img", width: 240, alt: "EOSC Node Poland", style: "display:block; width:240px; height:auto;"
+            - if logo_name
+              %tr
+                %td.gutter{ align: "left", style: "padding:32px 40px 24px 40px;" }
+                  = image_tag attachments[logo_name].url,
+                    class: "logo-img", width: 240, alt: "EOSC Node Poland", style: "display:block; width:240px; height:auto;"
 
             -# Title
             %tr
-              %td.gutter{ align: "left", style: "padding:0 40px 16px 40px;" }
+              %td.gutter{ align: "left", style: "padding:#{logo_name ? 0 : 32}px 40px 16px 40px;" }
                 %h1.h1{ style: "margin:0; font-family:'Quicksand','Trebuchet MS',Verdana,sans-serif; font-size:24px; " \
                   "line-height:32px; font-weight:600; color:#257B85;" }
                   = message.subject

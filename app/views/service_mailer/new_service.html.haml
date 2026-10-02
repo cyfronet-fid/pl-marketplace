@@ -9,7 +9,7 @@
         %h5
           = @service.name
   %p.center
-    = link_to "Check now", service_url(@service), class: "button"
+    = email_button "Check now", service_url(@service)
   %small
     You are receiving this message because
     you have opted up for updates in

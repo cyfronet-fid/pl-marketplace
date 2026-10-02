@@ -34,4 +34,60 @@ RSpec.describe Backoffice::ProvidersController, type: :controller, backend: true
       expect(session[:provider_profile_completion]).to be_nil
     end
   end
+
+  describe "PATCH #update" do
+    subject(:update_provider) do
+      patch :update,
+            params: {
+              id: provider.to_param,
+              provider: {
+                name: "Renamed provider",
+                upstream_id: ""
+              }
+            },
+            format: :turbo_stream
+    end
+
+    context "when the provider is already approved" do
+      let(:provider) { create(:provider, status: :published) }
+
+      before { create(:approval_request, :accepted, approvable: provider) }
+
+      it "updates the provider" do
+        expect { update_provider }.to change { provider.reload.name }.to("Renamed provider")
+      end
+
+      it "does not send the approval email again" do
+        expect { update_provider }.not_to have_enqueued_mail(ProviderMailer, :approved)
+      end
+    end
+
+    context "when the provider was rejected" do
+      let(:provider) { create(:provider, status: :unpublished) }
+
+      before { create(:approval_request, :rejected, approvable: provider) }
+
+      it "updates the provider" do
+        expect { update_provider }.to change { provider.reload.name }.to("Renamed provider")
+      end
+
+      it "does not send the rejection email again" do
+        expect { update_provider }.not_to have_enqueued_mail(ProviderMailer, :rejected)
+      end
+    end
+
+    context "when changes were requested for the provider" do
+      let(:provider) { create(:provider, status: :unpublished) }
+
+      before { create(:approval_request, :changes_requested, approvable: provider) }
+
+      it "updates the provider" do
+        expect { update_provider }.to change { provider.reload.name }.to("Renamed provider")
+      end
+
+      it "does not send the changes requested email again" do
+        expect { update_provider }.not_to have_enqueued_mail(ProviderMailer, :changes_requested)
+      end
+    end
+  end
 end

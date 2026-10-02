@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApprovalRequest::Review < ApplicationService
-  CLOSING_ACTIONS = %w[accepted rejected].freeze
-
   DECISIONS = {
     "accepted" => Provider::Approve,
     "rejected" => Provider::Reject,
@@ -46,7 +44,7 @@ class ApprovalRequest::Review < ApplicationService
 
   def assign_review
     approval_request.assign_attributes(
-      status: CLOSING_ACTIONS.include?(action) ? :deleted : :published,
+      status: ApprovalRequest::CLOSING_ACTIONS.include?(action) ? :deleted : :published,
       message: message&.message,
       current_action: action,
       last_action: action
@@ -58,7 +56,7 @@ class ApprovalRequest::Review < ApplicationService
   end
 
   def persist
-    ApprovalRequest.transaction do
+    ApprovalRequest.transaction(requires_new: true) do
       raise ActiveRecord::Rollback unless save_message && apply_decision && approval_request.save
 
       true
@@ -66,11 +64,15 @@ class ApprovalRequest::Review < ApplicationService
   end
 
   def save_message
-    message.nil? || Message::Create.call(message)
+    return true if message.nil?
+
+    Message::Create.call(message)
   end
 
   def apply_decision
     decision = DECISIONS[action]
-    decision.nil? || decision.new(approval_request, message).call
+    return true if decision.nil?
+
+    decision.call(approval_request, message)
   end
 end

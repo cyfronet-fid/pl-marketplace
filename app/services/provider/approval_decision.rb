@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Provider::ApprovalDecision < Provider::ApplicationService
-  CLOSING_ACTIONS = %w[accepted rejected].freeze
-
   def initialize(approval_request, message = nil)
     super(approval_request.approvable)
 
@@ -13,8 +11,7 @@ class Provider::ApprovalDecision < Provider::ApplicationService
   private
 
   def pending_decision?
-    @approval_request.status_in_database != "deleted" &&
-      CLOSING_ACTIONS.exclude?(@approval_request.last_action_in_database)
+    @approval_request.pending_decision?
   end
 
   # Emails go out only once the surrounding transaction commits, and never after a rollback.

@@ -50,8 +50,9 @@ RSpec.describe ProviderMailer, type: :mailer, backend: true do
 
     context "with a logo configured" do
       before do
-        allow(Rails.configuration).to receive(:mail_logo_path)
-          .and_return(Rails.root.join("app/assets/images/eoscpl-email-logo.png"))
+        allow(Rails.configuration).to receive(:mail_logo_path).and_return(
+          Rails.root.join("app/assets/images/eoscpl-email-logo.png")
+        )
       end
 
       it "embeds the logo" do

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.6.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.4...v4.6.0) (2026-10-05)
+
+
+### Features
+
+* [[#158](https://github.com/cyfronet-fid/pl-marketplace/issues/158)] simplify breadcrumbs to All collections › collection › item ([#169](https://github.com/cyfronet-fid/pl-marketplace/issues/169)) ([6e10e7f](https://github.com/cyfronet-fid/pl-marketplace/commit/6e10e7f6c13f92ace8cda69d7b3d02b22b1a5f8d))
+* [[#162](https://github.com/cyfronet-fid/pl-marketplace/issues/162)] split service and data source header buttons into own partials ([#168](https://github.com/cyfronet-fid/pl-marketplace/issues/168)) ([8919cbe](https://github.com/cyfronet-fid/pl-marketplace/commit/8919cbeefc07a24111babf655388b7d164f11319))
+* [[#170](https://github.com/cyfronet-fid/pl-marketplace/issues/170)] send EOSC PL provider onboarding emails (ONB-01 to ONB-04) ([#171](https://github.com/cyfronet-fid/pl-marketplace/issues/171)) ([c8cf6c6](https://github.com/cyfronet-fid/pl-marketplace/commit/c8cf6c68e2f2e0c49149682dcd47c47292fd239b))
+* **profiles:** show user roles on profile page ([#175](https://github.com/cyfronet-fid/pl-marketplace/issues/175)) ([5c0968b](https://github.com/cyfronet-fid/pl-marketplace/commit/5c0968b06a02dfd6e9fd60360fca90d054cd4ed9))
+
 ## [4.5.4](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.3...v4.5.4) (2026-09-23)
 
 

@@ -57,7 +57,7 @@ class Message < ApplicationRecord
   end
 
   def dispatch_email?
-    !role_user? && !internal_scope?
+    !role_user? && !internal_scope? && messageable_type != "ApprovalRequest"
   end
 
   def dispatch_create_email

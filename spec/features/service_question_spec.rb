@@ -39,7 +39,7 @@ RSpec.feature "Question about service", end_user_frontend: true do
         sleep(5)
         expect(page.current_path).to eq(service_path(service))
         expect(page).to have_content("Your message was successfully sent")
-      end.to change { ActionMailer::Base.deliveries.count }.by(3)
+      end.to have_enqueued_mail(ServiceMailer, :new_question).exactly(3)
 
       expect(Jms::PublishJob).to have_been_enqueued.with(hash_including(message_type: "service_question"))
     end
@@ -80,7 +80,7 @@ RSpec.feature "Question about service", end_user_frontend: true do
         sleep(5)
         expect(page.current_path).to eq(service_path(service))
         expect(page).to have_content("Your message was successfully sent")
-      end.to change { ActionMailer::Base.deliveries.count }.by(3)
+      end.to have_enqueued_mail(ServiceMailer, :new_question).exactly(3)
 
       expect(Jms::PublishJob).to have_been_enqueued.with(hash_including(message_type: "service_question"))
     end

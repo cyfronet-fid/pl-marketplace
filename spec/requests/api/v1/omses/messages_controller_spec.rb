@@ -243,7 +243,12 @@ RSpec.describe Api::V1::OMSes::MessagesController, swagger_doc: "v1/ordering_swa
           data = JSON.parse(response.body)
           expect(data).to eq(Api::V1::MessageSerializer.new(message).as_json.deep_stringify_keys)
 
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
+          expect(ActionMailer::MailDeliveryJob).to have_been_enqueued.with(
+            "MessageMailer",
+            "new_message",
+            "deliver_now",
+            args: [message, action: nil]
+          )
         end
       end
 
@@ -281,7 +286,12 @@ RSpec.describe Api::V1::OMSes::MessagesController, swagger_doc: "v1/ordering_swa
           data = JSON.parse(response.body)
           expect(data).to eq(Api::V1::MessageSerializer.new(message, keep_content?: true).as_json.deep_stringify_keys)
 
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
+          expect(ActionMailer::MailDeliveryJob).to have_been_enqueued.with(
+            "MessageMailer",
+            "new_message",
+            "deliver_now",
+            args: [message, action: nil]
+          )
         end
       end
 
@@ -615,7 +625,12 @@ RSpec.describe Api::V1::OMSes::MessagesController, swagger_doc: "v1/ordering_swa
           expect(project.messages.first.message).to eq("After update")
           expect(project.messages.count).to eq(1)
 
-          expect(ActionMailer::Base.deliveries.count).to eq(2)
+          expect(ActionMailer::MailDeliveryJob).to have_been_enqueued.with(
+            "MessageMailer",
+            "message_edited",
+            "deliver_now",
+            args: [message]
+          )
         end
       end
 
@@ -644,7 +659,12 @@ RSpec.describe Api::V1::OMSes::MessagesController, swagger_doc: "v1/ordering_swa
           expect(project_item.messages.first.message).to eq("After update")
           expect(project_item.messages.count).to eq(1)
 
-          expect(ActionMailer::Base.deliveries.count).to eq(2)
+          expect(ActionMailer::MailDeliveryJob).to have_been_enqueued.with(
+            "MessageMailer",
+            "message_edited",
+            "deliver_now",
+            args: [message]
+          )
         end
       end
 

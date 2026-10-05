@@ -27,7 +27,7 @@ RSpec.feature "Service browsing", end_user_frontend: true do
 
       visit service_path(service)
 
-      expect(page).to have_link("Access the service")
+      expect(page).to have_link("Order the service")
       expect(page).to have_content("Manage the service")
       expect(page).to_not have_content(offer1.name)
     end
@@ -106,7 +106,7 @@ RSpec.feature "Service browsing", end_user_frontend: true do
 
       visit service_path(service)
 
-      expect(page).to have_link("Access the service")
+      expect(page).to have_link("Order the service")
       expect(page).to_not have_content("Manage the service")
       expect(page).to_not have_content(offer1.name)
     end
@@ -121,7 +121,7 @@ RSpec.feature "Service browsing", end_user_frontend: true do
       checkin_sign_in_as(user)
       visit service_path(service)
 
-      expect(page).to have_link("Access the service")
+      expect(page).to have_link("Order the service")
       expect(page).to_not have_content("Manage the service")
       expect(page).to_not have_content(offer1.name)
     end
@@ -133,7 +133,7 @@ RSpec.feature "Service browsing", end_user_frontend: true do
 
       visit service_path(service)
 
-      expect(page).to have_link("Access the service")
+      expect(page).to have_link("Order the service")
       expect(page).to_not have_content(offer2.name)
       expect(page).to_not have_content(offer1.name)
     end

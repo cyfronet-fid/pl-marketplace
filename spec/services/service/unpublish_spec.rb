@@ -20,7 +20,7 @@ RSpec.describe Service::Unpublish, backend: true do
       bundle_offer = create(:offer)
       bundle = create(:bundle, main_offer: bundle_offer, offers: [bundled_offer])
       service.reload
-      expect { described_class.call(service) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect { described_class.call(service) }.to have_enqueued_mail(OfferMailer, :offer_unbundled)
 
       bundle.reload
       expect(bundle).to be_draft

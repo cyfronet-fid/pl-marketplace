@@ -6,20 +6,26 @@ RSpec.describe Backoffice::ProviderPolicy, backend: true do
   subject { described_class }
 
   let(:coordinator) { create(:user, roles: [:coordinator]) }
+  let(:admin) { create(:user, roles: [:admin]) }
   let(:owner) { create(:user) }
   let(:catalogue_owner) { create(:user) }
   let(:stranger) { create(:user) }
   let(:catalogue) do
     create(:catalogue, data_administrators: [build(:data_administrator, email: catalogue_owner.email)])
   end
-
-  def provider_owned_by(user, **attrs)
-    create(:provider, data_administrators: [build(:data_administrator, email: user.email)], **attrs)
+  let(:provider_status) { :published }
+  let(:provider) do
+    create(:provider, status: provider_status, data_administrators: [build(:data_administrator, email: owner.email)])
   end
+  let(:catalogue_provider) { create(:provider, catalogue_id: catalogue.id) }
 
   permissions :index?, :new?, :create?, :exit? do
     it "grants access for coordinator" do
       expect(subject).to permit(coordinator, Provider)
+    end
+
+    it "grants access for admin" do
+      expect(subject).to permit(admin, Provider)
     end
 
     it "grants access for any signed in user" do
@@ -32,10 +38,12 @@ RSpec.describe Backoffice::ProviderPolicy, backend: true do
   end
 
   permissions :show?, :edit?, :update? do
-    let(:provider) { provider_owned_by(owner) }
-
     it "grants access for coordinator" do
       expect(subject).to permit(coordinator, provider)
+    end
+
+    it "grants access for admin" do
+      expect(subject).to permit(admin, provider)
     end
 
     it "grants access for provider data administrator" do
@@ -43,9 +51,7 @@ RSpec.describe Backoffice::ProviderPolicy, backend: true do
     end
 
     it "grants access for catalogue data administrator" do
-      provider = create(:provider, catalogue_id: catalogue.id)
-
-      expect(subject).to permit(catalogue_owner, provider)
+      expect(subject).to permit(catalogue_owner, catalogue_provider)
     end
 
     it "denies for user who does not manage the provider" do
@@ -56,20 +62,30 @@ RSpec.describe Backoffice::ProviderPolicy, backend: true do
       expect(subject).to_not permit(nil, provider)
     end
 
-    it "denies coordinator for deleted provider" do
-      expect(subject).to_not permit(coordinator, provider_owned_by(owner, status: :deleted))
-    end
+    context "when provider is deleted" do
+      let(:provider_status) { :deleted }
 
-    it "denies provider data administrator for deleted provider" do
-      expect(subject).to_not permit(owner, provider_owned_by(owner, status: :deleted))
+      it "denies for coordinator" do
+        expect(subject).to_not permit(coordinator, provider)
+      end
+
+      it "denies for admin" do
+        expect(subject).to_not permit(admin, provider)
+      end
+
+      it "denies for provider data administrator" do
+        expect(subject).to_not permit(owner, provider)
+      end
     end
   end
 
   permissions :destroy? do
-    let(:provider) { provider_owned_by(owner) }
-
     it "grants access for coordinator" do
       expect(subject).to permit(coordinator, provider)
+    end
+
+    it "grants access for admin" do
+      expect(subject).to permit(admin, provider)
     end
 
     it "grants access for provider data administrator" do
@@ -77,27 +93,7 @@ RSpec.describe Backoffice::ProviderPolicy, backend: true do
     end
 
     it "grants access for catalogue data administrator" do
-      provider = create(:provider, catalogue_id: catalogue.id)
-
-      expect(subject).to permit(catalogue_owner, provider)
-    end
-
-    it "grants access for coordinator while approval request is pending" do
-      create(:approval_request, approvable: provider)
-
-      expect(subject).to permit(coordinator, provider.reload)
-    end
-
-    it "denies provider data administrator while approval request is pending" do
-      create(:approval_request, approvable: provider)
-
-      expect(subject).to_not permit(owner, provider.reload)
-    end
-
-    it "grants access for provider data administrator once approval request is closed" do
-      create(:approval_request, :accepted, approvable: provider)
-
-      expect(subject).to permit(owner, provider.reload)
+      expect(subject).to permit(catalogue_owner, catalogue_provider)
     end
 
     it "denies for user who does not manage the provider" do
@@ -108,82 +104,188 @@ RSpec.describe Backoffice::ProviderPolicy, backend: true do
       expect(subject).to_not permit(nil, provider)
     end
 
-    it "denies for deleted provider" do
-      expect(subject).to_not permit(coordinator, provider_owned_by(owner, status: :deleted))
+    context "when approval request is pending" do
+      before { create(:approval_request, approvable: provider) }
+
+      it "grants access for coordinator" do
+        expect(subject).to permit(coordinator, provider.reload)
+      end
+
+      it "grants access for admin" do
+        expect(subject).to permit(admin, provider.reload)
+      end
+
+      it "denies for provider data administrator" do
+        expect(subject).to_not permit(owner, provider.reload)
+      end
+    end
+
+    context "when approval request is closed" do
+      before { create(:approval_request, :accepted, approvable: provider) }
+
+      it "grants access for provider data administrator" do
+        expect(subject).to permit(owner, provider.reload)
+      end
+    end
+
+    context "when provider is deleted" do
+      let(:provider_status) { :deleted }
+
+      it "denies for coordinator" do
+        expect(subject).to_not permit(coordinator, provider)
+      end
+
+      it "denies for admin" do
+        expect(subject).to_not permit(admin, provider)
+      end
     end
   end
 
   permissions :publish? do
-    it "grants access for unpublished provider" do
-      expect(subject).to permit(coordinator, provider_owned_by(owner, status: :unpublished))
+    context "when provider is unpublished" do
+      let(:provider_status) { :unpublished }
+
+      it "grants access for coordinator" do
+        expect(subject).to permit(coordinator, provider)
+      end
+
+      it "grants access for admin" do
+        expect(subject).to permit(admin, provider)
+      end
+
+      it "denies for user who does not manage the provider" do
+        expect(subject).to_not permit(stranger, provider)
+      end
     end
 
-    it "denies for already published provider" do
-      expect(subject).to_not permit(coordinator, provider_owned_by(owner, status: :published))
-    end
+    context "when provider is already published" do
+      let(:provider_status) { :published }
 
-    it "denies for user who does not manage the provider" do
-      expect(subject).to_not permit(stranger, provider_owned_by(owner, status: :unpublished))
+      it "denies for coordinator" do
+        expect(subject).to_not permit(coordinator, provider)
+      end
+
+      it "denies for admin" do
+        expect(subject).to_not permit(admin, provider)
+      end
     end
   end
 
   permissions :unpublish? do
-    it "grants access for published provider" do
-      expect(subject).to permit(coordinator, provider_owned_by(owner, status: :published))
+    context "when provider is published" do
+      let(:provider_status) { :published }
+
+      it "grants access for coordinator" do
+        expect(subject).to permit(coordinator, provider)
+      end
+
+      it "grants access for admin" do
+        expect(subject).to permit(admin, provider)
+      end
+
+      it "denies for user who does not manage the provider" do
+        expect(subject).to_not permit(stranger, provider)
+      end
     end
 
-    it "denies for already unpublished provider" do
-      expect(subject).to_not permit(coordinator, provider_owned_by(owner, status: :unpublished))
-    end
+    context "when provider is already unpublished" do
+      let(:provider_status) { :unpublished }
 
-    it "denies for user who does not manage the provider" do
-      expect(subject).to_not permit(stranger, provider_owned_by(owner, status: :published))
+      it "denies for coordinator" do
+        expect(subject).to_not permit(coordinator, provider)
+      end
+
+      it "denies for admin" do
+        expect(subject).to_not permit(admin, provider)
+      end
     end
   end
 
   permissions :suspend? do
-    it "grants access for published provider" do
-      expect(subject).to permit(coordinator, provider_owned_by(owner, status: :published))
+    context "when provider is published" do
+      let(:provider_status) { :published }
+
+      it "grants access for coordinator" do
+        expect(subject).to permit(coordinator, provider)
+      end
+
+      it "grants access for admin" do
+        expect(subject).to permit(admin, provider)
+      end
+
+      it "denies for user who does not manage the provider" do
+        expect(subject).to_not permit(stranger, provider)
+      end
     end
 
-    it "denies for already suspended provider" do
-      expect(subject).to_not permit(coordinator, provider_owned_by(owner, status: :suspended))
-    end
+    context "when provider is already suspended" do
+      let(:provider_status) { :suspended }
 
-    it "denies for user who does not manage the provider" do
-      expect(subject).to_not permit(stranger, provider_owned_by(owner, status: :published))
+      it "denies for coordinator" do
+        expect(subject).to_not permit(coordinator, provider)
+      end
+
+      it "denies for admin" do
+        expect(subject).to_not permit(admin, provider)
+      end
     end
   end
 
   describe "Scope" do
-    let!(:owned_provider) { provider_owned_by(owner) }
-    let!(:catalogue_provider) { create(:provider, catalogue_id: catalogue.id) }
-    let!(:other_provider) { create(:provider) }
+    subject(:resolved) { described_class::Scope.new(user, Provider).resolve }
 
-    def resolve(user)
-      described_class::Scope.new(user, Provider).resolve
+    let(:other_provider) { create(:provider) }
+
+    before { [provider, catalogue_provider, other_provider] }
+
+    context "for coordinator" do
+      let(:user) { coordinator }
+
+      it "returns all providers" do
+        expect(resolved).to contain_exactly(provider, catalogue_provider, other_provider)
+      end
     end
 
-    it "returns all providers for coordinator" do
-      expect(resolve(coordinator)).to contain_exactly(owned_provider, catalogue_provider, other_provider)
+    context "for admin" do
+      let(:user) { admin }
+
+      it "returns all providers" do
+        expect(resolved).to contain_exactly(provider, catalogue_provider, other_provider)
+      end
     end
 
-    it "returns providers managed directly by the user" do
-      expect(resolve(owner)).to contain_exactly(owned_provider)
+    context "for provider data administrator" do
+      let(:user) { owner }
+
+      it "returns providers managed directly by the user" do
+        expect(resolved).to contain_exactly(provider)
+      end
     end
 
-    it "returns providers managed through the user's catalogue" do
-      pending "Provider.catalogue_managed_by filters on catalogues without joining them"
+    context "for catalogue data administrator" do
+      let(:user) { catalogue_owner }
 
-      expect(resolve(catalogue_owner)).to contain_exactly(catalogue_provider)
+      it "returns providers managed through the user's catalogue" do
+        pending "Provider.catalogue_managed_by filters on catalogues without joining them"
+
+        expect(resolved).to contain_exactly(catalogue_provider)
+      end
     end
 
-    it "returns nothing for user who manages no providers" do
-      expect(resolve(stranger)).to be_empty
+    context "for user who manages no providers" do
+      let(:user) { stranger }
+
+      it "returns nothing" do
+        expect(resolved).to be_empty
+      end
     end
 
-    it "returns nothing for anonymous user" do
-      expect(resolve(nil)).to be_empty
+    context "for anonymous user" do
+      let(:user) { nil }
+
+      it "returns nothing" do
+        expect(resolved).to be_empty
+      end
     end
   end
 end

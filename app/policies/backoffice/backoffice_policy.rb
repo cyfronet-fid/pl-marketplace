@@ -8,6 +8,6 @@
 Backoffice::BackofficePolicy =
   Struct.new(:user, :backoffice) do
     def show?
-      user&.coordinator? || user&.data_administrator?
+      user&.executive? || user&.coordinator? || user&.admin? || user&.data_administrator?
     end
   end

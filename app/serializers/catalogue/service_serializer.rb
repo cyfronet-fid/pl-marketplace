@@ -37,13 +37,13 @@ class Catalogue::ServiceSerializer < ApplicationSerializer
 
   %i[target_users access_modes].each do |method|
     define_method method do
-      object.send(method)&.map(&:eid)
+      object.send(method)&.map(&:eid)&.compact_blank
     end
   end
 
   # The catalogue schema expects the vocabulary id (trl-9), not the label
   def trls
-    object.trls.first&.eid
+    object.trls.first&.eid.presence
   end
 
   # The catalogue schema expects {domain, subdomain} pairs, while services are linked to tree nodes
@@ -60,15 +60,20 @@ class Catalogue::ServiceSerializer < ApplicationSerializer
 
   # Nodes above parent_depth (supercategories) have no place in the schema and are dropped.
   # A parent-level node is emitted alone only when none of its children is linked.
+  # Nodes without an EOSC id (created locally in the backoffice) cannot be published.
   def classification_pairs(nodes, parent_depth:, keys:)
     parent_key, child_key = keys
-    nodes = nodes.to_a
+    nodes = nodes.to_a.select { |node| node.eid.present? }
     return [] if nodes.empty?
 
     children = nodes.select { |node| node.depth > parent_depth }
     parents = nodes.first.class.where(id: children.map(&:parent_id)).index_by(&:id)
 
-    pairs = children.map { |node| { parent_key => parents[node.parent_id]&.eid, child_key => node.eid } }
+    pairs =
+      children.filter_map do |node|
+        parent_eid = parents[node.parent_id]&.eid
+        { parent_key => parent_eid, child_key => node.eid } if parent_eid.present?
+      end
     lone_parents = nodes.select { |node| node.depth == parent_depth && parents.exclude?(node.id) }
 
     (pairs + lone_parents.map { |node| { parent_key => node.eid } }).uniq

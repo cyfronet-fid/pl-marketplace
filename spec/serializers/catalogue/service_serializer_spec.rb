@@ -5,7 +5,15 @@ require "rails_helper"
 RSpec.describe Catalogue::ServiceSerializer, backend: true do
   subject(:data) { described_class.new(service).as_json }
 
-  let(:service) { create(:service, scientific_domains: scientific_domains, categories: categories, trls: trls) }
+  let(:service) do
+    create(
+      :service,
+      scientific_domains: scientific_domains,
+      categories: categories,
+      trls: trls,
+      target_users: target_users
+    )
+  end
 
   let(:domain) { create(:scientific_domain) }
   let(:subdomain) { create(:scientific_domain, parent: domain) }
@@ -19,6 +27,9 @@ RSpec.describe Catalogue::ServiceSerializer, backend: true do
 
   let(:trl) { create(:trl, eid: "trl-9", name: "9 - actual system proven in operational environment") }
   let(:trls) { [trl] }
+
+  let(:researchers) { create(:target_user, eid: "target_user-researchers") }
+  let(:target_users) { [researchers] }
 
   describe "scientificDomains" do
     subject(:scientific_domains_data) { data["scientificDomains"] }
@@ -55,6 +66,22 @@ RSpec.describe Catalogue::ServiceSerializer, backend: true do
 
       it "publishes the domain without a subdomain" do
         expect(scientific_domains_data).to eq([{ "scientificDomain" => domain.eid }])
+      end
+    end
+
+    context "when the subdomain has no eid" do
+      let(:subdomain) { create(:scientific_domain, parent: domain, eid: "") }
+
+      it "omits it" do
+        expect(scientific_domains_data).to eq([])
+      end
+    end
+
+    context "when the domain of the subdomain has no eid" do
+      let(:domain) { create(:scientific_domain, eid: "") }
+
+      it "omits the pair" do
+        expect(scientific_domains_data).to eq([])
       end
     end
   end
@@ -101,6 +128,28 @@ RSpec.describe Catalogue::ServiceSerializer, backend: true do
 
       it "publishes null" do
         expect(data["trl"]).to be_nil
+      end
+    end
+
+    context "when the trl has no eid" do
+      let(:trl) { create(:trl, eid: "") }
+
+      it "publishes null" do
+        expect(data["trl"]).to be_nil
+      end
+    end
+  end
+
+  describe "targetUsers" do
+    it "publishes the vocabulary ids" do
+      expect(data["targetUsers"]).to eq(["target_user-researchers"])
+    end
+
+    context "when a target user has no eid" do
+      let(:target_users) { [researchers, create(:target_user, eid: "")] }
+
+      it "omits it" do
+        expect(data["targetUsers"]).to eq(["target_user-researchers"])
       end
     end
   end

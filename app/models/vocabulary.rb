@@ -14,6 +14,8 @@ class Vocabulary < ApplicationRecord
   has_many :persistent_identity_system_vocabularies, dependent: :destroy
   has_many :persistent_identity_systems, through: :persistent_identity_system_vocabularies
 
+  normalizes :eid, with: ->(eid) { eid.strip.presence }
+
   validates :name, presence: true
   validates :type, presence: true
 

@@ -7,4 +7,6 @@ RSpec.describe TargetUser, type: :model, backend: true do
   include_examples "publishable"
 
   it { should validate_presence_of(:name) }
+
+  it { is_expected.to normalize(:eid).from(" ").to(nil) }
 end

@@ -6,6 +6,8 @@ require_relative "publishable"
 RSpec.describe Category, backend: true do
   include_examples "publishable"
 
+  it { is_expected.to normalize(:eid).from(" ").to(nil) }
+
   describe "validations" do
     it { should validate_presence_of(:name) }
 

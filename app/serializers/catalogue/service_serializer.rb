@@ -41,6 +41,11 @@ class Catalogue::ServiceSerializer < ApplicationSerializer
     end
   end
 
+  # The catalogue schema expects the vocabulary id (trl-9), not the label
+  def trls
+    object.trls.first&.eid
+  end
+
   # The catalogue schema expects {domain, subdomain} pairs, while services are linked to tree nodes
   def scientific_domains
     classification_pairs(object.scientific_domains, parent_depth: 0, keys: %i[scientific_domain scientific_subdomain])

@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Catalogue::ServiceSerializer, backend: true do
   subject(:data) { described_class.new(service).as_json }
 
-  let(:service) { create(:service, scientific_domains: scientific_domains, categories: categories) }
+  let(:service) { create(:service, scientific_domains: scientific_domains, categories: categories, trls: trls) }
 
   let(:domain) { create(:scientific_domain) }
   let(:subdomain) { create(:scientific_domain, parent: domain) }
@@ -16,6 +16,9 @@ RSpec.describe Catalogue::ServiceSerializer, backend: true do
   let(:category) { create(:category, parent: supercategory) }
   let(:subcategory) { create(:category, parent: category) }
   let(:categories) { [subcategory] }
+
+  let(:trl) { create(:trl, eid: "trl-9", name: "9 - actual system proven in operational environment") }
+  let(:trls) { [trl] }
 
   describe "scientificDomains" do
     subject(:scientific_domains_data) { data["scientificDomains"] }
@@ -84,6 +87,20 @@ RSpec.describe Catalogue::ServiceSerializer, backend: true do
 
       it "omits the supercategory" do
         expect(categories_data).to eq([])
+      end
+    end
+  end
+
+  describe "trl" do
+    it "publishes the vocabulary id instead of the label" do
+      expect(data["trl"]).to eq("trl-9")
+    end
+
+    context "when the service has no trl" do
+      let(:trls) { [] }
+
+      it "publishes null" do
+        expect(data["trl"]).to be_nil
       end
     end
   end

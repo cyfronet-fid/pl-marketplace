@@ -129,7 +129,8 @@ RSpec.configure do |config|
               },
               trl: {
                 type: :string,
-                nullable: true
+                nullable: true,
+                example: "trl-9"
               },
               userManual: {
                 type: :string,

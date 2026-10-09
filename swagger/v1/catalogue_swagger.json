@@ -69,7 +69,8 @@
                       "type": "integer"
                     },
                     "to": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Exclusive end index: from + number of returned results"
                     },
                     "results": {
                       "type": "array",

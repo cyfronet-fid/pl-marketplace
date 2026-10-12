@@ -13,6 +13,8 @@ class TargetUser < ApplicationRecord
   has_many :categorizations, through: :services
   has_many :categories, through: :categorizations
 
+  normalizes :eid, with: ->(eid) { eid.strip.presence }
+
   validates :name, uniqueness: true, presence: true
 
   def to_s

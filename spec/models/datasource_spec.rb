@@ -4,8 +4,7 @@ require "rails_helper"
 
 RSpec.describe Datasource, type: :model, backend: true do
   # The factory builds a Service with type "Datasource"; reload to get the Datasource class
-  let(:datasource) { described_class.find(create(:datasource, abbreviation: abbreviation).id) }
-  let(:abbreviation) { "ds-abbr" }
+  let(:datasource) { described_class.find(create(:datasource, abbreviation: "ds-abbr").id) }
 
   it "shares the Service model name" do
     expect(described_class.model_name).to eq(Service.model_name)
@@ -16,6 +15,8 @@ RSpec.describe Datasource, type: :model, backend: true do
   end
 
   describe "pid" do
+    let(:uuid) { /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/ }
+
     context "when pid is nil and the datasource has a source" do
       before do
         datasource.sources.build(source_type: :eosc_registry, eid: "datasource-eid")
@@ -30,26 +31,16 @@ RSpec.describe Datasource, type: :model, backend: true do
     context "when pid is nil and the datasource has no source" do
       before { datasource.pid = nil }
 
-      it "uses the abbreviation" do
-        expect { datasource.valid? }.to change(datasource, :pid).from(nil).to("ds-abbr")
-      end
-    end
-
-    context "when pid is nil and there is neither a source nor an abbreviation" do
-      let(:abbreviation) { "" }
-
-      before { datasource.pid = nil }
-
-      it "assigns a generated pid" do
-        expect { datasource.valid? }.to change(datasource, :pid).from(nil).to(be_present)
+      it "assigns a generated pid instead of the abbreviation" do
+        expect { datasource.valid? }.to change(datasource, :pid).from(nil).to(match(uuid))
       end
     end
 
     context "when pid is blank" do
       before { datasource.pid = "  " }
 
-      it "replaces it" do
-        expect { datasource.valid? }.to change(datasource, :pid).from("  ").to("ds-abbr")
+      it "replaces it with a generated pid" do
+        expect { datasource.valid? }.to change(datasource, :pid).from("  ").to(match(uuid))
       end
     end
 
@@ -59,8 +50,8 @@ RSpec.describe Datasource, type: :model, backend: true do
         datasource.save(validate: false)
       end
 
-      it "persists the fallback pid" do
-        expect(datasource.reload.pid).to eq("ds-abbr")
+      it "persists a generated pid" do
+        expect(datasource.reload.pid).to match(uuid)
       end
     end
 

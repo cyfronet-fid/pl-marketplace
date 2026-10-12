@@ -22,7 +22,7 @@ class Datasource < Service
   private
 
   def assign_generated_pid
-    self.pid = sources&.first&.eid.presence || abbreviation.presence || SecureRandom.uuid if pid.blank?
+    self.pid = sources&.first&.eid.presence || SecureRandom.uuid if pid.blank?
   end
 
   def _provider_search_link(target_name, filter_query, default_path = nil)

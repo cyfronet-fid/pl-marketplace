@@ -28,7 +28,8 @@ class EnforceNotNullUniquePidOnServicesAndCatalogues < ActiveRecord::Migration[7
   private
 
   def backfill_blank_pids(table)
-    select_values("SELECT id FROM #{table} WHERE pid IS NULL OR BTRIM(pid) = ''").each do |id|
+    # [[:space:]] also matches tabs and newlines, which BTRIM (spaces only) leaves in place
+    select_values("SELECT id FROM #{table} WHERE pid IS NULL OR pid ~ '^[[:space:]]*$'").each do |id|
       update("UPDATE #{table} SET pid = #{quote(SecureRandom.uuid)} WHERE id = #{quote(id)}")
     end
   end

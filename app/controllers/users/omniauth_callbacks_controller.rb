@@ -22,7 +22,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         end
         flash[:notice] = I18n.t "devise.omniauth_callbacks.success", kind: "Checkin"
       else
-        flash[:alert] = @user ? "Cannot register user #{@user.errors.inspect}" : "Cannot register user"
+        flash[:alert] = @user ? "Cannot register user: incomplete data" : "Cannot register user"
         session["devise.checkin_data"] = auth
         redirect_to root_url
       end

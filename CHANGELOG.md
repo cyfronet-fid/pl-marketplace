@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 Please view this file on the master branch, on stable branches it's out of date.
 
+## [4.6.1](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.6.0...v4.6.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* [[#185](https://github.com/cyfronet-fid/pl-marketplace/issues/185)] align catalogue API with EOSC verification feedback ([#186](https://github.com/cyfronet-fid/pl-marketplace/issues/186)) ([1d266fe](https://github.com/cyfronet-fid/pl-marketplace/commit/1d266fec6e5029949b67345324f12d03246702ae))
+* [[#185](https://github.com/cyfronet-fid/pl-marketplace/issues/185)] enforce not null and unique pid on services and catalogues ([#187](https://github.com/cyfronet-fid/pl-marketplace/issues/187)) ([e2c8105](https://github.com/cyfronet-fid/pl-marketplace/commit/e2c81051c80f5b6ccff1ad648055ad340b96b6ea))
+* allow executives and admins to access the backoffice ([#178](https://github.com/cyfronet-fid/pl-marketplace/issues/178)) ([8889eb2](https://github.com/cyfronet-fid/pl-marketplace/commit/8889eb2e9c81cb56a83178283398a50777cfacd4))
+
 ## [4.6.0](https://github.com/cyfronet-fid/pl-marketplace/compare/v4.5.4...v4.6.0) (2026-10-05)
 
 

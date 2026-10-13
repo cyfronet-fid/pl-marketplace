@@ -13,7 +13,6 @@ class Datasource < Service
   friendly_id :name, use: :slugged
 
   before_save do
-    self.pid = sources&.first&.eid || abbreviation if pid.blank?
     self.persistent_identity_systems =
       persistent_identity_systems.reject { |p| p.entity_type.blank? && p.entity_type_schemes.blank? }
   end
@@ -21,6 +20,10 @@ class Datasource < Service
   accepts_nested_attributes_for :persistent_identity_systems, reject_if: :all_blank, allow_destroy: true
 
   private
+
+  def assign_generated_pid
+    self.pid = sources&.first&.eid.presence || SecureRandom.uuid if pid.blank?
+  end
 
   def _provider_search_link(target_name, filter_query, default_path = nil)
     search_base_url = Mp::Application.config.search_service_base_url

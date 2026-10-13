@@ -236,4 +236,73 @@ RSpec.describe Service, backend: true do
       end
     end
   end
+
+  describe "pid" do
+    let(:service) { build(:service) }
+
+    context "when pid is nil" do
+      before { service.pid = nil }
+
+      it "assigns a generated pid" do
+        expect { service.valid? }.to change(service, :pid).from(nil).to(be_present)
+      end
+    end
+
+    context "when pid is blank" do
+      before { service.pid = "  " }
+
+      it "assigns a generated pid" do
+        expect { service.valid? }.to change(service, :pid).from("  ").to(be_present)
+      end
+    end
+
+    context "when pid is nil and validations are skipped" do
+      before do
+        service.pid = nil
+        service.save(validate: false)
+      end
+
+      it "persists a generated pid" do
+        expect(service.reload.pid).to be_present
+      end
+    end
+
+    context "when pid is blank and validations are skipped" do
+      before do
+        service.pid = "  "
+        service.save(validate: false)
+      end
+
+      it "persists a generated pid" do
+        expect(service.reload.pid).to be_present
+      end
+    end
+
+    context "when pid is present" do
+      let(:service) { build(:service, pid: "custom-pid") }
+
+      it "keeps the given pid" do
+        expect { service.valid? }.not_to change(service, :pid).from("custom-pid")
+      end
+    end
+
+    context "when pid is already taken by another service" do
+      let(:service) { build(:service, pid: "taken-pid") }
+
+      before { create(:service, pid: "taken-pid") }
+
+      it "is invalid" do
+        expect(service).not_to be_valid
+      end
+
+      it "reports the pid as taken" do
+        service.valid?
+        expect(service.errors[:pid]).to include("has already been taken")
+      end
+
+      it "is rejected by the database when validations are skipped" do
+        expect { service.save(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
+      end
+    end
+  end
 end

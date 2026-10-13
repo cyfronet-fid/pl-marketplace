@@ -16,7 +16,6 @@ class Service < ApplicationRecord
   acts_as_taggable
 
   before_save { self.catalogue = Catalogue.find(catalogue_id) if catalogue_id.present? }
-  before_save { self.pid = upstream.eid if upstream_id.present? }
 
   attr_accessor :catalogue_id, :monitoring_status, :bundle_id
 
@@ -220,6 +219,7 @@ class Service < ApplicationRecord
   auto_strip_attributes :related_platforms, nullify_array: false
   auto_strip_attributes :grant_project_names, nullify_array: false
 
+  validates :pid, presence: true, uniqueness: true
   validates :type, presence: true
   validates :name, presence: true
   validates :description, presence: true
@@ -263,6 +263,8 @@ class Service < ApplicationRecord
   validates :public_contacts, presence: true, length: { minimum: 1, message: "are required. Please add at least one" }
   validate :resource_organisation_published
 
+  before_validation :assign_generated_pid
+  before_save :assign_generated_pid
   after_save :set_first_category_as_main!, if: :main_category_missing?
 
   def resource_organisation_published
@@ -335,6 +337,10 @@ class Service < ApplicationRecord
   end
 
   private
+
+  def assign_generated_pid
+    self.pid = SecureRandom.uuid if pid.blank?
+  end
 
   def _search_link(target_name, filter_query, default_path = nil)
     search_base_url = Mp::Application.config.search_service_base_url
